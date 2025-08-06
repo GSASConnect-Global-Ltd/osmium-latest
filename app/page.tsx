@@ -1,103 +1,97 @@
+// app/page.tsx
 import Image from "next/image";
+
+
+import { Section } from "@/components/ui/Section";
+
+// Import images (Next.js handles these)
+import aiRoboticsImg from "@/assets/ai-robotics.jpg";
+import digitalTwinImg from "@/assets/digital-twin.jpg";
+import gameDevImg from "@/assets/game-development.jpg";
+import softwareImg from "@/assets/software-engineering.jpg";
+import renewableImg from "@/assets/renewable-energy.jpg";
+import xrImg from "@/assets/extended-reality.jpg";
+import smartHomesImg from "@/assets/smart-homes.jpg";
+import Hero from "@/components/home/Hero";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300">
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <Hero />
+
+      <div id="ai-robotics">
+        <Section
+          title="AI & Robotics"
+          description="Revolutionizing industries through intelligent automation and advanced robotic systems. Our AI-driven solutions combine machine learning, computer vision, and robotics to create autonomous systems that enhance productivity and safety across manufacturing, healthcare, and service sectors."
+          image={aiRoboticsImg}
+          imageAlt="AI and Robotics Technology"
+          ctaText="Explore AI Solutions"
+        />
+      </div>
+
+      <div id="digital-twin">
+        <Section
+          title="Digital Twin Technology"
+          description="Creating precise digital replicas of physical systems to optimize performance, predict maintenance needs, and accelerate innovation. Our digital twin solutions enable real-time monitoring, simulation, and analysis for smart cities, industrial facilities, and complex infrastructure projects."
+          image={digitalTwinImg}
+          imageAlt="Digital Twin Technology"
+          ctaText="Discover Digital Twins"
+          reverse
+        />
+      </div>
+
+      <div id="game-dev">
+        <Section
+          title="Game Development"
+          description="Crafting immersive gaming experiences through cutting-edge technology and innovative design. From mobile games to AAA productions, we leverage advanced graphics engines, AI-driven gameplay, and cross-platform development to create engaging entertainment solutions."
+          image={gameDevImg}
+          imageAlt="Game Development"
+          ctaText="View Our Games"
+        />
+      </div>
+
+      <div id="software">
+        <Section
+          title="Software Engineering"
+          description="Building robust, scalable software solutions that drive digital transformation. Our engineering expertise spans cloud-native applications, enterprise systems, and custom software development with a focus on performance, security, and user experience."
+          image={softwareImg}
+          imageAlt="Software Engineering"
+          ctaText="See Our Work"
+          reverse
+        />
+      </div>
+
+      <div id="renewable">
+        <Section
+          title="Renewable Energies"
+          description="Accelerating the transition to sustainable energy through innovative technology solutions. We develop smart grid systems, energy management platforms, and IoT-enabled renewable energy solutions that maximize efficiency and reduce environmental impact."
+          image={renewableImg}
+          imageAlt="Renewable Energy Solutions"
+          ctaText="Learn About Energy"
+        />
+      </div>
+
+      <div id="xr">
+        <Section
+          title="Extended Reality"
+          description="Pushing the boundaries of reality with immersive XR experiences that blend virtual and physical worlds. Our extended reality solutions encompass VR, AR, and MR applications for training, visualization, entertainment, and collaborative work environments."
+          image={xrImg}
+          imageAlt="Extended Reality Technology"
+          ctaText="Experience XR"
+          reverse
+        />
+      </div>
+
+      <div id="smart-homes">
+        <Section
+          title="Smart Homes Concept"
+          description="Transforming living spaces into intelligent environments that adapt to user preferences and optimize comfort, security, and energy efficiency. Our smart home solutions integrate IoT devices, AI automation, and intuitive interfaces for seamless home management."
+          image={smartHomesImg}
+          imageAlt="Smart Homes Technology"
+          ctaText="Explore Smart Living"
+        />
+      </div>
     </div>
   );
 }
