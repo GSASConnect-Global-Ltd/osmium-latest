@@ -1,102 +1,103 @@
-/* @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-} */
-
-
 @import "tailwindcss";
-
 @tailwind utilities;
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/font/poppin-bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/font/roboto-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root {
+
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+
   --background: #ffffff;
   --foreground: #171717;
+  --foreground-rgb: 23, 23, 23;
+
   --footer-bg: #f5f5f5;
   --footer-text: #1a1a1a;
   --footer-link: #666666;
   --footer-link-hover: #000000;
-}
 
-/* @import "tailwindcss";
+  --navbar: rgba(0, 0, 0, 0.6);
+  --navbar-border: #333;
+   --shadow-navbar: 0 2px 10px rgba(255, 255, 255, 0.07);
+    --navbar-transparent-bg: rgba(255, 255, 255, 0.1);
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-} */
-
-
-@import "tailwindcss";
-
-@tailwind utilities;
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --footer-bg: #f5f5f5;
-  --footer-text: #1a1a1a;
-  --footer-link: #666666;
-  --footer-link-hover: #000000;
+ 
 }
 
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+  --foreground-rgb: 237, 237, 237;
+
   --footer-bg: #121212;
   --footer-text: #e5e5e5;
   --footer-link: #a0a0a0;
   --footer-link-hover: #ffffff;
+
+   --navbar: rgba(255, 255, 255, 0.7);
+  --navbar-border: #ccc;
+  --shadow-navbar: 0 2px 10px rgba(0, 0, 0, 0.07);
+  --navbar-transparent-bg: rgba(0, 0, 0, 0.2);
+
+  
 }
 
+/* 🩶 Softer gray theme for BlogHero */
+.blog-hero {
+  --background: #1f1f1f;        /* Dark Gray */
+  --foreground: #f0f0f0;        /* Light Gray */
+  --foreground-rgb: 240, 240, 240;
+}
+
+.dark .blog-hero {
+  --background: #f5f5f5;        /* Light Gray */
+  --foreground: #1a1a1a;        /* Dark Gray */
+  --foreground-rgb: 26, 26, 26;
+}
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
 }
 
-
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
 }
+
+.blog-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(var(--foreground-rgb), 0.05),
+    rgba(var(--foreground-rgb), 0.1)
+  );
+  z-index: 0;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --navbar-transparent-bg: rgba(255, 255, 255, 1); /* Full opacity */
+  }
+
+  .dark :root {
+    --navbar-transparent-bg: rgba(0, 0, 0, 1); /* Full opacity */
+  }
+}
+
