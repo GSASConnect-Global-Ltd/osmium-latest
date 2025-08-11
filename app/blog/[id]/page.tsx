@@ -1,12 +1,7 @@
-import { ReactElement } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import type { Metadata } from 'next';
 
-interface BlogPostPageProps {
-  params: { slug: string };
-  searchParams?: Record<string, string>;
-}
 
 const relatedPosts = [
   {
@@ -26,19 +21,12 @@ const relatedPosts = [
   },
 ];
 
-export async function generateStaticParams() {
-  return relatedPosts.map(({ slug }) => ({ slug }));
-}
 
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  return {
-    title: `Blog | ${params.slug.replace(/-/g, ' ')}`,
-    description: `Read about ${params.slug.replace(/-/g, ' ')} on our design blog.`,
-  };
-}
 
-export default async function BlogPostPage({ params }: BlogPostPageProps): Promise<ReactElement> {
-  const { slug } = params;
+
+
+export default function BlogPostPage()  {
+  
 
   return (
     <main className="min-h-screen text-black bg-white">
