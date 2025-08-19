@@ -24,7 +24,7 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/blogs");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs`);
         if (!res.ok) throw new Error("Failed to fetch posts");
 
         const data: BlogPostFromAPI[] = await res.json();
@@ -42,7 +42,7 @@ export default function BlogPage() {
             category: featured.category,
             image:
               featured.images && featured.images[0]
-                ? `http://localhost:5000${featured.images[0]}`
+                ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${featured.images[0]}`
                 : "",
           });
 
@@ -57,7 +57,7 @@ export default function BlogPage() {
             category: post.category,
             image:
               post.images && post.images[0]
-                ? `http://localhost:5000${post.images[0]}`
+                ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${post.images[0]}`
                 : "",
           }));
 

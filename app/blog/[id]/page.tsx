@@ -45,7 +45,7 @@ export default function BlogPostPage() {
     const fetchPost = async () => {
       try {
         // Fetch main post
-        const res = await fetch(`http://localhost:5000/api/blogs/${id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${id}`);
         if (!res.ok) throw new Error("Failed to fetch post");
         const data: BlogPostFromAPI = await res.json();
 
@@ -58,14 +58,14 @@ export default function BlogPostPage() {
           readTime: data.readTime,
           category: data.category,
           images: (data.images || []).map(
-            (img) => (img ? `http://localhost:5000${img}` : null)
+            (img) => (img ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}` : null)
           ),
         };
         setPost(mappedPost);
 
         // Fetch related posts from same category
         const relatedRes = await fetch(
-          `http://localhost:5000/api/blogs?category=${data.category}&excludeId=${data._id}`
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs?category=${data.category}&excludeId=${data._id}`
         );
         if (relatedRes.ok) {
           const relatedData: BlogPostFromAPI[] = await relatedRes.json();
@@ -78,7 +78,7 @@ export default function BlogPostPage() {
             readTime: p.readTime,
             category: p.category,
             images: (p.images || []).map((img) =>
-              img ? `http://localhost:5000${img}` : null
+              img ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}` : null
             ),
           }));
           setRelatedPosts(mappedRelated);
