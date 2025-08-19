@@ -9,10 +9,12 @@ export default function Navbar() {
 
   const navItems = [
     { label: 'Home', href: '/' },
-    { label: 'About', href: '/#' },
-    { label: 'Services', href: '/#' },
+    { label: 'About', href: '/about' },
+    { label: 'Services', href: '/services' },
     { label: 'Blog', href: '/blog' },
-    { label: 'Contact', href: '/#' },
+    { label: 'Portfolio', href: '/portfolio'},
+
+    { label: 'Contact', href: '/contact' },
   ];
 
   useEffect(() => {
@@ -64,11 +66,7 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA Buttons */}
-          <div className="items-center hidden space-x-4 md:flex">
-            <button className="px-4 py-2 rounded text-navbar-foreground hover:bg-primary/10">Sign In</button>
-            <button className="px-4 py-2 rounded bg-primary text-primary-foreground hover:bg-primary/90">Get Started</button>
-          </div>
+        
 
           {/* Mobile Button */}
           <div className="md:hidden">
@@ -118,15 +116,7 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col items-center px-6 pb-10 space-y-3">
-              <button className="w-full max-w-xs px-4 py-2 text-sm font-medium border rounded text-[var(--foreground)] border-[var(--foreground)] hover:bg-primary/10 transition">
-                Sign In
-              </button>
-              <button className="w-full max-w-xs px-4 py-2 text-sm font-medium transition rounded bg-primary text-primary-foreground hover:bg-primary/90">
-                Get Started
-              </button>
-            </div>
+            
           </div>
         )}
       </div>

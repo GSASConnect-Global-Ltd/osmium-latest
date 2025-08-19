@@ -1,10 +1,13 @@
 // app/page.tsx
+
+"use client";
 import Image from "next/image";
-
-
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Section } from "@/components/ui/Section";
+import Hero from "@/components/home/Hero";
 
-// Import images (Next.js handles these)
+// Import images
 import aiRoboticsImg from "@/assets/ai-robotics.jpg";
 import digitalTwinImg from "@/assets/digital-twin.jpg";
 import gameDevImg from "@/assets/game-development.jpg";
@@ -12,12 +15,49 @@ import softwareImg from "@/assets/software-engineering.jpg";
 import renewableImg from "@/assets/renewable-energy.jpg";
 import xrImg from "@/assets/extended-reality.jpg";
 import smartHomesImg from "@/assets/smart-homes.jpg";
-import Hero from "@/components/home/Hero";
+
+// Define backend blog post type
+interface BlogPostFromAPI {
+  _id: string;
+  title: string;
+  summary: string;
+  images: string[]; // paths from backend
+}
+
+
 
 export default function Home() {
-  return (
-    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300">
 
+  const [blogPosts, setBlogPosts] = useState<BlogPostFromAPI[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/blogs");
+        if (!res.ok) throw new Error("Failed to fetch blogs");
+
+        const data: BlogPostFromAPI[] = await res.json();
+
+        // Prepend full URL to images
+        const mapped = data.map((post) => ({
+          ...post,
+          images: post.images.map((img) => `http://localhost:5000${img}`),
+        }));
+
+        setBlogPosts(mapped);
+      } catch (err) {
+        console.error("❌ Error fetching blog posts:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogPosts();
+  }, []);
+
+  return (
+    <div className="min-h-screen font-sans text-black transition-colors duration-300 bg-white">
       <Hero />
 
       <div id="ai-robotics">
@@ -91,6 +131,97 @@ export default function Home() {
           imageAlt="Smart Homes Technology"
           ctaText="Explore Smart Living"
         />
+
+        {/* Why Choose Us Section */}
+        <section className="py-20 text-center text-white bg-black">
+          <h2 className="mb-8 text-4xl font-bold">Why Choose Us</h2>
+          <ul className="max-w-3xl mx-auto space-y-4 text-lg text-left">
+            <li>✅ 3+ years in tech innovation</li>
+            <li>✅ Proven track record in renewable energy integrations</li>
+            <li>✅ Custom XR experiences for training and entertainment</li>
+          </ul>
+        </section>
+
+        {/* Featured Portfolio Teasers */}
+        {/* Featured Portfolio Teasers */}
+        <section className="py-20">
+          <h2 className="mb-12 text-4xl font-bold text-center">Featured Portfolio</h2>
+          <div className="flex justify-center gap-8 px-4 overflow-x-auto">
+            {[
+              "https://images.unsplash.com/photo-1542626991-cbc4e32524cc?q=80&w=1169&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1579389083046-e3df9c2b3325?q=80&w=687&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1622050756792-5b1180bbb873?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            ].map((url, i) => (
+              <div key={i} className="min-w-[300px] bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
+                <Image
+                  src={url}
+                  alt={`Portfolio ${i + 1}`}
+                  className="object-cover w-full h-48"
+                  width={300}
+                  height={192}
+                />
+                <div className="p-4">
+                  <h3 className="mb-2 text-xl font-semibold">Project {i + 1}</h3>
+                  <p className="mb-2 text-sm text-gray-700">
+                    Short description of this project highlighting innovation and impact.
+                  </p>
+                  <button className="px-4 py-2 font-semibold text-black transition border border-black rounded hover:bg-black hover:text-white">
+                    View Case Study
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+         {/* Latest Blog Posts Section */}
+      <section className="py-20 bg-gray-50">
+        <h2 className="mb-12 text-4xl font-bold text-center">Latest Blog Posts</h2>
+
+        {loading ? (
+          <p className="text-center text-black">Loading blog posts...</p>
+        ) : blogPosts.length === 0 ? (
+          <p className="text-center text-black">No blog posts available.</p>
+        ) : (
+          <div className="flex justify-center gap-8 px-4 overflow-x-auto">
+            {blogPosts.map((post, i) => (
+              <div key={post._id} className="min-w-[300px] bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
+                {post.images[0] && (
+                  <Image
+                    src={post.images[0]}
+                    alt={post.title}
+                    className="object-cover w-full h-48"
+                    width={300}
+                    height={192}
+                  />
+                )}
+                <div className="p-4">
+                  <h3 className="mb-2 text-xl font-semibold">{post.title}</h3>
+                  <p className="mb-2 text-sm text-gray-700">{post.summary}</p>
+                  <Link href={`/blog/${post._id}`}>
+                    <button className="px-4 py-2 font-semibold text-black transition border border-black rounded hover:bg-black hover:text-white">
+                      Read More
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+        {/* CTA Footer Banner */}
+        <section className="py-20 text-center text-white bg-black">
+          <h2 className="mb-4 text-4xl font-bold">Ready to innovate? Contact us today.</h2>
+          <form className="flex flex-col max-w-2xl gap-4 mx-auto mt-6">
+            <input type="text" placeholder="Your Name" className="p-3 text-black rounded" />
+            <input type="email" placeholder="Your Email" className="p-3 text-black rounded" />
+            <textarea placeholder="Your Message" rows={4} className="p-3 text-black rounded"></textarea>
+            <button type="submit" className="py-3 font-semibold text-black transition bg-white rounded hover:bg-gray-200">
+              Submit
+            </button>
+          </form>
+        </section>
       </div>
     </div>
   );

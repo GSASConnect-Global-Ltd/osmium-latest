@@ -1,32 +1,109 @@
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
+interface BlogPost {
+  _id: string;
+  title: string;
+  summary: string;
+  author: string;
+  date: string;
+  readTime: string;
+  category: string;
+  images: (string | null)[];
+}
 
-const relatedPosts = [
-  {
-    title: 'Typography in Digital Spaces',
-    slug: 'typography-digital-spaces',
-    image: 'https://images.unsplash.com/photo-1743397015920-e4682a813b24?q=80',
-  },
-  {
-    title: 'Color Theory for Brands',
-    slug: 'color-theory-brands',
-    image: 'https://images.unsplash.com/photo-1743397015920-e4682a813b24?q=80',
-  },
-  {
-    title: 'Psychology of User Experience',
-    slug: 'psychology-user-experience',
-    image: 'https://images.unsplash.com/photo-1743397015920-e4682a813b24?q=80',
-  },
-];
+// Backend API response type
+interface BlogPostFromAPI {
+  _id: string;
+  title: string;
+  summary: string;
+  author: string;
+  date: string;
+  readTime: string;
+  category: string;
+  images: string[];
+}
 
+export default function BlogPostPage() {
+  const { id } = useParams<{ id: string }>();
+  const router = useRouter();
 
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (!id) {
+      router.replace("/post");
+      return;
+    }
 
+    const fetchPost = async () => {
+      try {
+        // Fetch main post
+        const res = await fetch(`http://localhost:5000/api/blogs/${id}`);
+        if (!res.ok) throw new Error("Failed to fetch post");
+        const data: BlogPostFromAPI = await res.json();
 
-export default function BlogPostPage()  {
-  
+        const mappedPost: BlogPost = {
+          _id: data._id,
+          title: data.title,
+          summary: data.summary,
+          author: data.author,
+          date: data.date,
+          readTime: data.readTime,
+          category: data.category,
+          images: (data.images || []).map(
+            (img) => (img ? `http://localhost:5000${img}` : null)
+          ),
+        };
+        setPost(mappedPost);
+
+        // Fetch related posts from same category
+        const relatedRes = await fetch(
+          `http://localhost:5000/api/blogs?category=${data.category}&excludeId=${data._id}`
+        );
+        if (relatedRes.ok) {
+          const relatedData: BlogPostFromAPI[] = await relatedRes.json();
+          const mappedRelated = relatedData.map((p) => ({
+            _id: p._id,
+            title: p.title,
+            summary: p.summary,
+            author: p.author,
+            date: p.date,
+            readTime: p.readTime,
+            category: p.category,
+            images: (p.images || []).map((img) =>
+              img ? `http://localhost:5000${img}` : null
+            ),
+          }));
+          setRelatedPosts(mappedRelated);
+        }
+      } catch (error) {
+        console.error("❌ Error fetching post:", error);
+        alert("Failed to load post");
+        router.replace("/post");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [id, router]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-white">
+        <p className="text-lg text-black">Loading post...</p>
+      </div>
+    );
+  }
+
+  if (!post) return null;
 
   return (
     <main className="min-h-screen text-black bg-white">
@@ -34,17 +111,15 @@ export default function BlogPostPage()  {
         {/* Header */}
         <header className="mb-12 text-center">
           <span className="inline-block px-3 py-1 mb-4 text-sm text-white bg-gray-900 rounded-full">
-            Design
+            {post.category}
           </span>
-          <h1 className="mb-6 text-4xl font-bold md:text-5xl">
-            The Future of Minimalist Design
-          </h1>
+          <h1 className="mb-6 text-4xl font-bold md:text-5xl">{post.title}</h1>
           <div className="flex flex-wrap justify-center gap-4 mb-8 text-sm text-gray-700">
-            <span>By Sarah Chen</span>
+            <span>By {post.author}</span>
             <span>•</span>
-            <span>March 15, 2024</span>
+            <span>{new Date(post.date).toLocaleDateString()}</span>
             <span>•</span>
-            <span>8 min read</span>
+            <span>{post.readTime}</span>
           </div>
         </header>
 
@@ -52,75 +127,48 @@ export default function BlogPostPage()  {
         <div className="flex flex-col md:flex-row md:gap-12">
           {/* Main Content */}
           <section className="flex-1 prose prose-lg text-black">
-            <p>
-              In an era of information overload, minimalist design has become a philosophy that prioritizes clarity, functionality, and user experience.
-            </p>
-            <Image
-              src="https://images.unsplash.com/photo-1509395062183-67c5ad6faff9?auto=format&fit=crop&w=1100&q=80"
-              alt="Minimalist workspace with clean lines"
-              width={1100}
-              height={600}
-              className="w-full h-auto my-8 rounded-lg shadow"
-            />
-            <h2>The Power of Less</h2>
-            <p>Minimalism is about removing the unnecessary — leaving behind only what’s essential.</p>
-            <Image
-              src="https://images.unsplash.com/photo-1557682224-5b8590cd9ec5?auto=format&fit=crop&w=1100&q=80"
-              alt="Clean user interface demonstrating minimalism"
-              width={1100}
-              height={600}
-              className="w-full h-auto my-8 rounded-lg shadow"
-            />
-            <h2>Beyond Aesthetics</h2>
-            <p>It’s about performance, accessibility, and reducing cognitive load for better UX.</p>
-            <Image
-              src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1100&q=80"
-              alt="Architectural example of minimalist design"
-              width={1100}
-              height={600}
-              className="w-full h-auto my-8 rounded-lg shadow"
-            />
-
-            {/* Footer */}
-            <footer className="pt-8 mt-16 border-t border-gray-300">
-              <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-                <div>
-                  <p className="mb-1 text-sm text-gray-500">Written by</p>
-                  <p className="font-semibold text-black">Sarah Chen</p>
-                </div>
-                <div className="flex gap-4">
-                  <button className="px-4 py-2 text-sm transition border border-black rounded hover:bg-black hover:text-white">
-                    Share
-                  </button>
-                  <button className="px-4 py-2 text-sm transition border border-black rounded hover:bg-black hover:text-white">
-                    Subscribe
-                  </button>
-                </div>
-              </div>
-            </footer>
+            {post.images.map(
+              (img, i) =>
+                img && (
+                  <div
+                    key={i}
+                    className="relative w-full h-64 my-8 overflow-hidden border rounded-md border-black/10"
+                  >
+                    <Image
+                      src={img}
+                      alt={`Blog image ${i + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )
+            )}
+            <p className="whitespace-pre-line">{post.summary}</p>
           </section>
 
           {/* Related Posts */}
           <aside className="md:w-72">
             <h3 className="mb-4 text-xl font-semibold">Related Articles</h3>
             <ul className="space-y-6">
-              {relatedPosts.map((post) => (
-                <li key={post.slug}>
+              {relatedPosts.map((related) => (
+                <li key={related._id}>
                   <Link
-                    href={`/blog/${post.slug}`}
+                    href={`/blog/${related._id}`}
                     className="block overflow-hidden rounded-lg shadow group hover:shadow-md"
                   >
-                    <div className="relative w-full h-40">
-                      <Image
-                        src={post.image}
-                        alt={post.title}
-                        fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    </div>
+                    {related.images[0] && (
+                      <div className="relative w-full h-40">
+                        <Image
+                          src={related.images[0]!}
+                          alt={related.title}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
                     <div className="p-4 bg-white">
                       <h4 className="text-sm font-semibold text-black group-hover:underline">
-                        {post.title}
+                        {related.title}
                       </h4>
                     </div>
                   </Link>
