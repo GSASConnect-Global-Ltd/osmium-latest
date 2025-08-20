@@ -8,7 +8,7 @@ export const Hero = () => {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="space-y-8">
           <h1 className="text-6xl sm:text-7xl lg:text-8xl font-bold text-osmium-black leading-tight tracking-tight">
-            <span className="block">ORRELL</span>
+            <span className="block">ORREL</span>
             <span className="block text-4xl sm:text-5xl lg:text-6xl font-light text-osmium-gray-600 mt-4">
               Technology Solutions
             </span>

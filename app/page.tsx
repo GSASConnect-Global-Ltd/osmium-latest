@@ -32,29 +32,30 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchBlogPosts = async () => {
-      try {
-        const res = await fetch("http://localhost:5000/api/blogs");
-        if (!res.ok) throw new Error("Failed to fetch blogs");
+  const fetchBlogPosts = async () => {
+    try {
+      // ✅ Fetch only recent blogs
+      const res = await fetch("http://localhost:5000/api/blogs/recent");
+      if (!res.ok) throw new Error("Failed to fetch blogs");
 
-        const data: BlogPostFromAPI[] = await res.json();
+      const data: BlogPostFromAPI[] = await res.json();
 
-        // Prepend full URL to images
-        const mapped = data.map((post) => ({
-          ...post,
-          images: post.images.map((img) => `http://localhost:5000${img}`),
-        }));
+      // Prepend full URL to images
+      const mapped = data.map((post) => ({
+        ...post,
+        images: post.images.map((img) => `http://localhost:5000${img}`),
+      }));
 
-        setBlogPosts(mapped);
-      } catch (err) {
-        console.error("❌ Error fetching blog posts:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+      setBlogPosts(mapped);
+    } catch (err) {
+      console.error("❌ Error fetching blog posts:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchBlogPosts();
-  }, []);
+  fetchBlogPosts();
+}, []);
 
   return (
     <div className="min-h-screen font-sans text-black transition-colors duration-300 bg-white">
