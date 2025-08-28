@@ -31,8 +31,8 @@ export const Footer = () => {
             <h4 className="mb-4 text-lg font-semibold">Quick Links</h4>
             <ul className="space-y-2 text-[var(--footer-link)]">
               <li><Link href="/" className="hover:text-[var(--footer-link-hover)]">Home</Link></li>
-              <li><Link href="#about" className="hover:text-[var(--footer-link-hover)]">About</Link></li>
-              <li><Link href="#services" className="hover:text-[var(--footer-link-hover)]">Services</Link></li>
+              <li><Link href="about" className="hover:text-[var(--footer-link-hover)]">About</Link></li>
+              <li><Link href="services" className="hover:text-[var(--footer-link-hover)]">Services</Link></li>
               <li><Link href="#portfolio" className="hover:text-[var(--footer-link-hover)]">Portfolio</Link></li>
               <li><Link href="#insights" className="hover:text-[var(--footer-link-hover)]">Insights</Link></li>
             </ul>

@@ -8,17 +8,19 @@ const Navbar = () => {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
 
   const navigationItems = [
-    { name: "About", href: "#about" },
+    { name: "About", href: "about" },
     { name: "Portfolio", href: "#portfolio" },
-    { name: "Blog", href: "#blog" },
-    { name: "Contact", href: "#contact" },
+    { name: "Blog", href: "blog" },
+    { name: "Contact", href: "contact" },
   ];
 
   const serviceItems = [
-    { name: "Web Development", href: "#web-dev" },
-    { name: "Mobile Apps", href: "#mobile" },
-    { name: "Digital Marketing", href: "#marketing" },
-    { name: "Consulting", href: "#consulting" },
+    { name: "AI & Robotics", href: "#ai-robotics" },
+    { name: "Renewable Energy", href: "#renewable-energy" },
+    { name: "Digital Twin Technology", href: "#digital-twin" },
+    { name: "Extended Reality", href: "#extended-reality" },
+    { name: "Game Development", href: "#game-dev" },
+    { name: "Smart Home Concept", href: "#smart-home" },
   ];
 
   return (
@@ -36,7 +38,6 @@ const Navbar = () => {
                 height={40}
                 priority
               />
-
             </div>
 
             {/* Navigation Links - Hidden on mobile */}
@@ -66,7 +67,7 @@ const Navbar = () => {
                 </button>
 
                 {isServicesOpen && (
-                  <div className="absolute w-48 mt-2 bg-white border border-gray-200 shadow-lg rounded-xl">
+                  <div className="absolute w-56 mt-2 bg-white border border-gray-200 shadow-lg rounded-xl">
                     {serviceItems.map((service) => (
                       <a
                         key={service.name}
