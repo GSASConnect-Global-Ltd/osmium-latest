@@ -29,15 +29,18 @@ const Navbar = () => {
       <div className="px-6 py-4 border border-gray-200 shadow-lg bg-white/70 backdrop-blur-sm rounded-2xl lg:px-8">
         <div className="flex items-center justify-between">
           {/* Left Side - Logo */}
-          <div className="flex items-center space-x-8">
+          <div className="flex items-center">
             <Image
               src="/assets/Orrellogo2.svg"
               alt="ORREL Logo"
-              width={120}
-              height={40}
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="w-auto h-10"
               priority
             />
           </div>
+
 
           {/* Desktop Navigation */}
           <div className="items-center hidden space-x-6 md:flex">
