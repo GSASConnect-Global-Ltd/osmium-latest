@@ -9,9 +9,8 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
       },
       {
-        protocol: "http",
-        hostname: "localhost",
-        port: "5000",
+        protocol: "https",
+        hostname: "osmium-blog-admin-backend.onrender.com",
         pathname: "/uploads/**", // allow all images under /uploads
       },
     ],
