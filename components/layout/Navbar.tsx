@@ -1,125 +1,97 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
+import Image from "next/image";
 
-export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+const Navbar = () => {
+  const [isServicesOpen, setIsServicesOpen] = useState(false);
 
-  const navItems = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Services', href: '/services' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'Portfolio', href: '/portfolio'},
-
-    { label: 'Contact', href: '/contact' },
+  const navigationItems = [
+    { name: "About", href: "#about" },
+    { name: "Portfolio", href: "#portfolio" },
+    { name: "Blog", href: "#blog" },
+    { name: "Contact", href: "#contact" },
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const hero = document.getElementById('blogHero');
-      const heroHeight = hero?.offsetHeight || 0;
-      setScrolled(window.scrollY > heroHeight - 80);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const serviceItems = [
+    { name: "Web Development", href: "#web-dev" },
+    { name: "Mobile Apps", href: "#mobile" },
+    { name: "Digital Marketing", href: "#marketing" },
+    { name: "Consulting", href: "#consulting" },
+  ];
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b transition-all duration-300
-      ${scrolled ? 'bg-[var(--navbar)]' : 'bg-[var(--navbar-transparent-bg)]'}`}
-    >
-      <div className={`container mx-auto px-6 ${open ? 'py-6 min-h-screen' : 'py-4'}`}>
+    <nav className="fixed z-50 top-4 left-4 right-4">
+      <div className="px-6 py-4 border border-gray-200 shadow-lg bg-white/70 backdrop-blur-sm rounded-2xl lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary">
-              <span className="text-lg font-bold text-primary-foreground">L</span>
+          {/* Left Side - Logo and Navigation */}
+          <div className="flex items-center space-x-8">
+            {/* Logo */}
+            <div className="flex items-center">
+              <Image
+                src="/assets/Orrellogo2.svg"
+                alt="ORREL Logo"
+                width={120}
+                height={40}
+                priority
+              />
+
             </div>
-            <span
-              className="text-xl font-bold"
-              style={{
-                color: scrolled ? 'var(--foreground)' : 'rgba(var(--foreground-rgb), 0.9)',
-              }}
-            >
-              Logo
-            </span>
-          </div>
 
-          {/* Desktop Nav Links */}
-          <div className="items-center hidden space-x-8 md:flex">
-            {navItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="font-bold transition-colors"
-                style={{
-                  color: scrolled ? 'var(--foreground)' : 'rgba(var(--foreground-rgb), 0.8)',
-                }}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
+            {/* Navigation Links - Hidden on mobile */}
+            <div className="items-center hidden space-x-6 md:flex">
+              {navigationItems.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="px-3 py-2 text-sm font-medium text-gray-800 transition-all duration-200 rounded-lg hover:bg-gray-100"
+                >
+                  {item.name}
+                </a>
+              ))}
 
-        
+              {/* Services Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsServicesOpen(!isServicesOpen)}
+                  className="flex items-center px-3 py-2 space-x-1 text-sm font-medium text-gray-800 transition-all duration-200 rounded-lg hover:bg-gray-100"
+                >
+                  <span>Services</span>
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-200 ${
+                      isServicesOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
 
-          {/* Mobile Button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setOpen(!open)}
-              aria-label="Toggle menu"
-              className="p-2 text-navbar-foreground"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {open ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                {isServicesOpen && (
+                  <div className="absolute w-48 mt-2 bg-white border border-gray-200 shadow-lg rounded-xl">
+                    {serviceItems.map((service) => (
+                      <a
+                        key={service.name}
+                        href={service.href}
+                        className="block px-4 py-3 text-sm text-gray-700 transition-colors rounded-lg hover:bg-gray-100"
+                      >
+                        {service.name}
+                      </a>
+                    ))}
+                  </div>
                 )}
-              </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Side - CTA Button */}
+          <div className="flex items-center">
+            <button className="px-6 py-2 font-medium text-white transition-all duration-200 bg-black shadow-sm hover:bg-blue-700 rounded-xl">
+              Partner with us
             </button>
           </div>
         </div>
-
-        {/* Mobile Dropdown */}
-        {open && (
-          <div className="fixed inset-0 z-40 flex flex-col bg-[var(--background)] text-[var(--foreground)] md:hidden transition-opacity duration-300 ease-in-out">
-            {/* Close Button */}
-            <div className="flex items-center justify-end px-6 py-4">
-              <button
-                onClick={() => setOpen(false)}
-                className="text-[var(--foreground)] hover:opacity-80 focus:outline-none"
-                aria-label="Close menu"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Nav Links */}
-            <div className="flex flex-col items-center justify-center flex-1 space-y-6">
-              {navItems.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="text-lg font-semibold transition hover:underline hover:opacity-90"
-                  onClick={() => setOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-
-            
-          </div>
-        )}
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;

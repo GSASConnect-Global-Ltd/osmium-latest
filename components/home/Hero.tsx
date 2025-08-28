@@ -1,47 +1,57 @@
-import { ArrowDown, ChevronRight } from "lucide-react";
+"use client";
 
-export const Hero = () => {
+import Image from "next/image";
+import heroBackground from "@/assets/portfolio-hero.jpg";
+
+const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-hero overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-overlay"></div>
+    <section className="relative flex items-center justify-center min-h-screen">
+      {/* Background with overlay */}
+      <div className="absolute inset-0">
+        <Image
+          src={heroBackground}
+          alt="Hero Background"
+          fill
+          priority
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-black/70" />
+      </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="space-y-8">
-          <h1 className="text-6xl sm:text-7xl lg:text-8xl font-bold text-osmium-black leading-tight tracking-tight">
-            <span className="block">ORREL</span>
-            <span className="block text-4xl sm:text-5xl lg:text-6xl font-light text-osmium-gray-600 mt-4">
-              Technology Solutions
-            </span>
-          </h1>
-
-          <p className="text-xl sm:text-2xl text-osmium-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Pioneering the future through innovative technology solutions across
-            AI, Digital Twins, Gaming, Software Engineering, Renewable Energy,
-            Extended Reality, and Smart Home Systems.
+      {/* Content */}
+      <div className="container relative z-10 px-4 mx-auto text-center text-white">
+        <div className="max-w-5xl mx-auto space-y-8">
+          {/* Main Headline */}
+          <p className="text-6xl font-light leading-tight md:text-7xl lg:text-8xl">
+            Building Africa&apos;s{" "}
+            <span className="text-transparent bg-gradient-to-r from-green-400 to-green-600 bg-clip-text">
+              Digital &amp; Sustainable
+            </span>{" "}
+            Future
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-            <button
-              type="button"
-              className="inline-flex items-center justify-center bg-osmium-black text-osmium-white hover:bg-osmium-gray-800 shadow-elegant px-8 py-4 text-lg rounded"
-            >
-              <span>Explore Our Solutions</span>
-              <ChevronRight className="ml-2 h-5 w-5 transition-transform duration-200" />
-            </button>
+          {/* Description */}
+          <p className="max-w-2xl mx-auto text-base leading-relaxed text-gray-300 md:text-lg">
+            At ORREL, we are at the forefront of technological advancement,
+            uniting diverse sectors under one umbrella. Our mission is to drive
+            innovation in AI, renewable energies, and more — shaping a
+            sustainable future for Africa and beyond.
+          </p>
 
-            <button
-              type="button"
-              className="inline-flex items-center justify-center border-2 border-osmium-black text-osmium-black hover:bg-osmium-black hover:text-osmium-white shadow-button px-8 py-4 text-lg rounded"
-            >
-              Get in Touch
+          {/* CTA Buttons */}
+          <div className="flex flex-col items-center justify-center gap-4 pt-6 sm:flex-row">
+            <button className="h-12 px-5 text-base font-medium text-white transition-colors bg-green-600 rounded-lg min-w-40 hover:bg-green-700">
+              Partner with us
+            </button>
+            <button className="h-12 px-5 text-base font-medium text-white transition-colors border border-white rounded-lg min-w-40 hover:bg-white hover:text-black">
+              Explore our solutions
             </button>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <ArrowDown className="h-6 w-6 text-osmium-gray-500" />
-      </div>
+      {/* Subtle overlay gradient */}
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/30 via-transparent to-transparent" />
     </section>
   );
 };
