@@ -1,45 +1,98 @@
 "use client";
 
+import Image from "next/image";
+
 const CTASection = () => {
   return (
-    <section
-      className="relative min-h-screen flex items-center justify-start bg-cover bg-center bg-no-repeat px-6 md:px-12"
-      style={{ backgroundImage: "url(/assets/orrel-hero-bg.jpg)" }}
-    >
-      {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+    <section className="flex items-center justify-center px-6 py-16 md:px-12">
+      <div
+        className="relative flex items-center justify-start overflow-hidden bg-center bg-no-repeat bg-cover"
+        style={{
+          backgroundColor: "rgba(0,0,0,0.7)", // semi-transparent black
+          width: "1240px",
+          height: "720px",
+          borderRadius: "48px",
+        }}
+      >
+        {/* Logo under background */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-10">
+          <Image
+            src="/assets/orrel_logo.png"
+            alt="ORREL Logo"
+            width={400}
+            height={400}
+            className="object-contain"
+          />
+        </div>
 
-      {/* Content container aligned left + shifted upward */}
-      <div className="relative z-10 max-w-3xl text-left -translate-y-16 md:-translate-y-24">
-        {/* Heading */}
-        <p className="text-5xl md:text-7xl mb-8 leading-tight text-white font-light">
-          <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-            Join Us in Shaping Tomorrow
-          </span>
-        </p>
+        {/* Dark overlay (optional, can adjust opacity) */}
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm rounded-[48px]" />
 
-        {/* Description */}
-        <p className="text-lg md:text-xl text-gray-300 mb-12 leading-relaxed">
-          Partner with ORREL to innovate and transform industries through
-          cutting-edge technology and sustainable solutions
-        </p>
+      {/* Content */}
+<div
+  className="absolute z-10 flex flex-col px-8"
+  style={{
+    width: "505px",
+    height: "260px",
+    top: "120px",
+    gap: "24px",
+  }}
+>
+  {/* Heading */}
+ <p
+  className="mb-0 text-white md:text-7xl"
+  style={{
+    fontFamily: "PP Editorial New",
+    fontWeight: 200,
+    fontStyle: "ultralight",
+    fontSize: "48px",
+    lineHeight: "58px",
+    letterSpacing: "2%",
+  }}
+>
+  <span className="text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text">
+    Join Us in Shaping Tomorrow
+  </span>
+</p>
 
-        {/* CTA Button (green background) */}
-        <button className="text-base md:text-lg px-10 py-4 rounded-full font-semibold tracking-wide uppercase bg-green-600 text-white hover:bg-green-700 transition-colors">
-          Partner with us
-        </button>
+
+  <p
+  className="mb-12 text-gray-300 md:text-xl"
+  style={{
+    fontFamily: "Satoshi",
+    fontWeight: 400,
+    fontStyle: "normal",
+    fontSize: "16px",
+    lineHeight: "24px",
+    letterSpacing: "1%",
+  }}
+>
+  Partner with ORREL to innovate and transform industries through
+  cutting-edge technology and sustainable solutions
+</p>
+
+
+  {/* CTA Button */}
+<button
+  className="inline-flex items-center justify-center px-6 py-4 text-black uppercase font-satoshi font-bold text-[16px] leading-[20px] tracking-wide rounded-[12px] border-2 border-[#37D181] bg-[#37D181] transition-colors duration-300 hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black"
+  style={{
+    minWidth: "fit-content",
+  }}
+>
+  Partner with us
+</button>
+
+
+
+</div>
+
+        {/* Bottom right text */}
+        <div className="absolute z-10 bottom-8 right-8">
+          <p className="text-lg font-medium tracking-wider text-white">
+            Building Africa&apos;s future
+          </p>
+        </div>
       </div>
-
-      {/* Bottom right text (unchanged) */}
-      <div className="absolute bottom-8 right-8 z-10">
-        <p className="text-white text-lg font-medium tracking-wider">
-          Building Africa&apos;s future
-        </p>
-      </div>
-
-      {/* Decorative elements */}
-      <div className="absolute top-1/4 left-8 w-2 h-32 bg-gradient-to-b from-white to-transparent opacity-40" />
-      <div className="absolute bottom-1/4 right-12 w-2 h-24 bg-gradient-to-t from-white to-transparent opacity-40" />
     </section>
   );
 };

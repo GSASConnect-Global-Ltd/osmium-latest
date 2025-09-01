@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { StaticImageData } from "next/image";
+import Image from "next/image";
 
 // Import project images
 import solarEnergyImg from "@/assets/solar-energy-project.jpg";
@@ -14,7 +15,7 @@ interface Project {
   id: string;
   title: string;
   description: string;
-  image: StaticImageData; // ✅ Correct type for Next.js images
+  image: StaticImageData;
   keywords: string[];
 }
 
@@ -146,30 +147,70 @@ const categories: Category[] = [
 ];
 
 const ProjectCard = ({ project }: { project: Project }) => (
-  <div className="group overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md hover:shadow-lg transition duration-300">
+  <div className="overflow-hidden transition duration-300 bg-white border border-gray-200 shadow-md group rounded-xl hover:shadow-lg">
     <div className="aspect-[16/10] overflow-hidden">
-      <img
-        src={project.image.src} // ✅ StaticImageData includes `.src`
+      <Image
+        src={project.image}
         alt={project.title}
-        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
       />
     </div>
     <div className="p-6 space-y-4">
-      <h3 className="text-xl font-bold text-gray-900">{project.title}</h3>
-      <p className="text-gray-600 leading-relaxed">{project.description}</p>
+      <h3
+        className="text-gray-900"
+        style={{
+          fontFamily: "Satoshi",
+          fontWeight: 700,
+          fontSize: "24px",
+          lineHeight: "24px",
+          letterSpacing: "1%",
+        }}
+      >
+        {project.title}
+      </h3>
+      <p
+        className="text-gray-600"
+        style={{
+          fontFamily: "Satoshi",
+          fontWeight: 400,
+          fontSize: "16px",
+          lineHeight: "24px",
+          letterSpacing: "1%",
+        }}
+      >
+        {project.description}
+      </p>
       <div className="flex flex-wrap gap-2">
         {project.keywords.map((keyword) => (
           <span
             key={keyword}
-            className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full"
+            className="text-gray-700 bg-gray-100 rounded-full"
+            style={{
+              fontFamily: "Satoshi",
+              fontWeight: 400,
+              fontSize: "16px",
+              lineHeight: "24px",
+              letterSpacing: "1%",
+              padding: "4px 12px",
+            }}
           >
             {keyword}
           </span>
         ))}
       </div>
-      <button className="flex items-center gap-2 text-black font-medium hover:underline">
+      <button
+        className="flex items-center gap-2 text-green-700"
+        style={{
+          fontFamily: "Satoshi",
+          fontWeight: 700,
+          fontSize: "16px",
+          lineHeight: "20px",
+          letterSpacing: "0%",
+          textAlign: "center",
+        }}
+      >
         View Project
-        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
       </button>
     </div>
   </div>
@@ -186,10 +227,10 @@ const CategoryTab = ({
 }) => (
   <button
     onClick={onClick}
-    className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+    className={`w-[108px] h-[44px] rounded-[100px] flex items-center justify-center gap-[10px] px-[16px] py-[10px] font-medium transition-colors ${
       isActive
         ? "bg-black text-white"
-        : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+        : "bg-white text-gray-700 hover:bg-gray-100"
     }`}
   >
     {category.name}
@@ -203,46 +244,63 @@ export const ProjectsShowcase = () => {
 
   return (
     <section className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
+      <div className="container px-4 mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-black mb-6">
-            Our Impactful Projects
-          </h2>
-          <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            We design and deliver solutions in AI, Energy, XR, and more -
-            powering Africa&apos;s growth in the digital age.
+        <div className="mx-auto mb-16 text-center" style={{ maxWidth: "505px" }}>
+          <p
+            className="mb-6"
+            style={{
+              fontFamily: "PP Editorial New",
+              fontWeight: 200,
+              fontSize: "48px",
+              lineHeight: "58px",
+              letterSpacing: "0.02em",
+            }}
+          >
+            Our Impactful <span className="italic text-green-600">Projects</span>
+          </p>
+          <p
+            className="mx-auto text-gray-600"
+            style={{
+              fontFamily: "Satoshi",
+              fontWeight: 400,
+              fontSize: "16px",
+              lineHeight: "24px",
+              letterSpacing: "0.01em",
+            }}
+          >
+            We design and deliver solutions in AI, Energy, XR, and more — powering
+            Africa&apos;s growth in the digital age.
           </p>
         </div>
 
         {/* Categories */}
-        <div className="bg-gray-100 rounded-xl p-2 mb-12 max-w-md mx-auto">
-          <div className="flex gap-2 flex-wrap justify-center">
-            {categories.map((category) => (
-              <CategoryTab
-                key={category.id}
-                category={category}
-                isActive={activeCategory === category.id}
-                onClick={() => setActiveCategory(category.id)}
-              />
-            ))}
-          </div>
+        <div className="max-w-[448px] h-[60px] mx-auto mb-12 bg-gray-100 rounded-[100px] flex gap-[10px] px-2 py-2 overflow-x-auto">
+          {categories.map((category) => (
+            <CategoryTab
+              key={category.id}
+              category={category}
+              isActive={activeCategory === category.id}
+              onClick={() => setActiveCategory(category.id)}
+            />
+          ))}
         </div>
 
         {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
+        <div className="grid gap-8 mb-12 md:grid-cols-2">
           {currentCategory?.projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
         </div>
 
         {/* See All Projects */}
-        <div className="text-center">
-          <button className="inline-flex items-center gap-2 border border-black text-black px-8 py-4 rounded-lg font-semibold hover:bg-black hover:text-white transition">
-            See All {currentCategory?.name} Projects
-            <ArrowRight className="h-5 w-5" />
-          </button>
-        </div>
+          <div className="text-center">
+            <button className="inline-flex items-center justify-center gap-2 px-6 py-4 font-satoshi font-bold text-[16px] leading-[20px] text-black border-2 border-black rounded-lg transition-colors duration-300 hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-black whitespace-nowrap">
+              See All {currentCategory?.name} Projects
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
+
       </div>
     </section>
   );
