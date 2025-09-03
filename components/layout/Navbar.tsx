@@ -11,6 +11,8 @@ import {
   CodeXml,
   Home,
   BarChart3,
+  Users,
+  Blocks,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -69,17 +71,38 @@ const Navbar = () => {
       href: "#smart-home",
     },
     {
-      name: "Modelling & Simulation",
+      name: "Modelling and Simulation",
       desc: "Advanced computational models for system analysis.",
       icon: BarChart3,
       href: "#modelling-simulation",
+    },
+    {
+      name: "Consultation",
+      desc: "Expert guidance to grow and optimize your business.",
+      icon: Users,
+      href: "#consultation",
+    },
+    {
+      name: "Blockchain Technology",
+      desc: "Decentralized solutions for security and transparency.",
+      icon: Blocks,
+      href: "#blockchain-technology",
     },
   ];
 
   return (
     <nav className="fixed z-50 top-4 left-4 right-4 font-[Satoshi]">
-      <div className="px-6 py-4 border border-gray-200 shadow-lg bg-white/70 backdrop-blur-sm rounded-2xl lg:px-8">
-        <div className="relative flex items-center justify-between h-14">
+      <div
+        className="bg-white border border-gray-200 shadow-lg backdrop-blur-sm rounded-[20px] flex items-center justify-between"
+        style={{
+          height: "100px",
+          paddingTop: "14px",
+          paddingRight: "16px",
+          paddingBottom: "14px",
+          paddingLeft: "16px",
+        }}
+      >
+        <div className="relative flex items-center justify-between w-full">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
             <Image
@@ -121,41 +144,39 @@ const Navbar = () => {
               </button>
 
               {isServicesOpen && (
-                  <div className="absolute left-0 top-full mt-7 w-[700px] bg-white border border-gray-200 shadow-lg rounded-2xl p-6">
-                    <h4 className="mb-4 text-xs font-semibold text-gray-500 uppercase">
-                      See our services
-                    </h4>
-                    <div className="grid grid-cols-2 gap-6">
-                      {serviceItems.map((service) => (
-                        <Link
-                          key={service.name}
-                          href={service.href}
-                          className="flex items-start p-2 space-x-3 transition-colors rounded-lg hover:bg-gray-50"
-                        >
-                          <service.icon className="w-5 h-5 mt-1 text-gray-700" />
-                          <div>
-                            {/* Service name → now paragraph with 16px */}
-                            <p className="text-[16px] font-medium text-gray-900">
-                              {service.name}
-                            </p>
-                            {/* Service description → now 14px */}
-                            <p className="text-[14px] text-gray-500">
-                              {service.desc}
-                            </p>
-                          </div>
-                        </Link>
-                      ))}
-    </div>
-  </div>
-)}
-
+                <div className="absolute left-0 top-full mt-7 w-[700px] bg-white border border-gray-200 shadow-lg rounded-2xl p-6">
+                  <h4 className="mb-4 text-xs font-semibold text-gray-500 uppercase">
+                    See our services
+                  </h4>
+                  <div className="grid grid-cols-2 gap-6">
+                    {serviceItems.map((service) => (
+                      <Link
+                        key={service.name}
+                        href={service.href}
+                        className="flex items-start p-2 space-x-3 transition-colors rounded-lg hover:bg-gray-50"
+                      >
+                        <service.icon className="w-5 h-5 mt-1 text-gray-700" />
+                        <div>
+                          <p className="text-[16px] font-medium text-gray-900">
+                            {service.name}
+                          </p>
+                          <p className="text-[14px] text-gray-500">
+                            {service.desc}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
           {/* Right Side CTA */}
           <div className="flex items-center space-x-4">
             <button
-              className="w-[163px] h-[56px] px-6 py-4 
+              className="w-[163px] h-[56px] 
+                        px-6 py-4 
                         bg-black text-white font-[Satoshi] font-bold 
                         text-[16px] leading-[24px] tracking-[0.01em] 
                         rounded-[12px] border-2 border-black 
@@ -164,7 +185,6 @@ const Navbar = () => {
             >
               Partner with us
             </button>
-
           </div>
         </div>
       </div>

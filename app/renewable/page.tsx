@@ -7,7 +7,7 @@ import ServiceSection from "@/components/services/ServiceSection";
 import Service from "@/components/services/Service";
 import AdvantageSection from "@/components/services/AdvantageSection";
 import CTASection from "@/components/home/CTA";
-
+ 
 
 import  Ai1  from "@/assets/ai/ai1.png"; 
 import  Ai2  from "@/assets/ai/ai2.png"; 
@@ -71,25 +71,20 @@ const Services = () => {
   return (
     <>
        <Hero
-      tag="AI & Robotics"
-      headline="Intelligent Automation for African Industries"
-      description="We design and deploy bespoke AI and robotics systems that streamline operations, boost productivity, and drive sustainable growth across Africa’s industrial landscape."
-      backgroundImage="/ai/ai-hero.png"
+      tag="Renewable Energy."
+      headline="Powering Africa’s Future, Sustainably"
+      description="We deliver renewable energy systems and solutions that power industries, homes, offices, farms and more sustainably. "
+      backgroundImage="/renewable/renewable-hero.png"
       buttonText="Partner with us"
       buttonLink="/contact"
     />
-      <div>
+      
       <ServiceInfo
         text="Manual processes are prone to error, slow, and unsafe for high-risk tasks. 
         Scaling production or maintaining consistent quality is a constant challenge, 
         limiting competitiveness and the ability to innovate on the global stage."
         maxWidth="900px"
       />
-
-      <ServiceInfo
-        text="Our robotics systems solve this by ensuring precision, speed, and reliability at scale."
-      />
-    </div>
       <ServiceSection
       heading={{ main: "From Manual Tasks to", highlight: "Intelligent System" }}
       subtitle="We build integrated AI and robotics solutions that tackle your most

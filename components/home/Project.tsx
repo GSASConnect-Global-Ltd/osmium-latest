@@ -147,8 +147,8 @@ const categories: Category[] = [
 ];
 
 const ProjectCard = ({ project }: { project: Project }) => (
-  <div className="overflow-hidden transition duration-300 bg-white border border-gray-200 shadow-md group rounded-xl hover:shadow-lg">
-    <div className="aspect-[16/10] overflow-hidden">
+  <div className="overflow-hidden transition duration-300 group rounded-xl">
+    <div className="aspect-[16/10] overflow-hidden rounded-t-xl">
       <Image
         src={project.image}
         alt={project.title}
@@ -230,12 +230,13 @@ const CategoryTab = ({
     className={`w-[108px] h-[44px] rounded-[100px] flex items-center justify-center gap-[10px] px-[16px] py-[10px] font-medium transition-colors ${
       isActive
         ? "bg-black text-white"
-        : "bg-white text-gray-700 hover:bg-gray-100"
+        : "bg-transparent text-gray-700 hover:bg-white"
     }`}
   >
     {category.name}
   </button>
 );
+
 
 export const ProjectsShowcase = () => {
   const [activeCategory, setActiveCategory] = useState("energy");
@@ -243,15 +244,15 @@ export const ProjectsShowcase = () => {
   const currentCategory = categories.find((cat) => cat.id === activeCategory);
 
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="container px-4 mx-auto">
+    <section className="py-[120px] bg-gray-50">
+      <div className="px-[100px] mx-auto">
         {/* Header */}
         <div className="mx-auto mb-16 text-center" style={{ maxWidth: "505px" }}>
           <p
-            className="mb-6"
+            className="mb-6 font-extralight"
             style={{
               fontFamily: "PP Editorial New",
-              fontWeight: 200,
+              
               fontSize: "48px",
               lineHeight: "58px",
               letterSpacing: "0.02em",

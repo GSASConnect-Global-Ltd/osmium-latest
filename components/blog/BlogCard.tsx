@@ -14,7 +14,7 @@ interface BlogCardProps {
 const BlogCard = ({ id, title, summary, image }: BlogCardProps) => {
   return (
     <div
-      className="flex flex-col overflow-hidden transition-shadow duration-300 bg-white border border-gray-200 shadow-sm rounded-[32px] gap-3 p-2"
+      className="flex flex-col items-center overflow-hidden bg-gray-100 rounded-[32px] gap-3 p-2"
       style={{
         width: "398px",
         height: "437px",
@@ -39,8 +39,16 @@ const BlogCard = ({ id, title, summary, image }: BlogCardProps) => {
         />
       )}
 
-      {/* Content */}
-      <div className="flex flex-col flex-1 gap-3 p-2">
+      {/* Blog Body */}
+      <div
+        className="flex flex-col flex-1 bg-white rounded-[24px]"
+        style={{
+          width: "382px",
+          height: "192px",
+          gap: "24px",
+          padding: "24px",
+        }}
+      >
         <h3
           className="text-gray-900 line-clamp-2"
           style={{

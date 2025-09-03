@@ -4,7 +4,8 @@ import Image from "next/image";
 
 const CTASection = () => {
   return (
-    <section className="flex items-center justify-center px-6 py-16 md:px-12">
+    <section className="flex items-center justify-center px-[100px] py-[120px]">
+
       <div
         className="relative flex items-center justify-start overflow-hidden bg-center bg-no-repeat bg-cover"
         style={{
@@ -26,7 +27,7 @@ const CTASection = () => {
         </div>
 
         {/* Dark overlay (optional, can adjust opacity) */}
-        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm rounded-[48px]" />
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm rounded-[48px]" />
 
       {/* Content */}
 <div
@@ -74,9 +75,12 @@ const CTASection = () => {
 
   {/* CTA Button */}
 <button
-  className="inline-flex items-center justify-center px-6 py-4 text-black uppercase font-satoshi font-bold text-[16px] leading-[20px] tracking-wide rounded-[12px] border-2 border-[#37D181] bg-[#37D181] transition-colors duration-300 hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black"
+  className="inline-flex items-center justify-center px-6 py-4 text-black font-satoshi font-bold text-[16px] leading-[20px] tracking-wide rounded-[12px] border-2 border-[#f8faf9] bg-[#37D181] transition-colors duration-300 hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black"
   style={{
+    width: "163px",
     minWidth: "fit-content",
+    border: "1px solid white",
+    fontFamily: "Satoshi"
   }}
 >
   Partner with us
