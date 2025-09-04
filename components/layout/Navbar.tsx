@@ -93,7 +93,7 @@ const Navbar = () => {
   return (
     <nav className="fixed z-50 top-4 left-4 right-4 font-[Satoshi]">
       <div
-        className="bg-white border border-gray-200 shadow-lg backdrop-blur-sm rounded-[20px] flex items-center justify-between"
+        className="bg-white border border-gray-200 backdrop-blur-sm rounded-[20px] flex items-center justify-between"
         style={{
           height: "100px",
           paddingTop: "14px",
@@ -144,7 +144,7 @@ const Navbar = () => {
               </button>
 
               {isServicesOpen && (
-                <div className="absolute left-0 top-full mt-7 w-[700px] bg-white border border-gray-200 shadow-lg rounded-2xl p-6">
+                <div className="absolute left-0 top-full mt-7 w-[700px] bg-white border border-gray-200 rounded-2xl p-6">
                   <p className="mb-4 text-xs font-semibold text-gray-500 uppercase">
                     See our services
                   </p>
@@ -180,7 +180,7 @@ const Navbar = () => {
                         bg-black text-white font-[Satoshi] font-bold 
                         text-[16px] leading-[24px] tracking-[0.01em] 
                         rounded-[12px] border-2 border-black 
-                        shadow-sm transition-all duration-200 
+                       transition-all duration-200 
                         hover:bg-blue-700"
             >
               Partner with us
