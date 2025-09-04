@@ -1,89 +1,99 @@
 "use client";
 import Image from "next/image";
-
 import Link from "next/link";
 import { Facebook, Instagram, Twitter, Linkedin, Youtube } from "lucide-react";
 
 export const Footer = () => {
   return (
-    <footer className="bg-[var(--footer-bg)] text-[var(--footer-text)] transition-colors duration-300">
-      <div className="px-6 py-16 mx-auto max-w-7xl">
-        {/* Top section - 4 columns */}
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
-          {/* Logo */}
-          <div>
-             <Link href="/">
-              <Image
-                src="/assets/Orrellogo2.svg"
-                alt="ORREL Logo"
-                width={150}
-                height={50}
-                priority
-              />
-            </Link>
-            <p className="text-sm text-gray-400">
-              Connecting innovation with renewable technologies.
-            </p>
+    <footer className="bg-[var(--footer-bg)] text-[var(--footer-text)] transition-colors duration-300 font-satoshi">
+      <div className="px-[64px] py-[80px] mx-auto max-w-[1280px]">
+        {/* Top section */}
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-[752px_400px]">
+          {/* Left side (logo, links, solutions, contact) */}
+          <div className="grid grid-cols-2 gap-12 md:grid-cols-4">
+            {/* Logo */}
+            <div className="flex flex-col gap-4">
+              <Link href="/">
+                <Image
+                  src="/assets/Orrellogo2.svg"
+                  alt="ORREL Logo"
+                  width={120}
+                  height={80}
+                  priority
+                />
+              </Link>
+            </div>
+
+            {/* Quick Links */}
+            <div className="flex flex-col gap-4">
+              <p className="text-[16px] font-bold leading-[24px]">Quick Links</p>
+              <ul className="flex flex-col gap-2 text-[14px] font-normal leading-[21px] text-[var(--footer-link)]">
+                <li><Link href="/" className="hover:text-[var(--footer-link-hover)]">Home</Link></li>
+                <li><Link href="/about" className="hover:text-[var(--footer-link-hover)]">About</Link></li>
+                <li><Link href="/services" className="hover:text-[var(--footer-link-hover)]">Services</Link></li>
+                <li><Link href="#portfolio" className="hover:text-[var(--footer-link-hover)]">Portfolio</Link></li>
+                <li><Link href="#insights" className="hover:text-[var(--footer-link-hover)]">Insights</Link></li>
+              </ul>
+            </div>
+
+            {/* Our Solutions */}
+            <div className="flex flex-col gap-4">
+              <p className="text-[16px] font-bold leading-[24px]">Our Solutions</p>
+              <ul className="flex flex-col gap-2 text-[14px] font-normal leading-[21px] text-[var(--footer-link)]">
+                <li>AI & Robotics</li>
+                <li>Renewable Energy</li>
+                <li>Digital Twin Technology</li>
+                <li>Extended Reality</li>
+                <li>Game Development</li>
+                <li>Smart Home Concept</li>
+                <li>Consultation</li>
+                <li>Modelling and Simulation</li>
+                <li>Blockchain Technology</li>
+              </ul>
+            </div>
+
+            {/* Contact Us */}
+            <div className="flex flex-col gap-4">
+              <p className="text-[16px] font-bold leading-[24px]">Contact Us</p>
+              <ul className="flex flex-col gap-2 text-[14px] font-normal leading-[21px] text-[var(--footer-link)]">
+                <li>Location</li>
+                <li>Email address</li>
+                <li>Phone number</li>
+              </ul>
+            </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="mb-4 text-lg font-semibold">Quick Links</h4>
-            <ul className="space-y-2 text-[var(--footer-link)]">
-              <li><Link href="/" className="hover:text-[var(--footer-link-hover)]">Home</Link></li>
-              <li><Link href="about" className="hover:text-[var(--footer-link-hover)]">About</Link></li>
-              <li><Link href="services" className="hover:text-[var(--footer-link-hover)]">Services</Link></li>
-              <li><Link href="#portfolio" className="hover:text-[var(--footer-link-hover)]">Portfolio</Link></li>
-              <li><Link href="#insights" className="hover:text-[var(--footer-link-hover)]">Insights</Link></li>
-            </ul>
-          </div>
-
-          {/* Our Solutions */}
-          <div>
-            <h4 className="mb-4 text-lg font-semibold">Our Solutions</h4>
-            <ul className="space-y-2 text-[var(--footer-link)]">
-              <li>AI & Robotics</li>
-              <li>Renewable Energy</li>
-              <li>Digital Twin Technology</li>
-              <li>Extended Reality</li>
-              <li>Game Development</li>
-              <li>Smart Home Concept</li>
-            </ul>
-          </div>
-
-          {/* Subscribe */}
-          <div>
-            <h4 className="mb-4 text-lg font-semibold">Subscribe</h4>
-            <p className="mb-4 text-[var(--footer-link)]">
+          {/* Subscribe (fixed 400px) */}
+          <div className="flex flex-col gap-6 max-w-[400px]">
+            <p className="text-[16px] font-bold leading-[24px]">Subscribe</p>
+            <p className="text-[14px] font-normal leading-[21px] text-[var(--footer-link)]">
               Join our newsletter to stay up to date on products and releases.
             </p>
-            <div className="flex items-center gap-2">
+            <div className="flex gap-2">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full px-4 py-3 text-black rounded-lg focus:outline-none"
+                className="flex-1 px-4 py-3 text-black border border-gray-300 rounded-lg focus:outline-none"
               />
-              <button className="px-6 py-3 font-semibold text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
+              <button className="px-6 py-3 text-[14px] font-bold leading-[21px] text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
                 Subscribe
               </button>
             </div>
-            <p className="mt-4 text-xs text-gray-400">
+            <p className="text-[14px] font-normal leading-[21px] text-gray-400">
               By subscribing you agree to our{" "}
-              <Link href="/privacy-policy" className="underline">
-                Privacy Policy
-              </Link>{" "}
-              and provide consent to receive updates from our company.
+              <Link href="/privacy-policy" className="underline">Privacy Policy</Link>{" "}
+              and consent to receive updates from our company.
             </p>
           </div>
         </div>
 
         {/* Divider */}
-        <hr className="my-8 border-gray-300 dark:border-gray-700" />
+        <hr className="my-8 border-gray-300" />
 
         {/* Bottom section */}
-        <div className="flex flex-col md:flex-row items-center justify-between text-sm text-[var(--footer-link)] gap-4">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 h-[56px]">
           {/* Left side */}
-          <div className="flex flex-wrap items-center justify-center gap-4 md:justify-start">
+          <div className="flex flex-wrap items-center justify-center gap-4 md:justify-start text-[14px] font-normal leading-[21px]">
             <p>&copy; 2025 ORREL. All rights reserved.</p>
             <Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link>
             <Link href="/terms" className="hover:underline">Terms of Service</Link>

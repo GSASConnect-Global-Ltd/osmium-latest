@@ -14,11 +14,16 @@
   font-weight: 400;
   font-style: normal;
 }
+:root {
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: var(--font-satoshi), sans-serif;  /* ✅ now Satoshi */
+}
+
 
 :root {
 
-  --font-heading: 'Poppins', sans-serif;
-  --font-body: 'Roboto', sans-serif;
+  --font-heading: var(--font-pp-editorial), sans-serif;
+  --font-body: var(--font-satoshi), sans-serif;  /* ✅ now Satoshi */
 
   --background: #ffffff;
   --foreground: #171717;
@@ -36,6 +41,11 @@
 
  
 }
+
+.ppEditorial {
+  font-family: var(--font-pp-editorial), sans-serif;
+}
+
 
 .dark {
   --background: #0a0a0a;

@@ -1,69 +1,108 @@
 "use client";
 
 import Image from "next/image";
-import orrelLogo from "@/assets/orrel-logo.png";
-import humanTechIllustration from "@/assets/human-tech-illustration.png";
-import sevenFocusAreas from "@/assets/seven-focus-areas.png";
+import { TrendingUp } from "lucide-react";
+
 
 const TechSection = () => {
-  const focusAreas = [
-    "AI and robotics",
-    "Digital twin tech",
-    "XR",
-    "Game Dev",
-    "Renewable energy",
-    "Software engineering",
-    "Smart home concept",
+  const services = [
+    "Renewable Energy",
+    "Artificial Intelligence & Robotics",
+    "Extended Reality (XR)",
+    "Digital Twin Technology",
+    "Game Development",
+    "Software Engineering",
+    "Smart Home Concepts",
+    "Modelling & Simulation",
+    "Consultation",
+    "Blockchain Technology",
+  ];
+
+  const colors = [
+    "bg-green-100 text-green-800",
+    "bg-blue-100 text-blue-800",
+    "bg-yellow-100 text-yellow-800",
+    "bg-purple-100 text-purple-800",
+    "bg-pink-100 text-pink-800",
+    "bg-indigo-100 text-indigo-800",
+    "bg-red-100 text-red-800",
+    "bg-teal-100 text-teal-800",
+    "bg-orange-100 text-orange-800",
+    "bg-cyan-100 text-cyan-800",
   ];
 
   return (
-    <section className="py-20 px-6 min-h-screen relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-green-100">
+    <section className="relative min-h-screen px-6 py-20 overflow-hidden bg-[#EBFAF2]">
       {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background/90 to-background/50" />
-      <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float" />
+      <div className="absolute inset-0 bg-background/50" />
+      <div className="absolute rounded-full top-20 left-10 w-72 h-72 bg-primary/10 blur-3xl animate-float" />
       <div
-        className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-float"
+        className="absolute rounded-full bottom-20 right-10 w-96 h-96 bg-accent/10 blur-3xl animate-float"
         style={{ animationDelay: "1s" }}
       />
 
-      <div className="relative max-w-7xl mx-auto">
+      <div className="relative mx-auto max-w-7xl">
         {/* Main Heading */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-primary bg-clip-text text-transparent leading-tight">
-            Transforming Lives through
-            <br />
-            <span className="text-accent">innovative technologies</span>
-          </h1>
+        <div className="mb-16 text-center">
+          <p
+            className="text-center font-[100] text-[48px] leading-[58px] tracking-[0.02em] ppEditorial"
+          >
+            <span className="block text-black">Transforming Lives through</span>
+            <span className="text-[#13492D] block italic">
+              Innovative Technologies
+            </span>
+          </p>
         </div>
+       
 
         {/* Three Cards Layout */}
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid gap-8 lg:grid-cols-3">
           {/* Left Card - Company Story */}
-          <div className="p-8 bg-green-50 rounded-2xl border border-green-200 shadow-md hover:shadow-lg transition-all duration-500 group">
-            <div className="h-full flex flex-col">
+          <div className="p-8 transition-all duration-500 border border-green-200 shadow-md bg-[#EBFAF2] rounded-2xl hover:shadow-lg group">
+            <div className="flex flex-col h-full">
               <div className="flex-1">
-                <p className="text-lg leading-relaxed text-muted-foreground group-hover:text-foreground transition-colors">
+                <p
+                  className="transition-colors group-hover:text-foreground text-muted-foreground"
+                  style={{
+                    fontFamily: "Satoshi",
+                    fontWeight: 500,
+                    fontSize: "24px",
+                    lineHeight: "32px",
+                    letterSpacing: "0.01em",
+                  }}
+                >
                   Founded in 2022,{" "}
                   <span className="font-semibold text-primary">ORREL</span> set
                   out to build Africa&apos;s future in AI, Robotics, Renewable
-                  energy and more
+                  Energy and more
                 </p>
               </div>
-              <div className="mt-8 flex justify-center">
+              <div className="flex justify-center mt-8">
                 <Image
-                  src={orrelLogo}
+                  src="/assets/orrel_logo.png"
                   alt="ORREL Company Logo"
-                  className="h-16 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity drop-shadow-lg"
+                  width={300}
+                  height={77}
+                  className="object-contain w-auto h-16 transition-opacity opacity-80 group-hover:opacity-100 drop-shadow-lg"
                 />
               </div>
             </div>
           </div>
 
           {/* Middle Card - Mission */}
-          <div className="p-8 bg-green-50 rounded-2xl border border-green-200 shadow-md hover:shadow-lg transition-all duration-500 group">
-            <div className="h-full flex flex-col">
+          <div className="p-8 transition-all duration-500 border border-green-200 shadow-md bg-[#EBFAF2] rounded-2xl hover:shadow-lg group">
+            <div className="flex flex-col h-full">
               <div className="flex-1">
-                <p className="text-lg leading-relaxed text-muted-foreground group-hover:text-foreground transition-colors">
+                <p
+                  className="transition-colors group-hover:text-foreground text-muted-foreground"
+                  style={{
+                    fontFamily: "Satoshi",
+                    fontWeight: 500,
+                    fontSize: "24px",
+                    lineHeight: "32px",
+                    letterSpacing: "0.01em",
+                  }}
+                >
                   Empowering{" "}
                   <span className="font-semibold text-accent">
                     industries, students, communities
@@ -71,48 +110,52 @@ const TechSection = () => {
                   and many others through human-centered technology
                 </p>
               </div>
-              <div className="mt-8 flex justify-center">
-                <Image
-                  src={humanTechIllustration}
-                  alt="Human-centered technology illustration"
-                  className="h-32 w-auto object-contain rounded-lg group-hover:scale-105 transition-transform drop-shadow-lg"
-                />
+              <div className="flex justify-center mt-8">
+                <TrendingUp className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100" />
               </div>
             </div>
           </div>
 
-          {/* Right Card - Focus Areas */}
-          <div className="p-8 bg-green-50 rounded-2xl border border-green-200 shadow-md hover:shadow-lg transition-all duration-500 group">
-            <div className="h-full flex flex-col">
-              <div className="flex-1">
-                <p className="text-lg leading-relaxed text-muted-foreground group-hover:text-foreground transition-colors mb-4">
-                  <span className="font-bold text-2xl text-primary">7</span> key
-                  focus areas spanning AI, Energy, to platforms &amp; Fintech,
-                  driving innovation across Africa
-                </p>
+          {/* Right Card - Services */}
+          <div className="p-8 transition-all duration-500 border border-green-200 shadow-md bg-[#EBFAF2] rounded-2xl hover:shadow-lg group">
+            <div className="flex flex-col h-full">
+              <p
+                className="mb-6 transition-colors group-hover:text-foreground text-muted-foreground"
+                style={{
+                  fontFamily: "Satoshi",
+                  fontWeight: 500,
+                  fontSize: "24px",
+                  lineHeight: "32px",
+                  letterSpacing: "0.01em",
+                }}
+              >
+                <span className="text-2xl font-bold text-primary">10</span> key
+                services spanning AI, Energy, XR, and more — driving
+                innovation across Africa
+              </p>
 
-                {/* Focus areas list */}
-                <div className="grid grid-cols-1 gap-2 text-sm">
-                  {focusAreas.map((area, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-2 text-muted-foreground group-hover:text-foreground transition-colors"
-                      style={{ animationDelay: `${index * 0.1}s` }}
-                    >
-                      <div className="w-2 h-2 bg-gradient-primary rounded-full flex-shrink-0" />
-                      <span className="font-medium">{area}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+             {/* Services as Mini Cards */}
+<div className="flex flex-wrap justify-start gap-2">
+  {services.map((service, index) => (
+    <div
+      key={index}
+      className={`px-3 py-1.5 transition-transform duration-300 border rounded-md shadow hover:scale-105 hover:shadow-md ${
+        colors[index % colors.length]
+      }`}
+      style={{
+        fontFamily: "Satoshi",
+        fontWeight: 500,
+        fontSize: "13px",
+        lineHeight: "18px",
+        letterSpacing: "0.01em",
+        transform: `rotate(${index % 2 === 0 ? "-3deg" : "3deg"})`,
+      }}
+    >
+      {service}
+    </div>
+  ))}
+</div>
 
-              <div className="mt-8 flex justify-center">
-                <Image
-                  src={sevenFocusAreas}
-                  alt="Seven focus areas illustration"
-                  className="h-28 w-auto object-contain rounded-lg group-hover:scale-105 transition-transform drop-shadow-lg"
-                />
-              </div>
             </div>
           </div>
         </div>
