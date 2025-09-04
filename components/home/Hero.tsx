@@ -2,7 +2,7 @@
 
 const Hero = () => {
   return (
-    <section className="relative flex items-center justify-center min-h-screen bg-black overflow-hidden">
+    <section className="relative flex items-center justify-center min-h-screen lg:h-[900px] bg-black overflow-hidden">
       {/* Box 1 - shifted down so only half shows */}
       <img
         src="/home/box.png"
@@ -45,18 +45,24 @@ const Hero = () => {
           >
             At ORREL, we are at the forefront of technological advancement,
             uniting diverse sectors under one umbrella. Our mission is to drive
-            innovation in AI, renewable energies, and more — shaping a
-            sustainable future for Africa and beyond.
+            innovation in AI, renewable energies, and more shaping a sustainable
+            future for Africa and beyond.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col items-center justify-center gap-4 pt-6 sm:flex-row">
-            <button
-              className="h-12 min-w-40 px-5 text-[16px] font-bold leading-[24px] tracking-[0.01em] text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700"
-              style={{ fontFamily: "Satoshi" }}
-            >
-              Partner with us
-            </button>
+             {/* CTA Button */}
+<button
+  className="inline-flex items-center justify-center px-6 py-4 text-black font-satoshi font-bold text-[16px] leading-[20px] tracking-wide rounded-[12px] border-2 border-[#f8faf9] bg-[#37D181] transition-colors duration-300 hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black"
+  style={{
+    width: "163px",
+    minWidth: "fit-content",
+    border: "1px solid white",
+    fontFamily: "Satoshi"
+  }}
+>
+  Partner with us
+</button>
 
             <button
               className="h-12 px-5 text-base font-bold text-white tracking-[0.01em] transition-colors border border-white rounded-lg min-w-40 hover:bg-white hover:text-black"
