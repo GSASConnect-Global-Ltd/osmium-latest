@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { LineChart } from "lucide-react";
+import { TrendingUp } from "lucide-react";
+
 
 const TechSection = () => {
   const services = [
@@ -44,8 +45,7 @@ const TechSection = () => {
         {/* Main Heading */}
         <div className="mb-16 text-center">
           <p
-            className="text-center font-[100] text-[48px] leading-[58px] tracking-[0.02em]"
-            style={{ fontFamily: "PP Editorial New" }}
+            className="text-center font-[100] text-[48px] leading-[58px] tracking-[0.02em] ppEditorial"
           >
             <span className="block text-black">Transforming Lives through</span>
             <span className="text-[#13492D] block italic">
@@ -53,6 +53,7 @@ const TechSection = () => {
             </span>
           </p>
         </div>
+       
 
         {/* Three Cards Layout */}
         <div className="grid gap-8 lg:grid-cols-3">
@@ -110,7 +111,7 @@ const TechSection = () => {
                 </p>
               </div>
               <div className="flex justify-center mt-8">
-                <LineChart className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100" />
+                <TrendingUp className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100" />
               </div>
             </div>
           </div>

@@ -43,15 +43,14 @@ const CTASection = () => {
  <p
   className="mb-0 text-white md:text-7xl"
   style={{
-    fontFamily: "PP Editorial New",
-    fontWeight: 200,
-    fontStyle: "ultralight",
+  
+   
     fontSize: "48px",
     lineHeight: "58px",
     letterSpacing: "2%",
   }}
 >
-  <span className="text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text">
+  <span className="text-transparent ppEditorial bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text " >
     Join Us in Shaping Tomorrow
   </span>
 </p>

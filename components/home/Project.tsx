@@ -156,10 +156,9 @@ const ProjectCard = ({ project }: { project: Project }) => (
       />
     </div>
     <div className="p-6 space-y-4">
-      <h3
-        className="text-gray-900"
+      <p
+        className="text-gray-900 font-bold"
         style={{
-          fontFamily: "Satoshi",
           fontWeight: 700,
           fontSize: "24px",
           lineHeight: "24px",
@@ -167,7 +166,7 @@ const ProjectCard = ({ project }: { project: Project }) => (
         }}
       >
         {project.title}
-      </h3>
+      </p>
       <p
         className="text-gray-600"
         style={{
@@ -249,7 +248,7 @@ export const ProjectsShowcase = () => {
         {/* Header */}
         <div className="mx-auto mb-16 text-center" style={{ maxWidth: "505px" }}>
           <p
-            className="mb-6 font-extralight"
+            className="mb-6 font-extralight ppEditorial"
             style={{
               fontFamily: "PP Editorial New",
               

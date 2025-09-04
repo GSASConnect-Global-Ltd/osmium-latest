@@ -28,67 +28,67 @@ const Navbar = () => {
   ];
 
   const serviceItems = [
-    {
-      name: "Renewable Energy",
-      desc: "Clean power solutions for a sustainable future.",
-      icon: Zap,
-      href: "#renewable-energy",
-    },
-    {
-      name: "Artificial Intelligence & Robotics",
-      desc: "Smart automation to drive innovation.",
-      icon: Cpu,
-      href: "#ai-robotics",
-    },
-    {
-      name: "Extended Reality (XR)",
-      desc: "Immersive experiences beyond reality.",
-      icon: Headphones,
-      href: "#extended-reality",
-    },
-    {
-      name: "Digital Twin Technology",
-      desc: "Real-time virtual models for simulations.",
-      icon: Layers,
-      href: "#digital-twin",
-    },
-    {
-      name: "Game Development",
-      desc: "Custom games with immersive storytelling.",
-      icon: Gamepad2,
-      href: "#game-dev",
-    },
-    {
-      name: "Software Engineering",
-      desc: "Enterprise-grade apps, systems, and platforms.",
-      icon: CodeXml,
-      href: "#software-eng",
-    },
-    {
-      name: "Smart Home Concepts",
-      desc: "IoT-powered automation for modern living.",
-      icon: Home,
-      href: "#smart-home",
-    },
-    {
-      name: "Modelling and Simulation",
-      desc: "Advanced computational models for system analysis.",
-      icon: BarChart3,
-      href: "#modelling-simulation",
-    },
-    {
-      name: "Consultation",
-      desc: "Expert guidance to grow and optimize your business.",
-      icon: Users,
-      href: "#consultation",
-    },
-    {
-      name: "Blockchain Technology",
-      desc: "Decentralized solutions for security and transparency.",
-      icon: Blocks,
-      href: "#blockchain-technology",
-    },
-  ];
+  {
+    name: "Renewable Energy",
+    desc: "Clean power solutions for a sustainable future.",
+    icon: Zap,
+    href: "/renewable",
+  },
+  {
+    name: "Artificial Intelligence & Robotics",
+    desc: "Smart automation to drive innovation.",
+    icon: Cpu,
+    href: "/ai",
+  },
+  {
+    name: "Extended Reality (XR)",
+    desc: "Immersive experiences beyond reality.",
+    icon: Headphones,
+    href: "/xr",
+  },
+  {
+    name: "Digital Twin Technology",
+    desc: "Real-time virtual models for simulations.",
+    icon: Layers,
+    href: "/dtw",
+  },
+  {
+    name: "Game Development",
+    desc: "Custom games with immersive storytelling.",
+    icon: Gamepad2,
+    href: "/game",
+  },
+  {
+    name: "Software Engineering",
+    desc: "Enterprise-grade apps, systems, and platforms.",
+    icon: CodeXml,
+    href: "/software",
+  },
+  {
+    name: "Smart Home Concepts",
+    desc: "IoT-powered automation for modern living.",
+    icon: Home,
+    href: "/shc",
+  },
+  {
+    name: "Modelling and Simulation",
+    desc: "Advanced computational models for system analysis.",
+    icon: BarChart3,
+    href: "/modelling",
+  },
+  {
+    name: "Consultation",
+    desc: "Expert guidance to grow and optimize your business.",
+    icon: Users,
+    href: "/consultation",
+  },
+  {
+    name: "Blockchain Technology",
+    desc: "Decentralized solutions for security and transparency.",
+    icon: Blocks,
+    href: "/block",
+  },
+];
 
   return (
     <nav className="fixed z-50 top-4 left-4 right-4 font-[Satoshi]">
@@ -145,9 +145,9 @@ const Navbar = () => {
 
               {isServicesOpen && (
                 <div className="absolute left-0 top-full mt-7 w-[700px] bg-white border border-gray-200 shadow-lg rounded-2xl p-6">
-                  <h4 className="mb-4 text-xs font-semibold text-gray-500 uppercase">
+                  <p className="mb-4 text-xs font-semibold text-gray-500 uppercase">
                     See our services
-                  </h4>
+                  </p>
                   <div className="grid grid-cols-2 gap-6">
                     {serviceItems.map((service) => (
                       <Link

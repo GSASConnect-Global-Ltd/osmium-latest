@@ -50,9 +50,8 @@ export default function LatestBlogs() {
     <section className="py-20 bg-gray-50">
       <div className="px-6 mx-auto max-w-7xl">
         <h2
-          className="mb-12 text-center"
+          className="mb-12 text-center  ppEditorial"
           style={{
-            fontFamily: "PP Editorial New",
             fontWeight: 200,
             fontStyle: "ultralight",
             fontSize: "48px",
@@ -101,10 +100,9 @@ export default function LatestBlogs() {
 
                 {/* Content */}
                 <div className="flex flex-col flex-1 gap-3 p-2">
-                  <h3
+                  <p
                     className="text-gray-900 line-clamp-2"
                     style={{
-                      fontFamily: "PP Editorial New",
                       fontWeight: 700,
                       fontSize: "20px",
                       lineHeight: "28px",
@@ -112,12 +110,11 @@ export default function LatestBlogs() {
                     }}
                   >
                     {post.title}
-                  </h3>
+                  </p>
 
                   <p
                     className="flex-1 text-gray-600 line-clamp-3"
                     style={{
-                      fontFamily: "Satoshi",
                       fontWeight: 500,
                       fontSize: "20px",
                       lineHeight: "28px",
@@ -130,7 +127,7 @@ export default function LatestBlogs() {
                   {/* Read Article Button */}
                   <Link
                     href={`/blog/${post._id}`}
-                    className="inline-flex items-center justify-center gap-2 transition-colors bg-white border rounded-[8px] hover:bg-gray-100"
+                    className="inline-flex items-center font-bold justify-center gap-2 transition-colors bg-white border rounded-[8px] hover:bg-gray-100"
                     style={{
                       width: "123px",
                       height: "36px",
