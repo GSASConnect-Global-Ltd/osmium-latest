@@ -32,10 +32,10 @@ const Hero = () => {
       />
 
       {/* Content */}
-      <div className="container relative z-10 px-4 mx-auto text-center">
+      <div className="container relative z-10 px-4 mx-auto text-center w-[729px]">
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Main Headline */}
-          <p className="text-[72px] ppEditorial font-extralight leading-[86.4px] tracking-[0.04em] text-center text-white">
+          <p className="text-[71px] ppEditorial font-extralight leading-[86.4px] tracking-[0.04em] text-center text-white">
             Building Africa&apos;s Digital &amp; Sustainable Future
           </p>
 

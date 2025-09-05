@@ -226,7 +226,7 @@ const CategoryTab = ({
 }) => (
   <button
     onClick={onClick}
-    className={`w-[108px] h-[44px] rounded-[100px] flex items-center justify-center gap-[10px] px-[16px] py-[10px] font-medium transition-colors ${
+    className={`w-[108px] h-[44px] rounded-[100px] flex items-center justify-center gap-[10px] px-[16px] py-[10px] font-light transition-colors ${
       isActive
         ? "bg-black text-white"
         : "bg-transparent text-gray-700 hover:bg-white"
@@ -295,8 +295,8 @@ export const ProjectsShowcase = () => {
 
         {/* See All Projects */}
           <div className="text-center">
-            <button className="inline-flex items-center justify-center gap-2 px-6 py-4 font-satoshi font-bold text-[16px] leading-[20px] text-black border-2 border-black rounded-lg transition-colors duration-300 hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-black whitespace-nowrap">
-              See All {currentCategory?.name} Projects
+            <button className="inline-flex items-center justify-center gap-2 px-6 py-4 font-satoshi font-light text-[16px] leading-[20px] text-black border-2 border-black rounded-lg transition-colors duration-300 hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-black whitespace-nowrap">
+              See all Projects
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>

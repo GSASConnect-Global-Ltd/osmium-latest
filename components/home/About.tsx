@@ -6,12 +6,13 @@ const AboutSection = () => {
     <section className="p-[120px] mx-auto max-w-7xl">
       {/* About Header */}
       <div className="mb-16">
-        <h2
-          className="mb-4 text-[16px] font-medium leading-[24px] tracking-[0.01em] text-left text-gray-500 uppercase"
-          style={{ fontFamily: "Inter Tight" }}
-        >
-          About
-        </h2>
+       <h2
+        className="mb-4 text-[16px] font-medium leading-[24px] tracking-[0.16px] text-left"
+        style={{ fontFamily: "Inter Tight", color: "#6E7888" }}
+      >
+        About
+      </h2>
+
 
         <p
           className="w-full text-[36px] font-normal leading-[44px] tracking-[0.015em] text-gray-800"

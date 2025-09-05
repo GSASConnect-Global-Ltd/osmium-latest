@@ -2,7 +2,13 @@
 
 const SolutionsSection = () => {
   return (
-    <section className="px-6 py-20 mx-auto max-w-7xl">
+    <section
+      className="
+        flex flex-col items-start gap-[10px] 
+        w-[1440px] px-[120px] py-[120px] 
+        mx-auto
+      "
+    >
       {/* Solutions Header */}
       <div className="max-w-2xl mx-auto mb-16 text-center">
         <p className="mb-4 text-[48px] ppEditorial leading-[58px] tracking-[0.02em] font-light w-[505px] mx-auto">

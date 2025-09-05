@@ -25,7 +25,7 @@ const Navbar = () => {
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
-  // ✅ Scroll logic: Hide when scrolling past 1 full viewport, show when at top
+  // ✅ Scroll logic
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > window.innerHeight) {
@@ -47,66 +47,16 @@ const Navbar = () => {
   ];
 
   const serviceItems = [
-    {
-      name: "Renewable Energy",
-      desc: "Clean power solutions for a sustainable future.",
-      icon: Zap,
-      href: "/renewable",
-    },
-    {
-      name: "Artificial Intelligence & Robotics",
-      desc: "Smart automation to drive innovation.",
-      icon: Cpu,
-      href: "/ai",
-    },
-    {
-      name: "Extended Reality (XR)",
-      desc: "Immersive experiences beyond reality.",
-      icon: Headphones,
-      href: "/xr",
-    },
-    {
-      name: "Digital Twin Technology",
-      desc: "Real-time virtual models for simulations.",
-      icon: Layers,
-      href: "/dtw",
-    },
-    {
-      name: "Game Development",
-      desc: "Custom games with immersive storytelling.",
-      icon: Gamepad2,
-      href: "/game",
-    },
-    {
-      name: "Software Engineering",
-      desc: "Enterprise-grade apps, systems, and platforms.",
-      icon: CodeXml,
-      href: "/software",
-    },
-    {
-      name: "Smart Home Concepts",
-      desc: "IoT-powered automation for modern living.",
-      icon: Home,
-      href: "/shc",
-    },
-    {
-      name: "Modelling and Simulation",
-      desc: "Advanced computational models for system analysis.",
-      icon: BarChart3,
-      href: "/modelling",
-    },
-    {
-      name: "Consultation",
-      desc: "Expert guidance to grow and optimize your business.",
-      icon: Users,
-      href: "/consultation",
-    },
-    {
-      name: "Blockchain Technology",
-      desc: "Decentralized solutions for security and transparency.",
-      icon: Blocks,
-      href: "/block",
-    },
+    { name: "Renewable Energy", desc: "Clean power solutions for a sustainable future.", icon: Zap, href: "/renewable" },
+    { name: "Artificial Intelligence & Robotics", desc: "Smart automation to drive innovation.", icon: Cpu, href: "/ai" },
+    { name: "Extended Reality (XR)", desc: "Immersive experiences beyond reality.", icon: Headphones, href: "/xr" },
+    { name: "Digital Twin Technology", desc: "Real-time virtual models for simulations.", icon: Layers, href: "/dtw" },
+    { name: "Game Development", desc: "Custom games with immersive storytelling.", icon: Gamepad2, href: "/game" },
+    { name: "Software Engineering", desc: "Enterprise-grade apps, systems, and platforms.", icon: CodeXml, href: "/software" },
+    { name: "Smart Home Concepts", desc: "IoT-powered automation for modern living.", icon: Home, href: "/shc" },
+    { name: "Modelling and Simulation", desc: "Advanced computational models for system analysis.", icon: BarChart3, href: "/modelling" },
+    { name: "Consultation", desc: "Expert guidance to grow and optimize your business.", icon: Users, href: "/consultation" },
+    { name: "Blockchain Technology", desc: "Decentralized solutions for security and transparency.", icon: Blocks, href: "/block" },
   ];
 
   return (
@@ -118,44 +68,45 @@ const Navbar = () => {
       <div
         className="
           bg-white border border-gray-200 backdrop-blur-sm rounded-none md:rounded-[20px] 
-          flex items-center justify-between
+          flex items-center
           h-[100px] px-4 md:px-6
           md:mt-8 md:mx-[100px]
           mt-0 mx-0
         "
       >
-        <div className="relative flex items-center justify-between w-full">
+        {/* Left side: Logo + Navlinks */}
+        <div className="flex items-center gap-[36px]">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
             <Image
               src="/assets/Orrellogo2.svg"
               alt="ORREL Logo"
-              width={120}
-              height={80}
-              className="w-auto h-10 cursor-pointer"
+              width={72}
+              height={72}
+              className="cursor-pointer"
               priority
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center absolute left-[180px] top-1/2 -translate-y-1/2 space-x-1">
+          <div className="hidden md:flex items-center gap-[36px]">
             {navigationItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
                 className="px-3 py-1 font-medium text-gray-800 transition-all duration-200 rounded-lg hover:bg-gray-100 
-                           text-[16px] leading-[24px] tracking-[0]"
+                          text-[16px] leading-[24px]"
               >
                 {item.name}
               </Link>
             ))}
 
             {/* Services Dropdown */}
-            <div className="relative mx-2">
+            <div className="relative">
               <button
                 onClick={() => setIsServicesOpen(!isServicesOpen)}
                 className="flex items-center px-3 py-1 font-medium text-gray-800 transition-all duration-200 rounded-lg hover:bg-gray-100 
-                           text-[16px] leading-[24px] tracking-[0]"
+                          text-[16px] leading-[24px]"
               >
                 <span>Services</span>
                 <ChevronDown
@@ -182,9 +133,7 @@ const Navbar = () => {
                           <p className="text-[16px] font-medium text-gray-900">
                             {service.name}
                           </p>
-                          <p className="text-[14px] text-gray-500">
-                            {service.desc}
-                          </p>
+                          <p className="text-[14px] text-gray-500">{service.desc}</p>
                         </div>
                       </Link>
                     ))}
@@ -193,30 +142,30 @@ const Navbar = () => {
               )}
             </div>
           </div>
+        </div>
 
-          {/* Right Side CTA (Desktop) */}
-          <div className="hidden md:flex items-center space-x-4">
-            <button
-              className="w-[163px] h-[56px] 
+        {/* Right Side CTA (Desktop) */}
+        <div className="hidden md:flex items-center ml-auto">
+          <button
+            className="w-[163px] h-[56px] 
                         px-6 py-4 
                         bg-black text-white font-[Satoshi] font-bold 
                         text-[16px] leading-[24px] tracking-[0.01em] 
                         rounded-[12px] border-2 border-black 
                         transition-all duration-200 
                         hover:bg-blue-700"
-            >
-              Partner with us
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden flex items-center justify-center p-2 rounded-md text-gray-800 hover:bg-gray-100"
-            onClick={() => setIsMobileOpen(!isMobileOpen)}
           >
-            {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            Partner with us
           </button>
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden ml-auto flex items-center justify-center p-2 rounded-md text-gray-800 hover:bg-gray-100"
+          onClick={() => setIsMobileOpen(!isMobileOpen)}
+        >
+          {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
       </div>
 
       {/* Mobile Menu */}
