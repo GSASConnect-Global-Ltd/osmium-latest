@@ -35,9 +35,9 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({
         {/* Heading */}
         <div className="flex flex-col items-center gap-6 mb-16 text-center">
           <p
-            className="font-extralight text-[48px] leading-[58px] tracking-[0.96px] text-center"
+            className="ppEditorial text-[48px] leading-[58px] tracking-[0.96px] text-center"
             style={{
-              fontFamily: "PP Editorial New",
+              fontWeight: 200,
               color: "var(--Foundation-Primary-Shade-Darker, #10150C)",
               width: "505px",
             }}
@@ -100,8 +100,8 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({
                 className="text-muted-foreground"
                 style={{
                   fontFamily: "Satoshi",
-                  fontWeight: 500,
-                  fontSize: "20px",
+                  fontWeight: 200,
+                  fontSize: "16px",
                   lineHeight: "28px",
                   letterSpacing: "0.01em",
                 }}

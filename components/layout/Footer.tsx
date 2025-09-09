@@ -73,9 +73,9 @@ export const Footer = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-3 text-black border border-gray-300 rounded-lg focus:outline-none"
+                className="flex-1 px-4 py-3 text-black border border-gray-300 focus:outline-none"
               />
-              <button className="px-6 py-3 text-[14px] font-bold leading-[21px] text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
+              <button className="px-6 py-3 text-[14px] font-bold leading-[21px] text-white transition-colors bg-green-600 hover:bg-green-700">
                 Subscribe
               </button>
             </div>

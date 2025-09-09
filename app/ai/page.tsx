@@ -7,43 +7,68 @@ import ServiceSection from "@/components/services/ServiceSection";
 import Service from "@/components/services/Service";
 import AdvantageSection from "@/components/services/AdvantageSection";
 import CTASection from "@/components/home/CTA";
- 
-
-import  Ai1  from "@/assets/ai/ai1.png"; 
-import  Ai2  from "@/assets/ai/ai2.png"; 
-import  Ai3  from "@/assets/ai/ai3.png"; 
+  
 
 const features = [
   {
-    icon: <Settings className="w-6 h-6 text-white" />,
+    icon: "gear",
     title: "Custom-Built, Not Off-the-Shelf",
-    description: "We design solutions for your specific problem...",
+    description: "We design solutions for your specific problem, not force your problem into a generic product.",
   },
   {
-    icon: <Layers className="w-6 h-6 text-white" />,
+    icon: "wand",
     title: "Full Stack Experience",
-    description: "From the AI brain to the robotic body...",
+    description: "From the AI brain to the robotic body, we control the entire stack, ensuring seamless integration and performance."
   },
   {
-    icon: <LineChart className="w-6 h-6 text-white" />,
+     icon: "chart",
     title: "Focus on ROI & Impact",
-    description: "We prioritize solutions that deliver measurable improvements...",
+    description: "We prioritize solutions that deliver measurable improvements in efficiency, cost savings, and safety.",
   },
 ];
 
 
 
-const servicesData = [
+const servicesDetailData = [
+  {
+    title: "Precision and Automation",
+    description:
+      "Automate repetitive, complex, or high-precision assembly, welding, painting, or packaging tasks with unwavering consistency.",
+    
+  },
+  {
+    title: "Predictive Maintenance",
+    description:
+      "Use AI-powered analytics to predict equipment failures before they happen, minimizing unplanned downtime and maximizing asset lifespan.",
+    
+  },
+
+  {
+    title: "Intelligent Inspection & Quality Control ",
+    description:
+      "Deploy computer vision systems to perform automated, millimeter-accurate quality checks at speeds impossible for the human eye, drastically reducing defects.",
+    
+  },
+
+    {
+    title: "24/7 Operational Readiness",
+    description:
+      "Robots work tirelessly, enabling round-the-clock production and fulfilling orders without being constrained by shifts or fatigue.",
+  },
+  
+];
+
+const serviceData = [
   {
     title: "Manufacturing and assembly",
     description:
-      "Revolutionize production lines with robotic arms for assembly...",
+      "Revolutionize production lines with robotic arms for assembly, material handling, and precision machining. Increase output, improve quality, and protect workers from hazardous tasks.",
     image: "/ai/ai1.png",
   },
   {
     title: "Logistics and Warehousing",
     description:
-      "Automate sorting, picking, packing, and palletizing in warehouses...",
+      "Automate sorting, picking, packing, and palletizing in warehouses and distribution centers. Accelerate order fulfillment and reduce operational costs.",
     image: "/ai/ai2.png",
   },
 
@@ -58,7 +83,7 @@ const servicesData = [
     title: "Research and Development",
     description:
       "Partner with our AI specialists to prototype and develop custom robotic solutions for unique challenges, from medical devices to advanced material handling.",
-    image: "/ai/ai3.png",
+    image: "/ai/ai4.png",
   },
   
 ];
@@ -71,10 +96,10 @@ const Services = () => {
   return (
     <>
        <Hero
-      tag="Renewable Energy."
-      headline="Powering Africa’s Future, Sustainably"
-      description="We deliver renewable energy systems and solutions that power industries, homes, offices, farms and more sustainably. "
-      backgroundImage="/renewable/renewable-hero.png"
+      tag="AI and Robotics"
+      headline="Intelligent Automation for African Industry"
+      description="We design and deploy bespoke AI and robotic systems that automate complex tasks, enhance precision, and unlock new levels of productivity, safety, and data-driven insight."
+      backgroundImage="/ai/ai-hero.png"
       buttonText="Partner with us"
       buttonLink="/contact"
     />
@@ -91,15 +116,15 @@ const Services = () => {
         difficult operational challenges. Our systems work alongside human
         talent to augment capabilities, ensure pinpoint accuracy, and operate
         reliably in demanding environments."
-      services={servicesData}
+      services={servicesDetailData}
     />
        <Service
       heading="Transformative Energy Across Sectors"
-      services={servicesData}
+      services={serviceData}
     />
        <AdvantageSection
       heading="The ORREL Advantage in AI & Robotics"
-      subtitle="Our strength lies in tailoring global technology to local contexts..."
+      subtitle="Our strength lies in tailoring global technology to local contexts. We focus on robust, maintainable, and cost-effective solutions that deliver a clear return on investment and are built to thrive in the African operational environment."
       features={features}
     />
       <CTASection />

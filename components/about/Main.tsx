@@ -11,16 +11,16 @@ const Main = () => {
       description: "Every solution solves real problems.",
     },
     {
-      title: "Sustainable Growth",
-      description: "Building for the long-term future of Africa.",
+      title: "Sustainability First",
+      description: "Building system that endure.",
     },
     {
-      title: "Community First",
-      description: "Empowering local communities through technology.",
+      title: "Collaboration",
+      description: "Progress through partnerships.",
     },
     {
-      title: "Excellence Always",
-      description: "Delivering world-class solutions with African heart.",
+      title: "Innovation with Purpose",
+      description: "Every solution solves real problems.",
     },
   ];
 
@@ -76,10 +76,10 @@ const Main = () => {
           <div className="space-y-8 lg:pl-6">
             <div className="max-w-md mx-auto text-center lg:text-left lg:mx-0">
               <p
-                className="mb-4 text-[48px] leading-[58px] tracking-[0.02em] font-[200] text-foreground"
-                style={{ fontFamily: "PP Editorial New" }}
+                className="mb-4 ppEditorial text-[48px] leading-[58px] tracking-[0.02em] font-[200] text-foreground"
+                
               >
-                <span className="text-[#00C896] italic">Shaping the Future </span>
+                <span className="text-[#13492D] italic">Shaping the Future </span>
                 <br />
                 Step by Step
               </p>
@@ -92,12 +92,18 @@ const Main = () => {
               </p>
             </div>
             <div className="flex justify-center lg:justify-start">
-              <button
-                className="w-[163px] h-[56px] px-6 py-4 text-base font-semibold text-black transition-all shadow-md rounded-xl hover:shadow-lg"
-                style={{ backgroundColor: "#37D181" }}
-              >
-                Partner with us
-              </button>
+               {/* CTA Button */}
+<button
+  className="inline-flex items-center justify-center px-6 py-4 text-black font-satoshi font-bold text-[16px] leading-[20px] tracking-wide rounded-[12px] border-2 border-[#f8faf9] bg-[#37D181] transition-colors duration-300 hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black"
+  style={{
+    width: "163px",
+    minWidth: "fit-content",
+    border: "1px solid white",
+    fontFamily: "Satoshi"
+  }}
+>
+  Partner with us
+</button>
             </div>
           </div>
         </div>
@@ -109,47 +115,55 @@ const Main = () => {
           {/* Heading */}
           <div className="mb-20 text-center">
             <p
-              className="font-extralight text-[48px] leading-[58px] tracking-[0.02em] text-foreground"
-              style={{ fontFamily: "PP Editorial New" }}
+              className="font-extralight ppEditorial text-[48px] leading-[58px] tracking-[0.02em] text-foreground"
+              
             >
               Our Values
             </p>
           </div>
+{/* Cards */}
+<div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+  {values.map((value, index) => (
+    <div
+      key={index}
+      className="flex flex-col items-start"
+      style={{
+        borderRadius: "20px",
+        border: "1px solid #EAECE9",
+        background: "#FFF",
+        width: "266px",
+        padding: "24px",
+        gap: "100px",
+      }}
+    >
+      <h3
+        className="text-foreground"
+        style={{
+          fontFamily: "Satoshi",
+          fontWeight: 500,
+          fontSize: "24px",
+          lineHeight: "28.8px",
+          letterSpacing: "0.01em",
+        }}
+      >
+        {value.title}
+      </h3>
+      <p
+        className="text-muted-foreground"
+        style={{
+          fontFamily: "Satoshi",
+          fontWeight: 400,
+          fontSize: "16px",
+          lineHeight: "24px",
+          letterSpacing: "0.01em",
+        }}
+      >
+        {value.description}
+      </p>
+    </div>
+  ))}
+</div>
 
-          {/* Cards */}
-          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {values.map((value, index) => (
-              <div
-                key={index}
-                className="flex flex-col justify-between p-6 transition-all duration-300 border border-gray-200 bg-gradient-card shadow-card hover:shadow-hero rounded-2xl"
-              >
-                <h3
-                  className="mb-3 text-foreground"
-                  style={{
-                    fontFamily: "Satoshi",
-                    fontWeight: 500,
-                    fontSize: "24px",
-                    lineHeight: "28.8px",
-                    letterSpacing: "0.01em",
-                  }}
-                >
-                  {value.title}
-                </h3>
-                <p
-                  className="text-muted-foreground"
-                  style={{
-                    fontFamily: "Satoshi",
-                    fontWeight: 400,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    letterSpacing: "0.01em",
-                  }}
-                >
-                  {value.description}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -165,9 +179,10 @@ const Main = () => {
               lineHeight: "43.2px",
               letterSpacing: "0.01em",
               color: "#13492D",
+              width: " 779.5px",
             }}
           >
-            Our Vision is to position Africa as a global leader in digital innovation and
+            Our Vision <span className="text-[#717171]">is to</span> position Africa <span  className="text-[#717171]">as a global leader</span> in digital innovation and
             sustainability.
           </p>
         </div>

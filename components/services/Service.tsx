@@ -29,10 +29,8 @@ const Services: React.FC<ServicesProps> = ({ heading, services }) => {
         {/* Main Heading */}
         <div className="mb-16 text-center">
           <p
-            className="mx-auto text-center text-[48px] leading-[56px] tracking-[0.01em]"
+            className="mx-auto text-center text-[48px] leading-[56px] tracking-[0.01em] font-extralight ppEditorial"
             style={{
-              fontFamily: "PP Editorial New",
-              fontWeight: 200,
               width: "533px",
             }}
           >
@@ -41,7 +39,15 @@ const Services: React.FC<ServicesProps> = ({ heading, services }) => {
         </div>
 
         {/* Card Layout */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div
+          className="
+            grid gap-8 
+            grid-cols-1 
+            sm:grid-cols-2 
+            lg:grid-cols-3 
+            xl:grid-cols-4
+          "
+        >
           {services.map((service, index) => (
             <div
               key={index}
@@ -57,26 +63,30 @@ const Services: React.FC<ServicesProps> = ({ heading, services }) => {
               />
 
               {/* Service Content */}
-              <div className="flex flex-col flex-1 bg-white rounded-[24px] p-6">
-                <h3
-                  className="mb-2 text-gray-900"
+              <div
+                className="flex flex-col santoshi flex-1 bg-white rounded-[24px]"
+                style={{ padding: "24px" }}
+              >
+                <p
+                  className="mb-[24px] text-center"
                   style={{
-                    fontFamily: "PP Editorial New",
-                    fontWeight: 700,
-                    fontSize: "20px",
+                    color: "#10150C",
+                    fontWeight: 500,
+                    fontSize: "18px",
                     lineHeight: "28px",
                   }}
                 >
                   {service.title}
-                </h3>
+                </p>
 
                 <p
-                  className="text-gray-600"
+                  className="pt-[5px]"
                   style={{
+                    color: "#7C7B7C",
                     fontFamily: "Satoshi",
-                    fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
+                    fontWeight: 200,
+                    fontSize: "14px",
+                    lineHeight: "20px",
                   }}
                 >
                   {service.description}

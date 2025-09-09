@@ -32,10 +32,10 @@ const Hero = () => {
       />
 
       {/* Content */}
-      <div className="container relative z-10 px-4 mx-auto text-center">
+      <div className="container relative z-10 px-4 mx-auto text-center w-[729px]">
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Main Headline */}
-          <p className="text-[72px] ppEditorial font-extralight leading-[86.4px] tracking-[0.04em] text-center text-white">
+          <p className="text-[71px] ppEditorial font-extralight leading-[86.4px] tracking-[0.04em] text-center text-white">
             Building Africa&apos;s Digital &amp; Sustainable Future
           </p>
 
@@ -52,17 +52,17 @@ const Hero = () => {
           {/* CTA Buttons */}
           <div className="flex flex-col items-center justify-center gap-4 pt-6 sm:flex-row">
              {/* CTA Button */}
-<button
-  className="inline-flex items-center justify-center px-6 py-4 text-black font-satoshi font-bold text-[16px] leading-[20px] tracking-wide rounded-[12px] border-2 border-[#f8faf9] bg-[#37D181] transition-colors duration-300 hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black"
-  style={{
-    width: "163px",
-    minWidth: "fit-content",
-    border: "1px solid white",
-    fontFamily: "Satoshi"
-  }}
->
-  Partner with us
-</button>
+              <button
+                className="inline-flex items-center justify-center px-6 py-4 text-black font-satoshi font-bold text-[16px] leading-[20px] tracking-wide rounded-[12px] border-2 border-[#f8faf9] bg-[#37D181] transition-colors duration-300 hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black"
+                style={{
+                  width: "163px",
+                  minWidth: "fit-content",
+                  border: "1px solid white",
+                  fontFamily: "Satoshi"
+                }}
+              >
+                Partner with us
+              </button>
 
             <button
               className="h-12 px-5 text-base font-bold text-white tracking-[0.01em] transition-colors border border-white rounded-lg min-w-40 hover:bg-white hover:text-black"

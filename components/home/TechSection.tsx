@@ -79,13 +79,14 @@ const TechSection = () => {
               </div>
               <div className="flex justify-center mt-8">
                 <Image
-                  src="/assets/orrel_logo.png"
+                  src="/home/orrel-2.svg"
                   alt="ORREL Company Logo"
                   width={300}
                   height={77}
                   className="object-contain w-auto h-16 transition-opacity opacity-80 group-hover:opacity-100 drop-shadow-lg"
                 />
               </div>
+
             </div>
           </div>
 
@@ -111,8 +112,22 @@ const TechSection = () => {
                 </p>
               </div>
               <div className="flex justify-center mt-8">
-                <TrendingUp className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="299"
+                  height="85"
+                  viewBox="0 0 299 85"
+                  fill="none"
+                  className="opacity-80 group-hover:opacity-100"
+                >
+                  <path
+                    d="M1.81299 83.4033L48.451 47.8322C55.9085 42.1443 65.996 41.3217 74.2765 45.7262L98.5954 58.6619C104.343 61.7191 111.086 62.3103 117.278 60.3L176.916 40.9369C181.794 39.3531 187.051 39.3736 191.917 40.9955L219.8 50.2899C227.598 52.8895 236.185 51.3168 242.556 46.122L297.187 1.5769"
+                    stroke="black"
+                    strokeWidth="3"
+                  />
+                </svg>
               </div>
+
             </div>
           </div>
 
