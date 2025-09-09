@@ -29,17 +29,25 @@ const Services: React.FC<ServicesProps> = ({ heading, services }) => {
         {/* Main Heading */}
         <div className="mb-16 text-center">
           <p
-              className="mx-auto text-center text-[48px] leading-[56px] tracking-[0.01em] font-extralight ppEditorial"
-              style={{
-                width: "533px",
-              }}
-            >
-              {heading}
-            </p>
+            className="mx-auto text-center text-[48px] leading-[56px] tracking-[0.01em] font-extralight ppEditorial"
+            style={{
+              width: "533px",
+            }}
+          >
+            {heading}
+          </p>
         </div>
 
         {/* Card Layout */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div
+          className="
+            grid gap-8 
+            grid-cols-1 
+            sm:grid-cols-2 
+            lg:grid-cols-3 
+            xl:grid-cols-4
+          "
+        >
           {services.map((service, index) => (
             <div
               key={index}
@@ -59,7 +67,6 @@ const Services: React.FC<ServicesProps> = ({ heading, services }) => {
                 className="flex flex-col santoshi flex-1 bg-white rounded-[24px]"
                 style={{ padding: "24px" }}
               >
-
                 <p
                   className="mb-[24px] text-center"
                   style={{
@@ -72,8 +79,6 @@ const Services: React.FC<ServicesProps> = ({ heading, services }) => {
                   {service.title}
                 </p>
 
-
-
                 <p
                   className="pt-[5px]"
                   style={{
@@ -82,7 +87,6 @@ const Services: React.FC<ServicesProps> = ({ heading, services }) => {
                     fontWeight: 200,
                     fontSize: "14px",
                     lineHeight: "20px",
-                    
                   }}
                 >
                   {service.description}

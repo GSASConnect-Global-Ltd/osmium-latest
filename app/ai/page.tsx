@@ -7,27 +7,23 @@ import ServiceSection from "@/components/services/ServiceSection";
 import Service from "@/components/services/Service";
 import AdvantageSection from "@/components/services/AdvantageSection";
 import CTASection from "@/components/home/CTA";
- 
-
-import  Ai1  from "@/assets/ai/ai1.png"; 
-import  Ai2  from "@/assets/ai/ai2.png"; 
-import  Ai3  from "@/assets/ai/ai3.png"; 
+  
 
 const features = [
   {
-    icon: <Settings className="w-6 h-6 text-white" />,
+    icon: "gear",
     title: "Custom-Built, Not Off-the-Shelf",
-    description: "We design solutions for your specific problem...",
+    description: "We design solutions for your specific problem, not force your problem into a generic product.",
   },
   {
-    icon: <Layers className="w-6 h-6 text-white" />,
+    icon: "wand",
     title: "Full Stack Experience",
-    description: "From the AI brain to the robotic body...",
+    description: "From the AI brain to the robotic body, we control the entire stack, ensuring seamless integration and performance."
   },
   {
-    icon: <LineChart className="w-6 h-6 text-white" />,
+     icon: "chart",
     title: "Focus on ROI & Impact",
-    description: "We prioritize solutions that deliver measurable improvements...",
+    description: "We prioritize solutions that deliver measurable improvements in efficiency, cost savings, and safety.",
   },
 ];
 

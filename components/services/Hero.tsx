@@ -57,8 +57,12 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* Headline */}
           <p
-            className="text-[72px] font-thin leading-[76px] tracking-[0.04em] text-white"
-            style={{ fontFamily: "PP Editorial New", width: "598px" }}
+            className="text-[72px] leading-[76px] ppEditorial font-extralight tracking-[0.04em] text-white"
+            style={{
+               fontFamily: "PP Editorial New", width: "600px" ,
+               letterSpacing: "2.88px",
+               fontWeight: 200,
+              }}
           >
             {headline}
           </p>

@@ -1,65 +1,64 @@
-import { Settings, Layers, LineChart } from "lucide-react";
-
 
 import Hero from "@/components/services/Hero";
 import { ServiceInfo } from "@/components/services/ServiceInfo"
 import ServiceSection from "@/components/services/ServiceSection";
 import Service from "@/components/services/Service";
-import AdvantageSection from "@/components/services/AdvantageSection";
+
 import CTASection from "@/components/home/CTA";
  
 
-import  Ai1  from "@/assets/ai/ai1.png"; 
-import  Ai2  from "@/assets/ai/ai2.png"; 
-import  Ai3  from "@/assets/ai/ai3.png"; 
-
-const features = [
-  {
-    icon: <Settings className="w-6 h-6 text-white" />,
-    title: "Custom-Built, Not Off-the-Shelf",
-    description: "We design solutions for your specific problem...",
-  },
-  {
-    icon: <Layers className="w-6 h-6 text-white" />,
-    title: "Full Stack Experience",
-    description: "From the AI brain to the robotic body...",
-  },
-  {
-    icon: <LineChart className="w-6 h-6 text-white" />,
-    title: "Focus on ROI & Impact",
-    description: "We prioritize solutions that deliver measurable improvements...",
-  },
-];
 
 
-
-const servicesData = [
+const servicesDetailData = [
   {
-    title: "Manufacturing and assembly",
+    title: "Gamified STEM Labs",
     description:
-      "Revolutionize production lines with robotic arms for assembly...",
-    image: "/ai/ai1.png",
+      "We transform standard curriculum experiments into captivating VR challenges. Students conduct chemistry, physics, and biology activities in a safe, immersive digital environment, free from cost and safety constraints.",
+    
   },
   {
-    title: "Logistics and Warehousing",
+    title: "Experiential Learning",
     description:
-      "Automate sorting, picking, packing, and palletizing in warehouses...",
-    image: "/ai/ai2.png",
+      "Learners interact with complex systems—from engineering assemblies to historical events— fostering deep understanding through doing, not just reading.",
+    
   },
 
   {
-    title: "Agricultural and Food Processing",
+    title: "Industrial Procedure Training",
     description:
-      "Implement automated sorting, grading, and processing of agricultural produce. Enhance yield and reduce post-harvest waste through intelligent automation.",
-    image: "/ai/ai3.png",
+      "Create risk-free training simulations for high-stakes industrial environments. Practice equipment operation, safety protocols, and emergency responses without real-world danger.",
+    
   },
 
     {
-    title: "Research and Development",
+    title: "Performance Analytics",
     description:
-      "Partner with our AI specialists to prototype and develop custom robotic solutions for unique challenges, from medical devices to advanced material handling.",
-    image: "/ai/ai3.png",
+      "Track engagement and mastery in real-time. Our platforms provide educators and trainers with data on student progress, knowledge gaps, and skill proficiency.",
   },
+  
+];
+
+const serviceData = [
+  {
+    title: "Primary & Secondary STEM Education",
+    description:
+      "Our flagship VR school platform allows students to perform every required science experiment in the curriculum without a physical lab. We turn learning into an adventure.",
+    image: "/game/game1.png",
+  },
+  {
+    title: "University & Vocational Engineering Labs",
+    description:
+      "Provide engineering students with unlimited access to expensive, complex machinery through digital twins and gamified simulations. They can design, test, fail, and optimize in a virtual sandbox.",
+    image: "/game/game2.png",
+  },
+
+  {
+    title: "Industrial Safety & Skills Training",
+    description:
+      "Train employees on standard operating procedures, safety protocols, and equipment handling for manufacturing, energy, and construction sectors in a zero-risk environment.",
+    image: "/game/game3.png",
+  },
+
   
 ];
 
@@ -71,36 +70,27 @@ const Services = () => {
   return (
     <>
        <Hero
-      tag="Renewable Energy."
-      headline="Powering Africa’s Future, Sustainably"
-      description="We deliver renewable energy systems and solutions that power industries, homes, offices, farms and more sustainably. "
-      backgroundImage="/renewable/renewable-hero.png"
-      buttonText="Partner with us"
-      buttonLink="/contact"
+      tag="Game development"
+      headline="Where Play Meets Purpose"
+      description="We design and develop serious games and gamified experiences that transform learning, training, and complex tasks into engaging, effective, and memorable journeys. "
+      backgroundImage="/dwt/dwt-hero.png"
+      buttonText="Partner with Us"
+      buttonLink="#"
+      width="900px" 
     />
       
       <ServiceInfo
-        text="Manual processes are prone to error, slow, and unsafe for high-risk tasks. 
-        Scaling production or maintaining consistent quality is a constant challenge, 
-        limiting competitiveness and the ability to innovate on the global stage."
+        text="Traditional learning and training methods often fail to capture attention or ensure knowledge retention. Complex information is easily forgotten, and monotonous tasks lead to low participation and high error rates."
         maxWidth="900px"
       />
       <ServiceSection
-      heading={{ main: "From Manual Tasks to", highlight: "Intelligent System" }}
-      subtitle="We build integrated AI and robotics solutions that tackle your most
-        difficult operational challenges. Our systems work alongside human
-        talent to augment capabilities, ensure pinpoint accuracy, and operate
-        reliably in demanding environments."
-      services={servicesData}
+      heading={{ main: "Unlock Motivation Through ", highlight: "  Mastery and Play" }}
+      subtitle="We harness the powerful psychological principles of game design—progression, reward, and story—to create experiences that captivate users, deepen understanding, and drive desired behaviors, whether for students or professionals."
+      services={servicesDetailData}
     />
        <Service
-      heading="Transformative Energy Across Sectors"
-      services={servicesData}
-    />
-       <AdvantageSection
-      heading="The ORREL Advantage in AI & Robotics"
-      subtitle="Our strength lies in tailoring global technology to local contexts..."
-      features={features}
+      heading="Revolutionizing How Africa Learns and Trains"
+      services={serviceData}
     />
       <CTASection />
       
