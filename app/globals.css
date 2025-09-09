@@ -46,6 +46,10 @@
   font-family: var(--font-pp-editorial), sans-serif;
 }
 
+.santoshi {
+  font-family: var(--font-santoshi), sans-serif;
+}
+
 
 .dark {
   --background: #0a0a0a;

@@ -9,13 +9,16 @@ interface ServiceInfoProps {
 
 const ServiceInfo: React.FC<ServiceInfoProps> = ({ text, maxWidth }) => {
   return (
-    <section className="py-[120px] px-[100px] mx-auto max-w-7xl">
+    <section
+      className="flex flex-col items-start gap-[10px] mx-auto"
+      style={{
+        width: "1440px",
+        padding: "120px 80px",
+      }}
+    >
       <p
-        className="w-full text-[36px] font-normal leading-[44px] tracking-[0.015em] text-gray-800"
-        style={{
-          fontFamily: "Satoshi",
-          maxWidth: maxWidth || "100%", // fallback to full width
-        }}
+        className="text-[36px] font-normal leading-[44px] tracking-[0.015em] text-gray-800 w-full"
+        style={{ fontFamily: "Satoshi" }}
       >
         {text}
       </p>

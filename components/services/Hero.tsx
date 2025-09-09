@@ -24,8 +24,8 @@ const Hero: React.FC<HeroProps> = ({
 }) => {
   return (
     <section
-      className="relative flex items-center min-h-screen"
-      style={{ padding: "120px 100px" }}
+      className="relative flex items-start w-full"
+      style={{ height: "974px" }} // Fixed height
     >
       {/* Background Image */}
       <div className="absolute inset-0">
@@ -40,8 +40,11 @@ const Hero: React.FC<HeroProps> = ({
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex items-center justify-start w-full h-full">
-        <div className="space-y-6 text-left" style={{ width }}>
+      <div
+        className="relative z-10 w-full"
+        style={{ paddingTop: "401px" }} // Push content down
+      >
+        <div className="space-y-6 text-left mx-[100px]" style={{ width }}>
           {/* Tagline */}
           {tag && (
             <p
@@ -55,7 +58,7 @@ const Hero: React.FC<HeroProps> = ({
           {/* Headline */}
           <p
             className="text-[72px] font-thin leading-[76px] tracking-[0.04em] text-white"
-            style={{ fontFamily: "PP Editorial New",  width: "598px"}}
+            style={{ fontFamily: "PP Editorial New", width: "598px" }}
           >
             {headline}
           </p>
@@ -79,7 +82,6 @@ const Hero: React.FC<HeroProps> = ({
                   >
                     {buttonText}
                   </button>
-
                 </a>
               ) : (
                 <button

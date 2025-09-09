@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 // ✅ Noto Sans as Satoshi replacement
 const satoshi = Noto_Sans({
-  weight: ["200", "400", "700"],
+  weight: ["200", "400", "500" , "700"],
   subsets: ["latin"],
   variable: "--font-satoshi",
   display: "swap",

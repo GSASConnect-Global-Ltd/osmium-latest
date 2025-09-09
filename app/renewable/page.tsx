@@ -35,9 +35,9 @@ const features = [
 
 const servicesData = [
   {
-    title: "Manufacturing and assembly",
+    title: "Custom Solar and Hybrid Systems",
     description:
-      "Revolutionize production lines with robotic arms for assembly...",
+      "From off-grid residential setups to large-scale grid-tied industrial solutions with battery backup and generator integration.",
     image: "/ai/ai1.png",
   },
   {
@@ -80,17 +80,12 @@ const Services = () => {
     />
       
       <ServiceInfo
-        text="Manual processes are prone to error, slow, and unsafe for high-risk tasks. 
-        Scaling production or maintaining consistent quality is a constant challenge, 
-        limiting competitiveness and the ability to innovate on the global stage."
+        text="Unstable grids and soaring energy costs are stifling African innovation and growth. Businesses lose revenue to downtime, communities remain in the dark and development is held back by a lack of reliable, affordable power."
         maxWidth="900px"
       />
       <ServiceSection
-      heading={{ main: "From Manual Tasks to", highlight: "Intelligent System" }}
-      subtitle="We build integrated AI and robotics solutions that tackle your most
-        difficult operational challenges. Our systems work alongside human
-        talent to augment capabilities, ensure pinpoint accuracy, and operate
-        reliably in demanding environments."
+      heading={{ main: "Reliable, Clean and Intelligent ", highlight: "Energy" }}
+      subtitle="We design integrated renewable energy systems that provide uninterrupted power, slash electricity costs, and promote sustainability, all built for Africa’s unique demands"
       services={servicesData}
     />
        <Service

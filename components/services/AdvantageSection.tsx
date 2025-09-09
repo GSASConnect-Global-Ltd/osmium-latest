@@ -2,10 +2,9 @@
 
 interface Feature {
   icon: React.ReactNode;
-  title: string;        // ✅ add this
+  title: string; // required
   description: string;
 }
-
 
 interface AdvantageSectionProps {
   heading: string;
@@ -22,17 +21,26 @@ const AdvantageSection: React.FC<AdvantageSectionProps> = ({
     <section className="px-6 py-20 bg-white">
       <div className="max-w-5xl mx-auto text-center">
         {/* Heading */}
-        <h2
-          className="text-[32px] leading-[40px] text-gray-900 mb-4"
-          style={{ fontFamily: "PP Editorial New", fontWeight: 400 }}
+        <p
+          className="text-[32px] leading-[40px] text-gray-900 mb-4 ppEditorial mx-auto"
+          style={{ 
+            fontWeight: 400,
+            fontSize: "48px",
+             maxWidth: "505px", 
+             lineHeight: "58px",
+            }} // ✅ heading width
         >
           {heading}
-        </h2>
+        </p>
 
         {/* Subtitle */}
         <p
           className="text-gray-600 max-w-3xl mx-auto mb-16 text-[16px] leading-[24px]"
-          style={{ fontFamily: "Satoshi", fontWeight: 400 }}
+          style={{ 
+            fontFamily: "Satoshi",
+            fontWeight: 400,
+            
+            }}
         >
           {subtitle}
         </p>
@@ -48,8 +56,7 @@ const AdvantageSection: React.FC<AdvantageSectionProps> = ({
                 className="mb-2 text-lg font-semibold text-gray-900"
                 style={{ fontFamily: "Satoshi" }}
               >
-                {feature.title} 
-                {/* error: Property 'title' does not exist on type 'Feature'.ts(2339) */}
+                {feature.title} {/* ✅ now works */}
               </h3>
               <p
                 className="text-gray-600 text-[14px] leading-[22px]"
