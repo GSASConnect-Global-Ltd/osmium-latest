@@ -31,8 +31,9 @@ export const Footer = () => {
                 <li><Link href="/" className="hover:text-[var(--footer-link-hover)]">Home</Link></li>
                 <li><Link href="/about" className="hover:text-[var(--footer-link-hover)]">About</Link></li>
                 <li><Link href="/services" className="hover:text-[var(--footer-link-hover)]">Services</Link></li>
-                <li><Link href="#portfolio" className="hover:text-[var(--footer-link-hover)]">Portfolio</Link></li>
-                <li><Link href="#insights" className="hover:text-[var(--footer-link-hover)]">Insights</Link></li>
+                <li><Link href="/portfolio" className="hover:text-[var(--footer-link-hover)]">Portfolio</Link></li>
+                <li><Link href="/blog" className="hover:text-[var(--footer-link-hover)]">Insights</Link></li>
+                <li><Link href="/contact" className="hover:text-[var(--footer-link-hover)]">Contact</Link></li>
               </ul>
             </div>
 
@@ -40,15 +41,16 @@ export const Footer = () => {
             <div className="flex flex-col gap-4">
               <p className="text-[16px] font-bold leading-[24px]">Our Solutions</p>
               <ul className="flex flex-col gap-2 text-[14px] font-normal leading-[21px] text-[var(--footer-link)]">
-                <li>AI & Robotics</li>
-                <li>Renewable Energy</li>
-                <li>Digital Twin Technology</li>
-                <li>Extended Reality</li>
-                <li>Game Development</li>
-                <li>Smart Home Concept</li>
-                <li>Consultation</li>
-                <li>Modelling and Simulation</li>
-                <li>Blockchain Technology</li>
+                <li><Link href="/ai" className="hover:text-[var(--footer-link-hover)]">AI & Robotics</Link></li>
+                <li><Link href="/renewable" className="hover:text-[var(--footer-link-hover)]">Renewable Energy</Link></li>
+                <li><Link href="/digital" className="hover:text-[var(--footer-link-hover)]">Digital Twin Technology</Link></li>
+                <li><Link href="/xr" className="hover:text-[var(--footer-link-hover)]">Extended Reality</Link></li>
+                <li><Link href="/game" className="hover:text-[var(--footer-link-hover)]">Game Development</Link></li>
+                <li><Link href="/shc" className="hover:text-[var(--footer-link-hover)]">Smart Home Concept</Link></li>
+                <li><Link href="/consultation" className="hover:text-[var(--footer-link-hover)]">Consultation</Link></li>
+                <li><Link href="/modelling" className="hover:text-[var(--footer-link-hover)]">Modelling & Simulation</Link></li>
+                <li><Link href="/block" className="hover:text-[var(--footer-link-hover)]">Blockchain Technology</Link></li>
+                <li><Link href="/software" className="hover:text-[var(--footer-link-hover)]">Software Development</Link></li>
               </ul>
             </div>
 
@@ -56,9 +58,9 @@ export const Footer = () => {
             <div className="flex flex-col gap-4">
               <p className="text-[16px] font-bold leading-[24px]">Contact Us</p>
               <ul className="flex flex-col gap-2 text-[14px] font-normal leading-[21px] text-[var(--footer-link)]">
-                <li>Location</li>
-                <li>Email address</li>
-                <li>Phone number</li>
+                <li><Link href="/contact" className="hover:text-[var(--footer-link-hover)]">Location</Link></li>
+                <li><Link href="/contact" className="hover:text-[var(--footer-link-hover)]">Email address</Link></li>
+                <li><Link href="/contact" className="hover:text-[var(--footer-link-hover)]">Phone number</Link></li>
               </ul>
             </div>
           </div>

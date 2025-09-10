@@ -1,5 +1,3 @@
-import { Settings, Layers, LineChart } from "lucide-react";
-
 
 import Hero from "@/components/services/Hero";
 import { ServiceInfo } from "@/components/services/ServiceInfo"
@@ -9,56 +7,84 @@ import AdvantageSection from "@/components/services/AdvantageSection";
 import CTASection from "@/components/home/CTA";
  
 
-import  Ai1  from "@/assets/ai/ai1.png"; 
-import  Ai2  from "@/assets/ai/ai2.png"; 
-import  Ai3  from "@/assets/ai/ai3.png"; 
+
 
 const features = [
   {
-    icon: <Settings className="w-6 h-6 text-white" />,
-    title: "Custom-Built, Not Off-the-Shelf",
-    description: "We design solutions for your specific problem...",
+    icon: "vector",
+    title: "End to End service",
+    description: "From initial site assessment and custom design to professional installation, commissioning, and ongoing maintenance.",
   },
   {
-    icon: <Layers className="w-6 h-6 text-white" />,
-    title: "Full Stack Experience",
-    description: "From the AI brain to the robotic body...",
+    icon: "globe",
+    title: "Global Standards",
+    description: "Our solutions are designed for local conditions but adhere to international engineering and safety standards.",
   },
   {
-    icon: <LineChart className="w-6 h-6 text-white" />,
-    title: "Focus on ROI & Impact",
-    description: "We prioritize solutions that deliver measurable improvements...",
+    icon: "chart",
+    title: "Focus on Impact",
+    description: "We measure our success not just in kilowatts generated, but in businesses grown, communities empowered, and carbon emissions avoided.",
   },
 ];
 
 
 
-const servicesData = [
+
+const servicesDetailData = [
   {
-    title: "Custom Solar and Hybrid Systems",
+    title: "Custom Solar and Hybrid Syatems",
     description:
       "From off-grid residential setups to large-scale grid-tied industrial solutions with battery backup and generator integration.",
-    image: "/ai/ai1.png",
+    
   },
   {
-    title: "Logistics and Warehousing",
+    title: "Reduced Operational Cost",
     description:
-      "Automate sorting, picking, packing, and palletizing in warehouses...",
-    image: "/ai/ai2.png",
+      "Drastically cut your reliance on expensive and polluting diesel generators, locking in long-term energy savings.",
+    
   },
 
   {
-    title: "Agricultural and Food Processing",
+    title: "Uninterrupted Power Supply",
     description:
-      "Implement automated sorting, grading, and processing of agricultural produce. Enhance yield and reduce post-harvest waste through intelligent automation.",
-    image: "/ai/ai3.png",
+      "Ensure business continuity and operational efficiency with seamless backup power that kicks in during grid outages.",
+    
   },
 
     {
-    title: "Research and Development",
+    title: "Smart Monitoring and Analytics",
     description:
-      "Partner with our AI specialists to prototype and develop custom robotic solutions for unique challenges, from medical devices to advanced material handling.",
-    image: "/ai/ai3.png",
+      "Test and validate new designs, concepts, and modifications in the digital world first, eliminating the need for costly physical prototypes.",
+  },
+  
+];
+
+const serviceData = [
+  {
+    title: "Manufacturing and Industrial Plants",
+    description:
+      "Create digital twins of entire production lines to optimize workflow, simulate bottlenecks, and train new operators without stopping production.",
+    image: "/renewable/renewable1.png",
+  },
+  {
+    title: "Education and Research",
+    description:
+      "Power the next generation of engineers. Students can interact with, disassemble, and experiment on complex digital twins of machinery, from engines to power grids, in an immersive VR environment.",
+    image: "/renewable/renewable1.png.png",
+  },
+
+  {
+    title: "Renewable Energy Systems",
+    description:
+      "Model and monitor solar farms or hybrid energy systems. Predict energy output based on weather data, simulate component failures, and plan maintenance schedules virtually.",
+    image: "/renewable/renewable1.png",
+  },
+
+    {
+    title: "RSmart City and Infrastructure Planning",
+    description:
+      "Plan urban infrastructure projects, model traffic flow, and assess the environmental impact of new developments before a single foundation is poured.",
+    image: "/renewable/renewable1.png",
   },
   
 ];
@@ -71,12 +97,13 @@ const Services = () => {
   return (
     <>
        <Hero
-      tag="Renewable Energy."
+      tag="Renewable Energy"
       headline="Powering Africa’s Future, Sustainably"
-      description="We deliver renewable energy systems and solutions that power industries, homes, offices, farms and more sustainably. "
+      description="We deliver renewable energy systems and solutions that power industries, homes, offices, farms and more sustainably.  "
       backgroundImage="/renewable/renewable-hero.png"
       buttonText="Partner with us"
-      buttonLink="/contact"
+      buttonLink="#"
+      width="900px" 
     />
       
       <ServiceInfo
@@ -84,17 +111,17 @@ const Services = () => {
         maxWidth="900px"
       />
       <ServiceSection
-      heading={{ main: "Reliable, Clean and Intelligent ", highlight: "Energy" }}
+      heading={{ main: "Reliable, Clean and Intelligent  ", highlight: "Energy" }}
       subtitle="We design integrated renewable energy systems that provide uninterrupted power, slash electricity costs, and promote sustainability, all built for Africa’s unique demands"
-      services={servicesData}
+      services={servicesDetailData}
     />
        <Service
       heading="Transformative Energy Across Sectors"
-      services={servicesData}
+      services={serviceData}
     />
        <AdvantageSection
-      heading="The ORREL Advantage in AI & Robotics"
-      subtitle="Our strength lies in tailoring global technology to local contexts..."
+      heading="Why Partner with ORREL for Your Energy Needs?"
+      subtitle=" Our approach is rooted in engineering excellence and a deep understanding of the African context. We don't just sell systems; we deliver end-to-end partnerships."
       features={features}
     />
       <CTASection />

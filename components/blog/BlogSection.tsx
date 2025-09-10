@@ -1,3 +1,4 @@
+//C:\Next\j\project\Osmium\osmium\components\blog\BlogSection.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -49,16 +50,28 @@ const BlogSection = () => {
 
         const data: BlogPostFromAPI[] = await res.json();
 
-        const normalized: BlogPost[] = data.map((post) => ({
-          id: post._id,
-          title: post.title,
-          summary: post.summary,
-          category: post.category,
-          image:
-            post.images && post.images[0]
-              ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${post.images[0]}`
-              : "/assets/NoImage.png",
-        }));
+        const normalized: BlogPost[] = data.map((post) => {
+          let imageUrl = "/assets/NoImage.png";
+
+          if (post.images && post.images[0]) {
+            const img = post.images[0];
+            // ✅ If backend already gives a full URL, use it directly
+            if (img.startsWith("http")) {
+              imageUrl = img;
+            } else {
+              // ✅ Otherwise, prepend API base URL
+              imageUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}`;
+            }
+          }
+
+          return {
+            id: post._id,
+            title: post.title,
+            summary: post.summary,
+            category: post.category,
+            image: imageUrl,
+          };
+        });
 
         setPosts(normalized);
       } catch (err) {

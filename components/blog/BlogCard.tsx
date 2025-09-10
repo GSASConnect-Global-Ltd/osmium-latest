@@ -78,24 +78,22 @@ const BlogCard = ({ id, title, summary, image }: BlogCardProps) => {
         {/* Read Article Button */}
         <Link
           href={`/blog/${id}`}
-          className="inline-flex items-center justify-center gap-2 transition-colors bg-white border rounded-[8px] hover:bg-gray-100"
+          className="flex items-center justify-center gap-2 px-3 py-2 transition-colors rounded-[8px] border border-[#E9E9E9] hover:bg-gray-100"
           style={{
-            width: "123px",
-            height: "36px",
-            padding: "8px 12px",
             fontFamily: "Satoshi",
             fontWeight: 500,
             fontSize: "14px",
             lineHeight: "20px",
             letterSpacing: "0%",
             textAlign: "center",
-            borderWidth: "1px",
             color: "#000",
+            width: "fit-content", // ✅ make it fit the content
           }}
         >
           Read Article
           <ArrowRight className="w-4 h-4" />
         </Link>
+
       </div>
     </div>
   );

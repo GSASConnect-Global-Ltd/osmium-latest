@@ -1,5 +1,15 @@
 @import "tailwindcss";
-@tailwind utilities;
+/* ✅ Extend Tailwind utilities */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}
 
 @font-face {
   font-family: "Poppins";
@@ -49,6 +59,17 @@
 .santoshi {
   font-family: var(--font-santoshi), sans-serif;
 }
+
+/* Hide scrollbar but keep scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 
 
 .dark {

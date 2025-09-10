@@ -14,9 +14,9 @@ interface BlogPost {
   readTime: string;
   category: string;
   images: (string | null)[];
+  content: string;
 }
 
-// Backend API response type
 interface BlogPostFromAPI {
   _id: string;
   title: string;
@@ -26,6 +26,7 @@ interface BlogPostFromAPI {
   readTime: string;
   category: string;
   images: string[];
+  content: string;
 }
 
 export default function BlogPostPage() {
@@ -38,14 +39,15 @@ export default function BlogPostPage() {
 
   useEffect(() => {
     if (!id) {
-      router.replace("/post");
+      router.replace("/blog");
       return;
     }
 
     const fetchPost = async () => {
       try {
-        // Fetch main post
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${id}`);
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/${id}`
+        );
         if (!res.ok) throw new Error("Failed to fetch post");
         const data: BlogPostFromAPI = await res.json();
 
@@ -60,10 +62,10 @@ export default function BlogPostPage() {
           images: (data.images || []).map(
             (img) => (img ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}` : null)
           ),
+          content: data.content,
         };
         setPost(mappedPost);
 
-        // Fetch related posts from same category
         const relatedRes = await fetch(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs?category=${data.category}&excludeId=${data._id}`
         );
@@ -80,13 +82,13 @@ export default function BlogPostPage() {
             images: (p.images || []).map((img) =>
               img ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}` : null
             ),
+            content: p.content,
           }));
           setRelatedPosts(mappedRelated);
         }
       } catch (error) {
         console.error("❌ Error fetching post:", error);
-        alert("Failed to load post");
-        router.replace("/post");
+        router.replace("/blog");
       } finally {
         setLoading(false);
       }
@@ -107,76 +109,96 @@ export default function BlogPostPage() {
 
   return (
     <main className="min-h-screen text-black bg-white">
-      <article className="container max-w-6xl px-4 py-12 mx-auto">
-        {/* Header */}
-        <header className="mb-12 text-center">
-          <span className="inline-block px-3 py-1 mb-4 text-sm text-white bg-gray-900 rounded-full">
+      {/* Hero Section */}
+      <div className="relative w-full h-[400px] md:h-[500px]">
+        <Image
+          src={post.images[0] || "/assets/NoImage.png"}
+          alt={post.title}
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center bg-black/50">
+          <span className="inline-block px-4 py-1 mb-4 text-sm text-white bg-gray-900 rounded-full">
             {post.category}
           </span>
-          <h1 className="mb-6 text-4xl font-bold md:text-5xl">{post.title}</h1>
-          <div className="flex flex-wrap justify-center gap-4 mb-8 text-sm text-gray-700">
+          <h1 className="mb-4 text-3xl font-bold text-white md:text-5xl">
+            {post.title}
+          </h1>
+          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-200">
             <span>By {post.author}</span>
             <span>•</span>
             <span>{new Date(post.date).toLocaleDateString()}</span>
             <span>•</span>
             <span>{post.readTime}</span>
           </div>
-        </header>
-
-        {/* Content + Sidebar */}
-        <div className="flex flex-col md:flex-row md:gap-12">
-          {/* Main Content */}
-          <section className="flex-1 prose prose-lg text-black">
-            {post.images.map(
-              (img, i) =>
-                img && (
-                  <div
-                    key={i}
-                    className="relative w-full h-64 my-8 overflow-hidden border rounded-md border-black/10"
-                  >
-                    <Image
-                      src={img}
-                      alt={`Blog image ${i + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                )
-            )}
-            <p className="whitespace-pre-line">{post.summary}</p>
-          </section>
-
-          {/* Related Posts */}
-          <aside className="md:w-72">
-            <h3 className="mb-4 text-xl font-semibold">Related Articles</h3>
-            <ul className="space-y-6">
-              {relatedPosts.map((related) => (
-                <li key={related._id}>
-                  <Link
-                    href={`/blog/${related._id}`}
-                    className="block overflow-hidden rounded-lg shadow group hover:shadow-md"
-                  >
-                    {related.images[0] && (
-                      <div className="relative w-full h-40">
-                        <Image
-                          src={related.images[0]!}
-                          alt={related.title}
-                          fill
-                          className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                      </div>
-                    )}
-                    <div className="p-4 bg-white">
-                      <h4 className="text-sm font-semibold text-black group-hover:underline">
-                        {related.title}
-                      </h4>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </aside>
         </div>
+      </div>
+
+      {/* Main Layout */}
+      <article className="container flex flex-col max-w-6xl px-6 py-12 mx-auto md:flex-row md:gap-12">
+        {/* Content */}
+        <section className="flex-1 prose prose-lg text-black max-w-none">
+          <p className="text-lg text-gray-700 whitespace-pre-line">
+            {post.summary}
+          </p>
+
+          {/* Inline Images */}
+          {post.images.slice(1).map(
+            (img, i) =>
+              img && (
+                <div
+                  key={i}
+                  className="relative w-full my-8 overflow-hidden shadow-md rounded-xl"
+                >
+                  <Image
+                    src={img}
+                    alt={`Blog image ${i + 2}`}
+                    width={1200}
+                    height={600}
+                    className="object-cover w-full h-auto"
+                  />
+                </div>
+              )
+          )}
+
+          <div className="mt-8 leading-relaxed text-gray-800 whitespace-pre-line">
+            {post.content}
+          </div>
+        </section>
+
+        {/* Sidebar */}
+        <aside className="md:w-80">
+          <h3 className="mb-6 text-xl font-semibold">Related Articles</h3>
+          <ul className="space-y-6">
+            {relatedPosts.map((related) => (
+              <li key={related._id}>
+                <Link
+                  href={`/blog/${related._id}`}
+                  className="block overflow-hidden transition bg-white border border-gray-200 shadow rounded-xl hover:shadow-md"
+                >
+                  {related.images[0] && (
+                    <div className="relative w-full h-40">
+                      <Image
+                        src={related.images[0]!}
+                        alt={related.title}
+                        fill
+                        className="object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <h4 className="text-base font-semibold text-black line-clamp-2">
+                      {related.title}
+                    </h4>
+                    <p className="mt-1 text-sm text-gray-600 line-clamp-2">
+                      {related.summary}
+                    </p>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </aside>
       </article>
     </main>
   );

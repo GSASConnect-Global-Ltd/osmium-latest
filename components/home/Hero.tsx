@@ -1,34 +1,38 @@
 "use client";
 
+import Image from "next/image";
+
 const Hero = () => {
   return (
     <section className="relative flex items-center justify-center min-h-screen lg:h-[900px] bg-black overflow-hidden">
       {/* Box 1 - shifted down so only half shows */}
-      <img
+      <Image
         src="/home/box.png"
         alt="Background Box 1"
+        width={1328}
+        height={724}
         className="absolute opacity-40"
         style={{
-          width: "1328.21px",
-          height: "724.48px",
           transform: "rotate(67.18deg)",
           bottom: "-362px", // half hidden
           left: "-455.46px",
         }}
+        priority
       />
 
       {/* Box 2 - shifted down so only half shows */}
-      <img
+      <Image
         src="/home/box.png"
         alt="Background Box 2"
+        width={1195}
+        height={652}
         className="absolute opacity-40"
         style={{
-          width: "1194.70px",
-          height: "651.65px",
           transform: "rotate(112.82deg)",
           bottom: "-325px", // half hidden
           left: "763.1px",
         }}
+        priority
       />
 
       {/* Content */}
@@ -51,18 +55,17 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col items-center justify-center gap-4 pt-6 sm:flex-row">
-             {/* CTA Button */}
-              <button
-                className="inline-flex items-center justify-center px-6 py-4 text-black font-satoshi font-bold text-[16px] leading-[20px] tracking-wide rounded-[12px] border-2 border-[#f8faf9] bg-[#37D181] transition-colors duration-300 hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black"
-                style={{
-                  width: "163px",
-                  minWidth: "fit-content",
-                  border: "1px solid white",
-                  fontFamily: "Satoshi"
-                }}
-              >
-                Partner with us
-              </button>
+            {/* CTA Button */}
+            <button
+              className="inline-flex items-center justify-center px-6 py-4 text-black font-satoshi font-bold text-[16px] leading-[20px] tracking-wide rounded-[12px] border-2 border-[#f8faf9] bg-[#37D181] transition-colors duration-300 hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black"
+              style={{
+                minWidth: "fit-content",
+                border: "1px solid white",
+                fontFamily: "Satoshi",
+              }}
+            >
+              Partner with us
+            </button>
 
             <button
               className="h-12 px-5 text-base font-bold text-white tracking-[0.01em] transition-colors border border-white rounded-lg min-w-40 hover:bg-white hover:text-black"

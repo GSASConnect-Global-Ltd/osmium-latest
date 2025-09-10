@@ -25,7 +25,7 @@ const Navbar = () => {
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
-  // ✅ Scroll logic
+  // ✅ Hide navbar after scrolling past viewport height
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > window.innerHeight) {
@@ -39,24 +39,76 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // ✅ Static pages that exist in `app/`
   const navigationItems = [
-    { name: "About", href: "about" },
-    { name: "Portfolio", href: "#portfolio" },
-    { name: "Blog", href: "blog" },
-    { name: "Contact", href: "contact" },
+    { name: "About", href: "/about" },
+    { name: "Portfolio", href: "/portfolio" },
+    { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" },
   ];
 
+  // ✅ Services pages that exist in `app/`
   const serviceItems = [
-    { name: "Renewable Energy", desc: "Clean power solutions for a sustainable future.", icon: Zap, href: "/renewable" },
-    { name: "Artificial Intelligence & Robotics", desc: "Smart automation to drive innovation.", icon: Cpu, href: "/ai" },
-    { name: "Extended Reality (XR)", desc: "Immersive experiences beyond reality.", icon: Headphones, href: "/xr" },
-    { name: "Digital Twin Technology", desc: "Real-time virtual models for simulations.", icon: Layers, href: "/dtw" },
-    { name: "Game Development", desc: "Custom games with immersive storytelling.", icon: Gamepad2, href: "/game" },
-    { name: "Software Engineering", desc: "Enterprise-grade apps, systems, and platforms.", icon: CodeXml, href: "/software" },
-    { name: "Smart Home Concepts", desc: "IoT-powered automation for modern living.", icon: Home, href: "/shc" },
-    { name: "Modelling and Simulation", desc: "Advanced computational models for system analysis.", icon: BarChart3, href: "/modelling" },
-    { name: "Consultation", desc: "Expert guidance to grow and optimize your business.", icon: Users, href: "/consultation" },
-    { name: "Blockchain Technology", desc: "Decentralized solutions for security and transparency.", icon: Blocks, href: "/block" },
+    {
+      name: "Renewable Energy",
+      desc: "Clean power solutions for a sustainable future.",
+      icon: Zap,
+      href: "/renewable",
+    },
+    {
+      name: "Artificial Intelligence & Robotics",
+      desc: "Smart automation to drive innovation.",
+      icon: Cpu,
+      href: "/ai",
+    },
+    {
+      name: "Extended Reality (XR)",
+      desc: "Immersive experiences beyond reality.",
+      icon: Headphones,
+      href: "/xr",
+    },
+    {
+      name: "Digital Twin Technology",
+      desc: "Real-time virtual models for simulations.",
+      icon: Layers,
+      href: "/digital",
+    },
+    {
+      name: "Game Development",
+      desc: "Custom games with immersive storytelling.",
+      icon: Gamepad2,
+      href: "/game",
+    },
+    {
+      name: "Software Engineering",
+      desc: "Enterprise-grade apps, systems, and platforms.",
+      icon: CodeXml,
+      href: "/software",
+    },
+    {
+      name: "Smart Home Concepts",
+      desc: "IoT-powered automation for modern living.",
+      icon: Home,
+      href: "/shc",
+    },
+    {
+      name: "Modelling and Simulation",
+      desc: "Advanced computational models for system analysis.",
+      icon: BarChart3,
+      href: "/modelling",
+    },
+    {
+      name: "Consultation",
+      desc: "Expert guidance to grow and optimize your business.",
+      icon: Users,
+      href: "/consultation",
+    },
+    {
+      name: "Blockchain Technology",
+      desc: "Decentralized solutions for security and transparency.",
+      icon: Blocks,
+      href: "/block",
+    },
   ];
 
   return (
@@ -133,7 +185,9 @@ const Navbar = () => {
                           <p className="text-[16px] font-medium text-gray-900">
                             {service.name}
                           </p>
-                          <p className="text-[14px] text-gray-500">{service.desc}</p>
+                          <p className="text-[14px] text-gray-500">
+                            {service.desc}
+                          </p>
                         </div>
                       </Link>
                     ))}
@@ -145,15 +199,20 @@ const Navbar = () => {
         </div>
 
         {/* Right Side CTA (Desktop) */}
-        <div className="hidden md:flex items-center ml-auto">
+        <div className="items-center hidden ml-auto md:flex">
           <button
-            className="w-[163px] h-[56px] 
-                        px-6 py-4 
-                        bg-black text-white font-[Satoshi] font-bold 
-                        text-[16px] leading-[24px] tracking-[0.01em] 
-                        rounded-[12px] border-2 border-black 
-                        transition-all duration-200 
-                        hover:bg-blue-700"
+            className="
+              inline-flex items-center justify-center gap-2
+              px-6 py-4
+              font-satoshi font-bold text-[16px] leading-[20px] tracking-wide
+              text-white
+              rounded-[12px] border-2
+              border-[var(--Foundation-Primary-Shade-Light,#EAECE9)]
+              bg-[var(--Foundation-Primary-Shade-Darker,#10150C)]
+              shadow-[inset_6px_6px_12px_rgba(94,23,235,0.10)]
+              transition-all duration-300
+              hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black
+            "
           >
             Partner with us
           </button>
@@ -161,10 +220,14 @@ const Navbar = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden ml-auto flex items-center justify-center p-2 rounded-md text-gray-800 hover:bg-gray-100"
+          className="flex items-center justify-center p-2 ml-auto text-gray-800 rounded-md md:hidden hover:bg-gray-100"
           onClick={() => setIsMobileOpen(!isMobileOpen)}
         >
-          {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {isMobileOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
       </div>
 
@@ -211,7 +274,9 @@ const Navbar = () => {
                       <p className="text-[16px] font-medium text-gray-900">
                         {service.name}
                       </p>
-                      <p className="text-[14px] text-gray-500">{service.desc}</p>
+                      <p className="text-[14px] text-gray-500">
+                        {service.desc}
+                      </p>
                     </div>
                   </Link>
                 ))}
@@ -219,18 +284,26 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* CTA Button */}
-          <button
-            className="w-full h-[56px] 
-                px-6 py-4 
-                bg-black text-white font-[Satoshi] font-bold 
-                text-[16px] leading-[24px] tracking-[0.01em] 
-                rounded-[12px] border-2 border-black 
-                transition-all duration-200 
-                hover:bg-blue-700"
-          >
-            Partner with us
-          </button>
+          {/* CTA Button (Mobile) */}
+          <div className="flex justify-center mt-6">
+            <button
+              className="
+                inline-flex items-center justify-center gap-2
+                px-6 py-4
+                font-satoshi font-bold text-[16px] leading-[20px] tracking-wide
+                text-white
+                rounded-[12px] border-2
+                border-[var(--Foundation-Primary-Shade-Light,#EAECE9)]
+                bg-[var(--Foundation-Primary-Shade-Darker,#10150C)]
+                shadow-[inset_6px_6px_12px_rgba(94,23,235,0.10)]
+                w-full max-w-[320px]
+                transition-all duration-300
+                hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black
+              "
+            >
+              Partner with us
+            </button>
+          </div>
         </div>
       )}
     </nav>
