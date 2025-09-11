@@ -1,7 +1,7 @@
 //C:\Next\j\project\Osmium\osmium\components\blog\BlogSection.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BlogHero from "./BlogHero";
 import BlogCategories from "./BlogCategories";
 import BlogCard from "./BlogCard";
@@ -40,6 +40,54 @@ const BlogSection = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  // ✅ Enable drag-to-scroll only for small screens
+  useEffect(() => {
+  const el = scrollRef.current;
+  if (!el) return;
+
+  // ✅ Always allow native swipe on mobile
+  el.style.setProperty("-webkit-overflow-scrolling", "touch");
+  el.style.touchAction = "pan-x";
+  el.style.scrollSnapType = "x mandatory";
+
+  let isDown = false;
+  let startX = 0;
+  let scrollLeft = 0;
+
+  const onPointerDown = (e: PointerEvent) => {
+    // only enable drag-scroll for desktop
+    if (window.innerWidth < 1024) return;
+    isDown = true;
+    startX = e.pageX;
+    scrollLeft = el.scrollLeft;
+    el.classList.add("dragging");
+    e.preventDefault();
+  };
+
+  const onPointerMove = (e: PointerEvent) => {
+    if (!isDown) return;
+    const walk = startX - e.pageX;
+    el.scrollLeft = scrollLeft + walk;
+  };
+
+  const onPointerUp = () => {
+    isDown = false;
+    el.classList.remove("dragging");
+  };
+
+  el.addEventListener("pointerdown", onPointerDown);
+  window.addEventListener("pointermove", onPointerMove);
+  window.addEventListener("pointerup", onPointerUp);
+
+  return () => {
+    el.removeEventListener("pointerdown", onPointerDown);
+    window.removeEventListener("pointermove", onPointerMove);
+    window.removeEventListener("pointerup", onPointerUp);
+  };
+}, []);
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -55,11 +103,9 @@ const BlogSection = () => {
 
           if (post.images && post.images[0]) {
             const img = post.images[0];
-            // ✅ If backend already gives a full URL, use it directly
             if (img.startsWith("http")) {
               imageUrl = img;
             } else {
-              // ✅ Otherwise, prepend API base URL
               imageUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}`;
             }
           }
@@ -105,19 +151,58 @@ const BlogSection = () => {
       </div>
 
       {/* Categories */}
-      <div className="mb-16">
-        <BlogCategories
-          categories={categories}
-          activeCategory={activeCategory}
-          onCategoryChange={setActiveCategory}
-        />
-      </div>
+          <div className="mb-16">
+            <div className="mx-auto max-w-7xl">
+              <div
+                ref={scrollRef}
+                className="flex items-center overflow-x-auto flex-nowrap snap-x snap-mandatory scrollbar-hide lg:overflow-visible lg:justify-between lg:w-full"
+                style={{
+                  width: "100%",
+                  borderRadius: "100px",
+                  border: "1px solid #E8E8E8",
+                  background: "#F5F5F5",
+                  padding: "8px",
+                  margin: "0 auto",
+                  scrollBehavior: "smooth",
+                }}
+              >
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`flex justify-center items-center rounded-full transition-all duration-300 flex-shrink-0 snap-start 
+                    ${
+                      activeCategory === category
+                        ? "bg-black text-white shadow-md"
+                        : "bg-transparent text-gray-800 hover:bg-gray-200"
+                    } 
+                    lg:flex-1 lg:mx-1
+                  `}
+                  style={{
+                    padding: "10px 20px",
+                    textAlign: "center",
+                    fontFamily: "Satoshi",
+                    fontSize: "16px",
+                    fontWeight: 600,
+                    lineHeight: "24px",
+                    letterSpacing: "0.16px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+
+            </div>
+          </div>
+
 
       {/* Blog Posts */}
       <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
           {filteredPosts.length > 0 ? (
-            <div className="grid grid-cols-1 gap-y-20 gap-x-12 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-y-20 gap-x-12 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
               {filteredPosts.map((post) => (
                 <BlogCard
                   key={post.id}
@@ -128,6 +213,7 @@ const BlogSection = () => {
                 />
               ))}
             </div>
+
           ) : (
             <p className="text-center text-gray-500">No posts available.</p>
           )}
