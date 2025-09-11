@@ -1,5 +1,3 @@
-import { Settings, Layers, LineChart } from "lucide-react";
-
 
 import Hero from "@/components/services/Hero";
 import { ServiceInfo } from "@/components/services/ServiceInfo"
@@ -9,56 +7,84 @@ import AdvantageSection from "@/components/services/AdvantageSection";
 import CTASection from "@/components/home/CTA";
  
 
-import  Ai1  from "@/assets/ai/ai1.png"; 
-import  Ai2  from "@/assets/ai/ai2.png"; 
-import  Ai3  from "@/assets/ai/ai3.png"; 
+
 
 const features = [
   {
-    icon: <Settings className="w-6 h-6 text-white" />,
-    title: "Custom-Built, Not Off-the-Shelf",
-    description: "We design solutions for your specific problem...",
+    icon: "chart",
+    title: "Focus on Integration",
+    description: "We ensure the digital twin is fed by live data from your sensors and systems for a true live view.",
   },
   {
-    icon: <Layers className="w-6 h-6 text-white" />,
-    title: "Full Stack Experience",
-    description: "From the AI brain to the robotic body...",
+    icon: "gear",
+    title: "Tailored to your needs",
+    description: "We build solutions that are robust and effective even with specific local infrastructure challenges in mind.",
   },
   {
-    icon: <LineChart className="w-6 h-6 text-white" />,
-    title: "Focus on ROI & Impact",
-    description: "We prioritize solutions that deliver measurable improvements...",
+    icon: "vector",
+    title: "End to End service",
+    description: "From data acquisition and 3D modeling to software development and analytics, we handle the entire process.",
   },
 ];
 
 
 
-const servicesData = [
+
+const servicesDetailData = [
   {
-    title: "Manufacturing and assembly",
+    title: "Gamified STEM Labs",
     description:
-      "Revolutionize production lines with robotic arms for assembly...",
-    image: "/ai/ai1.png",
+      "We transform standard curriculum experiments into captivating VR challenges. Students conduct chemistry, physics, and biology activities in a safe, immersive digital environment, free from cost and safety constraints.",
+    
   },
   {
-    title: "Logistics and Warehousing",
+    title: "Experiential Learning",
     description:
-      "Automate sorting, picking, packing, and palletizing in warehouses...",
-    image: "/ai/ai2.png",
+      "Learners interact with complex systems—from engineering assemblies to historical events— fostering deep understanding through doing, not just reading.",
+    
   },
 
   {
-    title: "Agricultural and Food Processing",
+    title: "Industrial Procedure Training",
     description:
-      "Implement automated sorting, grading, and processing of agricultural produce. Enhance yield and reduce post-harvest waste through intelligent automation.",
-    image: "/ai/ai3.png",
+      "Create risk-free training simulations for high-stakes industrial environments. Practice equipment operation, safety protocols, and emergency responses without real-world danger.",
+    
   },
 
     {
-    title: "Research and Development",
+    title: "Performance Analytics",
     description:
-      "Partner with our AI specialists to prototype and develop custom robotic solutions for unique challenges, from medical devices to advanced material handling.",
-    image: "/ai/ai3.png",
+      "Track engagement and mastery in real-time. Our platforms provide educators and trainers with data on student progress, knowledge gaps, and skill proficiency.",
+  },
+  
+];
+
+const serviceData = [
+  {
+    title: "Primary & Secondary STEM Education",
+    description:
+      "Our flagship VR school platform allows students to perform every required science experiment in the curriculum without a physical lab. We turn learning into an adventure.",
+    image: "/digital/digital1.png",
+  },
+  {
+    title: "University & Vocational Engineering Labs",
+    description:
+      "Provide engineering students with unlimited access to expensive, complex machinery through digital twins and gamified simulations. They can design, test, fail, and optimize in a virtual sandbox.",
+    image: "/digital/digital2.png",
+  },
+
+  {
+    title: "Industrial Safety & Skills Training",
+    description:
+      "Train employees on standard operating procedures, safety protocols, and equipment handling for manufacturing, energy, and construction sectors in a zero-risk environment.",
+    image: "/digital/digital3.png",
+  },
+
+    {
+    title: "RSmart City and Infrastructure Planning",
+    description:
+      "Plan urban infrastructure projects, model traffic flow, and assess the environmental impact of new developments before a single foundation is poured.",
+    image: "/digital/digital4.png",
   },
   
 ];
@@ -71,35 +97,31 @@ const Services = () => {
   return (
     <>
        <Hero
-      tag="Renewable Energy."
-      headline="Powering Africa’s Future, Sustainably"
-      description="We deliver renewable energy systems and solutions that power industries, homes, offices, farms and more sustainably. "
-      backgroundImage="/renewable/renewable-hero.png"
+      tag="Software Engineering"
+      headline="Engineering the Digital Backbone of Africa's Future"
+      description="We design and develop robust, scalable, and secure software applications, platforms, and APIs that form the core of modern digital transformation for businesses and institutions. "
+      backgroundImage="/dwt/dwt-hero.png"
       buttonText="Partner with us"
-      buttonLink="/contact"
+      buttonLink="#"
+      width="900px" 
     />
       
       <ServiceInfo
-        text="Manual processes are prone to error, slow, and unsafe for high-risk tasks. 
-        Scaling production or maintaining consistent quality is a constant challenge, 
-        limiting competitiveness and the ability to innovate on the global stage."
+        text="Off-the-shelf software often fails to meet unique business needs, leading to inefficiencies, security gaps, and missed opportunities. Legacy systems are costly to maintain and cannot scale to meet modern demands, locking organizations into outdated ways of working."
         maxWidth="900px"
       />
       <ServiceSection
-      heading={{ main: "From Manual Tasks to", highlight: "Intelligent System" }}
-      subtitle="We build integrated AI and robotics solutions that tackle your most
-        difficult operational challenges. Our systems work alongside human
-        talent to augment capabilities, ensure pinpoint accuracy, and operate
-        reliably in demanding environments."
-      services={servicesData}
+      heading={{ main: "Bespoke Software, ", highlight: " Engineered for Scale and Impact" }}
+      subtitle="We are full-stack experts who architect and build custom software tailored to your exact challenges. We prioritize clean code, security, and scalability from the ground up, ensuring your digital foundation drives growth, not holds it back."
+      services={servicesDetailData}
     />
        <Service
-      heading="Transformative Energy Across Sectors"
-      services={servicesData}
+      heading="Revolutionizing How Africa Learns and Trains"
+      services={serviceData}
     />
        <AdvantageSection
-      heading="The ORREL Advantage in AI & Robotics"
-      subtitle="Our strength lies in tailoring global technology to local contexts..."
+      heading="More Than a Model—A Strategic Partner"
+      subtitle="Our digital twins are not just static 3D models; they are data-rich, interactive decision-making tools. We focus on building twins that are directly tied to your key performance indicators and business outcomes, ensuring you get a clear return on investment."
       features={features}
     />
       <CTASection />

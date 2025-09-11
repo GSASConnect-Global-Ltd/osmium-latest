@@ -157,24 +157,17 @@ const ProjectCard = ({ project }: { project: Project }) => (
     </div>
     <div className="p-6 space-y-4">
       <p
-        className="text-gray-900 font-bold"
-        style={{
-          fontWeight: 700,
-          fontSize: "24px",
-          lineHeight: "24px",
-          letterSpacing: "1%",
-        }}
+        className="text-gray-900 font-bold text-lg sm:text-xl md:text-[24px] leading-snug"
+        style={{ fontWeight: 700 }}
       >
         {project.title}
       </p>
       <p
-        className="text-gray-600"
+        className="text-sm text-gray-600 sm:text-base"
         style={{
           fontFamily: "Satoshi",
           fontWeight: 400,
-          fontSize: "16px",
           lineHeight: "24px",
-          letterSpacing: "1%",
         }}
       >
         {project.description}
@@ -183,30 +176,16 @@ const ProjectCard = ({ project }: { project: Project }) => (
         {project.keywords.map((keyword) => (
           <span
             key={keyword}
-            className="text-gray-700 bg-gray-100 rounded-full"
-            style={{
-              fontFamily: "Satoshi",
-              fontWeight: 400,
-              fontSize: "16px",
-              lineHeight: "24px",
-              letterSpacing: "1%",
-              padding: "4px 12px",
-            }}
+            className="px-3 py-1 text-xs text-gray-700 bg-gray-100 rounded-full sm:text-sm md:text-base"
+            style={{ fontFamily: "Satoshi" }}
           >
             {keyword}
           </span>
         ))}
       </div>
       <button
-        className="flex items-center gap-2 text-green-700"
-        style={{
-          fontFamily: "Satoshi",
-          fontWeight: 700,
-          fontSize: "16px",
-          lineHeight: "20px",
-          letterSpacing: "0%",
-          textAlign: "center",
-        }}
+        className="flex items-center gap-2 text-sm text-green-700 sm:text-base"
+        style={{ fontFamily: "Satoshi", fontWeight: 700 }}
       >
         View Project
         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -226,7 +205,7 @@ const CategoryTab = ({
 }) => (
   <button
     onClick={onClick}
-    className={`w-[108px] h-[44px] rounded-[100px] flex items-center justify-center gap-[10px] px-[16px] py-[10px] font-light transition-colors ${
+    className={`flex-shrink-0 w-[90px] sm:w-[108px] h-[40px] sm:h-[44px] rounded-[100px] flex items-center justify-center px-4 py-2 text-sm sm:text-base font-light transition-colors ${
       isActive
         ? "bg-black text-white"
         : "bg-transparent text-gray-700 hover:bg-white"
@@ -236,38 +215,25 @@ const CategoryTab = ({
   </button>
 );
 
-
 export const ProjectsShowcase = () => {
   const [activeCategory, setActiveCategory] = useState("energy");
 
   const currentCategory = categories.find((cat) => cat.id === activeCategory);
 
   return (
-    <section className="py-[120px] bg-gray-50">
-      <div className="px-[100px] mx-auto">
+    <section className="py-[80px] sm:py-[100px] md:py-[120px] bg-gray-50">
+      <div className="px-4 sm:px-6 md:px-[100px] mx-auto max-w-7xl">
         {/* Header */}
-        <div className="mx-auto mb-16 text-center" style={{ maxWidth: "505px" }}>
+        <div className="mx-auto mb-12 text-center md:mb-16" style={{ maxWidth: "505px" }}>
           <p
-            className="mb-6 font-extralight ppEditorial"
-            style={{
-              fontFamily: "PP Editorial New",
-              
-              fontSize: "48px",
-              lineHeight: "58px",
-              letterSpacing: "0.02em",
-            }}
+            className="mb-4 sm:mb-6 font-extralight ppEditorial text-2xl sm:text-3xl md:text-[48px] leading-tight md:leading-[58px]"
+            style={{ fontFamily: "PP Editorial New", letterSpacing: "0.02em" }}
           >
             Our Impactful <span className="italic text-green-600">Projects</span>
           </p>
           <p
-            className="mx-auto text-gray-600"
-            style={{
-              fontFamily: "Satoshi",
-              fontWeight: 400,
-              fontSize: "16px",
-              lineHeight: "24px",
-              letterSpacing: "0.01em",
-            }}
+            className="mx-auto text-gray-600 text-sm sm:text-base md:text-[16px]"
+            style={{ fontFamily: "Satoshi", fontWeight: 400 }}
           >
             We design and deliver solutions in AI, Energy, XR, and more — powering
             Africa&apos;s growth in the digital age.
@@ -275,7 +241,7 @@ export const ProjectsShowcase = () => {
         </div>
 
         {/* Categories */}
-        <div className="max-w-[448px] h-[60px] mx-auto mb-12 bg-gray-100 rounded-[100px] flex gap-[10px] px-2 py-2 overflow-x-auto">
+        <div className="max-w-full md:max-w-[448px] h-auto md:h-[60px] mx-auto mb-8 md:mb-12 bg-gray-100 rounded-[100px] flex gap-2 sm:gap-[10px] px-2 py-2 overflow-x-auto">
           {categories.map((category) => (
             <CategoryTab
               key={category.id}
@@ -287,20 +253,19 @@ export const ProjectsShowcase = () => {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid gap-8 mb-12 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 mb-12 md:gap-8 md:grid-cols-2">
           {currentCategory?.projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
         </div>
 
         {/* See All Projects */}
-          <div className="text-center">
-            <button className="inline-flex items-center justify-center gap-2 px-6 py-4 font-satoshi font-light text-[16px] leading-[20px] text-black border-2 border-black rounded-lg transition-colors duration-300 hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-black whitespace-nowrap">
-              See all Projects
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </div>
-
+        <div className="text-center">
+          <button className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-4 font-satoshi font-light text-sm sm:text-[16px] text-black border-2 border-black rounded-lg transition-colors duration-300 hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-black whitespace-nowrap">
+            See all Projects
+            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+        </div>
       </div>
     </section>
   );

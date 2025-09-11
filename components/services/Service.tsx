@@ -15,6 +15,16 @@ interface ServicesProps {
 }
 
 const Services: React.FC<ServicesProps> = ({ heading, services }) => {
+  // Decide grid columns based on number of services
+  const gridCols =
+    services.length === 1
+      ? "grid-cols-1 max-w-md mx-auto"
+      : services.length === 2
+      ? "grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto"
+      : services.length === 3
+      ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto"
+      : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+
   return (
     <section className="relative min-h-screen px-6 py-20 overflow-hidden bg-[#37D181]">
       {/* Background effects */}
@@ -39,15 +49,7 @@ const Services: React.FC<ServicesProps> = ({ heading, services }) => {
         </div>
 
         {/* Card Layout */}
-        <div
-          className="
-            grid gap-8 
-            grid-cols-1 
-            sm:grid-cols-2 
-            lg:grid-cols-3 
-            xl:grid-cols-4
-          "
-        >
+        <div className={`grid gap-8 ${gridCols}`}>
           {services.map((service, index) => (
             <div
               key={index}

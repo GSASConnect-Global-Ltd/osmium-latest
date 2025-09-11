@@ -30,23 +30,19 @@ const ContactSection = () => {
   };
 
   return (
-    <section className="py-20 text-gray-900 bg-gray-50 lg:py-32">
-      <div className="container max-w-4xl px-6 mx-auto lg:px-8">
+    <section className="py-16 text-gray-900 sm:py-20 lg:py-32 bg-gray-50">
+      <div className="container max-w-4xl px-4 mx-auto sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-16 text-center">
+        <div className="mb-12 text-center sm:mb-16">
           <p
             style={{
               fontFamily: "PP Editorial New",
               fontWeight: 200,
-              fontStyle: "normal",
-              fontSize: "48px",
-              lineHeight: "57.6px",
+              fontSize: "32px",
+              lineHeight: "40px",
               letterSpacing: "4%",
-              textAlign: "center",
-              width: "490px",
-              margin: "0 auto",
             }}
-            className="mb-6"
+            className="mb-4 sm:mb-6 text-[28px] sm:text-[36px] md:text-[48px] leading-[36px] sm:leading-[44px] md:leading-[57.6px] mx-auto max-w-[90%] sm:max-w-[490px] text-gray-900"
           >
             How Would You Like to Engage With Us?
           </p>
@@ -55,15 +51,11 @@ const ContactSection = () => {
             style={{
               fontFamily: "Satoshi",
               fontWeight: 400,
-              fontStyle: "normal",
               fontSize: "16px",
               lineHeight: "24px",
               letterSpacing: "1%",
-              textAlign: "center",
-              width: "597.64px",
-              margin: "0 auto",
             }}
-            className="text-gray-600"
+            className="text-gray-600 text-[14px] sm:text-[16px] leading-[22px] sm:leading-[24px] mx-auto max-w-[90%] sm:max-w-[600px]"
           >
             Select the option that best describes your reason for reaching out
             so we can connect with the right team immediately.
@@ -73,17 +65,16 @@ const ContactSection = () => {
         {/* Form */}
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col items-center space-y-8 text-gray-600"
+          className="flex flex-col items-center space-y-6 text-gray-600 sm:space-y-8"
           style={{
             fontFamily: "Satoshi",
             fontWeight: 400,
             fontSize: "16px",
             lineHeight: "22px",
-            letterSpacing: "0%",
           }}
         >
           {/* Select Option */}
-          <div className="space-y-2" style={{ width: "765px", gap: "12px" }}>
+          <div className="space-y-2 w-full max-w-[765px]">
             <label htmlFor="option" className="block">
               Select Option
             </label>
@@ -106,10 +97,7 @@ const ContactSection = () => {
           </div>
 
           {/* First + Last Name */}
-          <div
-            className="grid grid-cols-1 md:grid-cols-2"
-            style={{ width: "765px", gap: "12px" }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-[12px] w-full max-w-[765px]">
             <div className="space-y-2">
               <label htmlFor="firstName" className="block">
                 First Name
@@ -145,7 +133,7 @@ const ContactSection = () => {
           </div>
 
           {/* Email */}
-          <div className="space-y-2" style={{ width: "765px", gap: "12px" }}>
+          <div className="space-y-2 w-full max-w-[765px]">
             <label htmlFor="email" className="block">
               Email address
             </label>
@@ -163,7 +151,7 @@ const ContactSection = () => {
           </div>
 
           {/* Message */}
-          <div className="space-y-2" style={{ width: "765px", gap: "12px" }}>
+          <div className="space-y-2 w-full max-w-[765px]">
             <label htmlFor="message" className="block">
               Message
             </label>
@@ -174,17 +162,18 @@ const ContactSection = () => {
                 setFormData((prev) => ({ ...prev, message: e.target.value }))
               }
               placeholder="Tell us more about your inquiry..."
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-600 min-h-[120px] resize-none"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-600 min-h-[120px] resize-none"
               required
             />
           </div>
 
-          {/* Submit Button - aligned left */}
-          <div className="w-full pt-4" style={{ width: "765px" }}>
+          {/* Submit Button */}
+          <div className="w-full pt-2 sm:pt-4 max-w-[765px] flex justify-center md:justify-start">
             <button
               type="submit"
               style={{
-                width: "267px",
+                width: "100%",
+                maxWidth: "267px",
                 height: "56px",
                 padding: "16px 24px",
                 borderRadius: "12px",

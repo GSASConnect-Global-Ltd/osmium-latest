@@ -7,7 +7,7 @@ interface ServiceInfoProps {
   maxWidth?: string; // optional for controlling width if needed
 }
 
-const ServiceInfo: React.FC<ServiceInfoProps> = ({ text, maxWidth }) => {
+const ServiceInfo: React.FC<ServiceInfoProps> = ({ text}) => {
   return (
     <section
       className="flex flex-col items-start gap-[10px] mx-auto"
