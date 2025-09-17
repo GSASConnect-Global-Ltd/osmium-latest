@@ -46,6 +46,7 @@ const Navbar = () => {
     { name: "Portfolio", href: "/portfolio", type: "link" },
     { name: "Blog", href: "/blog", type: "link" },
     { name: "Contact", href: "/contact", type: "link" },
+    { name: "Hire", href: "/hiring", type: "link"}
   ];
 
   // ✅ Services pages
