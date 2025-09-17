@@ -13,6 +13,14 @@ export const ppEditorialNew = localFont({
       weight: "200",
       style: "italic",
     },
+    {
+      path: "../public/font/PP_Editorial_New_Light.ttf",
+      weight: "300",     // or "100" depending on how light it is
+      style: "normal",
+    },
+
+
+
   ],
   variable: "--font-pp-editorial", // CSS variable
   display: "swap",

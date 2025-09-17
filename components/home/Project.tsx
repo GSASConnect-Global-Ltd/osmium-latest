@@ -6,7 +6,8 @@ import { StaticImageData } from "next/image";
 import Image from "next/image";
 
 // Import project images
-import solarEnergyImg from "@/assets/solar-energy-project.jpg";
+import solarEnergyImg from "@/public/home/solar.png";
+
 import smartGridImg from "@/assets/smart-grid-project.jpg";
 import constructionImg from "@/assets/construction-build-project.jpg";
 import learningImg from "@/assets/learning-tech-project.jpg";
@@ -32,24 +33,27 @@ const categories: Category[] = [
     projects: [
       {
         id: "solar-farms",
-        title: "Solar Energy Farms",
+        title: "Solar Energy Initiative",
         description:
           "Large-scale solar installations providing clean energy to communities across West Africa, reducing carbon footprint and energy costs.",
         image: solarEnergyImg,
         keywords: [
-          "Solar Power",
+          
           "Renewable Energy",
-          "Sustainability",
-          "Green Tech",
+          "Community Impact",
+          "Sustainability focus",
+          
         ],
       },
       {
         id: "smart-grid",
-        title: "Smart Grid Infrastructure",
+        title: "Smart Farm Energy Automation",
         description:
-          "Advanced electrical grid systems with AI-powered monitoring and optimization for efficient energy distribution.",
-        image: smartGridImg,
-        keywords: ["Smart Grid", "AI Monitoring", "Energy Efficiency", "IoT"],
+          "Innovating the future of robotics for various industries.",
+        image: solarEnergyImg,
+        keywords: [ "Renewable Energy",
+          "Community Impact",
+          "Sustainability focus",]
       },
     ],
   },
@@ -148,17 +152,22 @@ const categories: Category[] = [
 
 const ProjectCard = ({ project }: { project: Project }) => (
   <div className="overflow-hidden transition duration-300 group rounded-xl">
-    <div className="aspect-[16/10] overflow-hidden rounded-t-xl">
+    {/* Image with overlay */}
+    <div className="relative aspect-[16/10] overflow-hidden rounded-xl">
       <Image
         src={project.image}
         alt={project.title}
         className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
       />
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/50"></div>
     </div>
-    <div className="p-6 space-y-4">
+
+    {/* Text */}
+    <div className="pt-4 pb-6 space-y-4">
       <p
         className="text-gray-900 font-bold text-lg sm:text-xl md:text-[24px] leading-snug"
-        style={{ fontWeight: 700 }}
+        style={{ fontWeight: 400 }}
       >
         {project.title}
       </p>
@@ -176,7 +185,7 @@ const ProjectCard = ({ project }: { project: Project }) => (
         {project.keywords.map((keyword) => (
           <span
             key={keyword}
-            className="px-3 py-1 text-xs text-gray-700 bg-gray-100 rounded-full sm:text-sm md:text-base"
+            className="px-3 py-1 text-xs text-gray-700 bg-gray-100 sm:text-sm md:text-base"
             style={{ fontFamily: "Satoshi" }}
           >
             {keyword}
@@ -184,7 +193,7 @@ const ProjectCard = ({ project }: { project: Project }) => (
         ))}
       </div>
       <button
-        className="flex items-center gap-2 text-sm text-green-700 sm:text-base"
+        className="flex items-center gap-2 text-sm text-[#13492D] sm:text-base"
         style={{ fontFamily: "Satoshi", fontWeight: 700 }}
       >
         View Project
@@ -193,6 +202,7 @@ const ProjectCard = ({ project }: { project: Project }) => (
     </div>
   </div>
 );
+
 
 const CategoryTab = ({
   category,
@@ -227,7 +237,10 @@ export const ProjectsShowcase = () => {
         <div className="mx-auto mb-12 text-center md:mb-16" style={{ maxWidth: "505px" }}>
           <p
             className="mb-4 sm:mb-6 font-extralight ppEditorial text-2xl sm:text-3xl md:text-[48px] leading-tight md:leading-[58px]"
-            style={{ fontFamily: "PP Editorial New", letterSpacing: "0.02em" }}
+            style={{ 
+              fontWeight: 300,
+               letterSpacing: "0.02em"
+               }}
           >
             Our Impactful <span className="italic text-green-600">Projects</span>
           </p>
@@ -241,7 +254,7 @@ export const ProjectsShowcase = () => {
         </div>
 
         {/* Categories */}
-        <div className="max-w-full md:max-w-[448px] h-auto md:h-[60px] mx-auto mb-8 md:mb-12 bg-gray-100 rounded-[100px] flex gap-2 sm:gap-[10px] px-2 py-2 overflow-x-auto">
+        <div className="max-w-full md:max-w-[448px] h-auto md:h-[60px] mx-auto mb-8 md:mb-12 bg-gray-100 rounded-[100px] flex justify-center md:justify-start gap-2 sm:gap-[10px] px-2 py-2 overflow-x-auto no-scrollbar ">
           {categories.map((category) => (
             <CategoryTab
               key={category.id}
@@ -250,7 +263,8 @@ export const ProjectsShowcase = () => {
               onClick={() => setActiveCategory(category.id)}
             />
           ))}
-        </div>
+          </div>
+
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 gap-6 mb-12 md:gap-8 md:grid-cols-2">
@@ -261,7 +275,7 @@ export const ProjectsShowcase = () => {
 
         {/* See All Projects */}
         <div className="text-center">
-          <button className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-4 font-satoshi font-light text-sm sm:text-[16px] text-black border-2 border-black rounded-lg transition-colors duration-300 hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-black whitespace-nowrap">
+          <button className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-4 font-satoshi font-light text-sm sm:text-[16px] text-black border-2 border-black rounded-lg transition-colors duration-300 hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-black whitespace-nowrap" style={{ fontWeight: 300 }}>
             See all Projects
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>

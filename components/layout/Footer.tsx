@@ -32,7 +32,7 @@ export const Footer = () => {
                 <li><Link href="/about" className="hover:text-[var(--footer-link-hover)]">About</Link></li>
                 <li><Link href="/services" className="hover:text-[var(--footer-link-hover)]">Services</Link></li>
                 <li><Link href="/portfolio" className="hover:text-[var(--footer-link-hover)]">Portfolio</Link></li>
-                <li><Link href="/blog" className="hover:text-[var(--footer-link-hover)]">Insights</Link></li>
+                <li><Link href="/blog" className="hover:text-[var(--footer-link-hover)]">Blog</Link></li>
                 <li><Link href="/contact" className="hover:text-[var(--footer-link-hover)]">Contact</Link></li>
               </ul>
             </div>

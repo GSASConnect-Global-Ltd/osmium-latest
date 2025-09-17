@@ -16,11 +16,12 @@ const CTASection = () => {
           <Image
             src="/home/orrel-3.svg"
             alt="ORREL Logo"
-            width={908}
-            height={908}
+            width={700}
+            height={700}
             className="object-contain translate-x-16 opacity-10 sm:translate-x-32 md:translate-x-60"
             priority
           />
+
         </div>
 
         {/* Dark overlay */}

@@ -25,10 +25,10 @@ const Navbar = () => {
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
-  // ✅ Hide navbar after scrolling past viewport height
+  // ✅ Hide navbar after short scroll (100px)
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > window.innerHeight) {
+      if (window.scrollY > 100) {
         setIsVisible(false);
       } else {
         setIsVisible(true);
@@ -39,15 +39,16 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ✅ Static pages that exist in `app/`
+  // ✅ Static pages (Services handled separately)
   const navigationItems = [
-    { name: "About", href: "/about" },
-    { name: "Portfolio", href: "/portfolio" },
-    { name: "Blog", href: "/blog" },
-    { name: "Contact", href: "/contact" },
+    { name: "About", href: "/about", type: "link" },
+    { name: "Services", type: "services" }, // 👈 Services now comes second
+    { name: "Portfolio", href: "/portfolio", type: "link" },
+    { name: "Blog", href: "/blog", type: "link" },
+    { name: "Contact", href: "/contact", type: "link" },
   ];
 
-  // ✅ Services pages that exist in `app/`
+  // ✅ Services pages
   const serviceItems = [
     {
       name: "Renewable Energy",
@@ -142,59 +143,61 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-[36px]">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="px-3 py-1 font-medium text-gray-800 transition-all duration-200 rounded-lg hover:bg-gray-100 
-                          text-[16px] leading-[24px]"
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navigationItems.map((item) =>
+              item.type === "link" ? (
+                <Link
+                  key={item.name}
+                  href={item.href!}
+                  className="px-3 py-1 font-medium text-gray-800 transition-all duration-200 rounded-lg hover:bg-gray-100 
+                            text-[16px] leading-[24px]"
+                >
+                  {item.name}
+                </Link>
+              ) : (
+                // ✅ Services Dropdown
+                <div key="services" className="relative">
+                  <button
+                    onClick={() => setIsServicesOpen(!isServicesOpen)}
+                    className="flex items-center px-3 py-1 font-medium text-gray-800 transition-all duration-200 rounded-lg hover:bg-gray-100 
+                              text-[16px] leading-[24px]"
+                  >
+                    <span>Services</span>
+                    <ChevronDown
+                      className={`h-4 w-4 ml-1 transition-transform duration-200 ${
+                        isServicesOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
 
-            {/* Services Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setIsServicesOpen(!isServicesOpen)}
-                className="flex items-center px-3 py-1 font-medium text-gray-800 transition-all duration-200 rounded-lg hover:bg-gray-100 
-                          text-[16px] leading-[24px]"
-              >
-                <span>Services</span>
-                <ChevronDown
-                  className={`h-4 w-4 ml-1 transition-transform duration-200 ${
-                    isServicesOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-
-              {isServicesOpen && (
-                <div className="absolute left-0 top-full mt-7 w-[700px] bg-white border border-gray-200 rounded-2xl p-6">
-                  <p className="mb-4 text-xs font-semibold text-gray-500 uppercase">
-                    See our services
-                  </p>
-                  <div className="grid grid-cols-2 gap-6">
-                    {serviceItems.map((service) => (
-                      <Link
-                        key={service.name}
-                        href={service.href}
-                        className="flex items-start p-2 space-x-3 transition-colors rounded-lg hover:bg-gray-50"
-                      >
-                        <service.icon className="w-5 h-5 mt-1 text-gray-700" />
-                        <div>
-                          <p className="text-[16px] font-medium text-gray-900">
-                            {service.name}
-                          </p>
-                          <p className="text-[14px] text-gray-500">
-                            {service.desc}
-                          </p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
+                  {isServicesOpen && (
+                    <div className="absolute left-0 top-full mt-7 w-[700px] bg-white border border-gray-200 rounded-2xl p-6">
+                      <p className="mb-4 text-xs font-semibold text-gray-500 uppercase">
+                        See our services
+                      </p>
+                      <div className="grid grid-cols-2 gap-6">
+                        {serviceItems.map((service) => (
+                          <Link
+                            key={service.name}
+                            href={service.href}
+                            className="flex items-start p-2 space-x-3 transition-colors rounded-lg hover:bg-gray-50"
+                          >
+                            <service.icon className="w-5 h-5 mt-1 text-gray-700" />
+                            <div>
+                              <p className="text-[16px] font-medium text-gray-900">
+                                {service.name}
+                              </p>
+                              <p className="text-[14px] text-gray-500">
+                                {service.desc}
+                              </p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              )
+            )}
           </div>
         </div>
 
@@ -235,54 +238,58 @@ const Navbar = () => {
       {isMobileOpen && (
         <div className="md:hidden bg-white border-t border-gray-200 p-6 space-y-4 
                   max-h-[80vh] overflow-y-auto">
-          {navigationItems.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="block text-gray-800 text-[16px] font-medium hover:text-blue-600"
-              onClick={() => setIsMobileOpen(false)}
-            >
-              {item.name}
-            </Link>
-          ))}
+          {navigationItems.map((item) =>
+            item.type === "link" ? (
+              <Link
+                key={item.name}
+                href={item.href!}
+                className="block text-gray-800 text-[16px] font-medium hover:text-blue-600"
+                onClick={() => setIsMobileOpen(false)}
+              >
+                {item.name}
+              </Link>
+            ) : (
+              // ✅ Mobile Services Dropdown
+              <div key="services">
+                <button
+                  onClick={() =>
+                    setIsMobileServicesOpen(!isMobileServicesOpen)
+                  }
+                  className="flex items-center justify-between w-full text-gray-800 text-[16px] font-medium hover:text-blue-600"
+                >
+                  <span>Services</span>
+                  <ChevronDown
+                    className={`h-4 w-4 ml-2 transition-transform ${
+                      isMobileServicesOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
 
-          {/* Mobile Services Dropdown */}
-          <div>
-            <button
-              onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
-              className="flex items-center justify-between w-full text-gray-800 text-[16px] font-medium hover:text-blue-600"
-            >
-              <span>Services</span>
-              <ChevronDown
-                className={`h-4 w-4 ml-2 transition-transform ${
-                  isMobileServicesOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-
-            {isMobileServicesOpen && (
-              <div className="mt-4 space-y-3">
-                {serviceItems.map((service) => (
-                  <Link
-                    key={service.name}
-                    href={service.href}
-                    className="flex items-start p-2 space-x-3 rounded-lg hover:bg-gray-50"
-                    onClick={() => setIsMobileOpen(false)}
-                  >
-                    <service.icon className="w-5 h-5 mt-1 text-gray-700" />
-                    <div>
-                      <p className="text-[16px] font-medium text-gray-900">
-                        {service.name}
-                      </p>
-                      <p className="text-[14px] text-gray-500">
-                        {service.desc}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
+                {isMobileServicesOpen && (
+                  <div className="mt-4 space-y-3">
+                    {serviceItems.map((service) => (
+                      <Link
+                        key={service.name}
+                        href={service.href}
+                        className="flex items-start p-2 space-x-3 rounded-lg hover:bg-gray-50"
+                        onClick={() => setIsMobileOpen(false)}
+                      >
+                        <service.icon className="w-5 h-5 mt-1 text-gray-700" />
+                        <div>
+                          <p className="text-[16px] font-medium text-gray-900">
+                            {service.name}
+                          </p>
+                          <p className="text-[14px] text-gray-500">
+                            {service.desc}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            )
+          )}
 
           {/* CTA Button (Mobile) */}
           <div className="flex justify-center mt-6">
