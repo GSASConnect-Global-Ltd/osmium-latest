@@ -18,15 +18,15 @@ const Services: React.FC<ServicesProps> = ({ heading, services }) => {
   // Decide grid columns based on number of services
   const gridCols =
     services.length === 1
-      ? "grid-cols-1 max-w-md mx-auto"
+      ? "grid-cols-1 justify-items-center"
       : services.length === 2
-      ? "grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto"
+      ? "grid-cols-1 sm:grid-cols-2 justify-items-center"
       : services.length === 3
-      ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto"
+      ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center"
       : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
 
   return (
-    <section className="relative min-h-screen px-6 py-20 overflow-hidden bg-[#37D181]">
+    <section className="relative min-h-screen px-[100px] py-20 overflow-hidden bg-[#37D181]">
       {/* Background effects */}
       <div className="absolute inset-0 bg-background/50" />
       <div className="absolute rounded-full top-20 left-10 w-72 h-72 bg-primary/10 blur-3xl animate-float" />
@@ -35,25 +35,23 @@ const Services: React.FC<ServicesProps> = ({ heading, services }) => {
         style={{ animationDelay: "1s" }}
       />
 
-      <div className="relative mx-auto max-w-7xl">
+      <div className="relative w-full">
         {/* Main Heading */}
         <div className="mb-16 text-center">
           <p
             className="mx-auto text-center text-[48px] leading-[56px] tracking-[0.01em] font-extralight ppEditorial"
-            style={{
-              width: "533px",
-            }}
+            style={{ maxWidth: "533px" }}
           >
             {heading}
           </p>
         </div>
 
         {/* Card Layout */}
-        <div className={`grid gap-8 ${gridCols}`}>
+        <div className={`grid gap-16 ${gridCols}`}>
           {services.map((service, index) => (
             <div
               key={index}
-              className="flex flex-col items-center overflow-hidden bg-gray-100 rounded-[32px] gap-3 p-2 w-full"
+              className="flex flex-col items-center overflow-hidden bg-gray-100 rounded-[32px] gap-3 p-2 w-full max-w-sm"
             >
               {/* Service Image */}
               <Image

@@ -113,14 +113,14 @@ const HiringPage = () => {
 
   return (
     <section className="bg-gray-50">
-      {/* Hero Section */}
-      <div className="bg-green-50 border-b pt-[200px]">
+     {/* Hero Section */}
+      <div className="bg-black border-b pt-[200px]">
         <div className="max-w-6xl px-6 py-20 mx-auto text-center">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900 sm:text-5xl">
+          <h1 className="text-3xl font-bold leading-tight text-white sm:text-5xl">
             Discover your potential and{" "}
-            <span className="text-green-700">take your career</span> to new heights today!
+            <span className="text-green-500">take your career</span> to new heights today!
           </h1>
-          <p className="max-w-2xl mx-auto mt-4 text-lg text-gray-600">
+          <p className="max-w-2xl mx-auto mt-4 text-lg text-gray-300">
             At ORREL, we’re building Africa’s digital and sustainable future. Join us to
             create impact that lasts.
           </p>
@@ -138,6 +138,7 @@ const HiringPage = () => {
           </div>
         </div>
       </div>
+
 
       {/* Jobs */}
       <div className="bg-white border-t">
