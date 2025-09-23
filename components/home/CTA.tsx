@@ -11,7 +11,7 @@ const CTASection = () => {
           backgroundColor: "rgba(0,0,0,0.6)",
         }}
       >
-        {/* Large background logo (shifted right like Figma) */}
+      
         <div className="absolute inset-0 flex items-center justify-center">
           <Image
             src="/home/orrel-3.svg"
