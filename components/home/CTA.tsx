@@ -8,7 +8,7 @@ const CTASection = () => {
       <div
         className="relative flex items-center justify-start overflow-hidden bg-center bg-no-repeat bg-cover w-full max-w-[1240px] h-[400px] sm:h-[500px] md:h-[720px] rounded-[24px] sm:rounded-[32px] md:rounded-[48px]"
         style={{
-          backgroundColor: "rgba(0,0,0,0.7)",
+          backgroundColor: "rgba(0,0,0,0.6)",
         }}
       >
         {/* Large background logo (shifted right like Figma) */}

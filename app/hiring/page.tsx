@@ -29,7 +29,7 @@ const HiringPage = () => {
     const fetchJobs = async () => {
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:5000/api/hirings"); // change when deployed
+        const res = await fetch("https://osmium-blog-admin-backend.onrender.com/api/hirings"); // change when deployed
         const data = await res.json();
         setJobs(data);
       } catch (error) {
@@ -86,7 +86,7 @@ const HiringPage = () => {
 
     try {
       setApplicationLoading(true);
-      const res = await fetch(`http://localhost:5000/api/applications/${jobId}`, {
+      const res = await fetch(`https://osmium-blog-admin-backend.onrender.com/api/hirings/${jobId}`, {
         method: "POST",
         body: formData,
       });

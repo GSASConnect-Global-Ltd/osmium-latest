@@ -1,0 +1,67 @@
+"use client";
+
+import { ReactNode } from "react";
+
+interface HeroSectionProps {
+  subtitle?: string;
+  title: string;
+  description?: string;
+  extras?: ReactNode; // For stats, buttons, etc.
+}
+
+const HeroSection = ({ subtitle, title, description, extras }: HeroSectionProps) => {
+  return (
+    <section className="bg-black text-gray-900 min-h-[70vh] flex items-start px-6 sm:px-10 md:px-16 lg:px-[120px] pt-32 sm:pt-40 md:pt-60 lg:pt-[365px] pb-16 sm:pb-20 md:pb-28 lg:pb-[100px]">
+      <div className="container px-4 mx-auto sm:px-6 lg:px-8">
+        <div className="grid items-stretch gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* Left side */}
+          <div className="space-y-4 sm:space-y-6">
+            {subtitle && (
+              <p
+                className="text-white uppercase"
+                style={{
+                  fontFamily: "Satoshi",
+                  fontWeight: 400,
+                  fontSize: "16px",
+                  lineHeight: "16px",
+                  letterSpacing: "1%",
+                }}
+              >
+                {subtitle}
+              </p>
+            )}
+
+            <p
+              className="ppEditorial text-4xl sm:text-5xl md:text-6xl lg:text-[72px] leading-tight lg:leading-[80px] text-white"
+              style={{
+                fontWeight: 200,
+                letterSpacing: "4%",
+              }}
+            >
+              {title}
+            </p>
+          </div>
+
+          {/* Right side aligned bottom */}
+          <div className="self-end mt-6 space-y-6 lg:pl-8 lg:mt-0">
+            {description && (
+              <p
+                className="text-white text-base sm:text-lg md:text-[16px] leading-relaxed"
+                style={{
+                  fontFamily: "Satoshi",
+                  fontWeight: 400,
+                  letterSpacing: "1%",
+                }}
+              >
+                {description}
+              </p>
+            )}
+            {extras}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default HeroSection;

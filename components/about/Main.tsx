@@ -3,8 +3,11 @@
 
 import Image from "next/image";
 import africaImage from "@/assets/african-innovation.jpg";
+import { useTheme } from "next-themes";
 
 const Main = () => {
+  const { theme } = useTheme(); // ✅ get current theme
+
   const values = [
     {
       title: "Innovation with Purpose",
@@ -25,7 +28,11 @@ const Main = () => {
   ];
 
   return (
-    <main className="min-h-screen bg-background">
+    <main
+      className={`min-h-screen transition-colors duration-300 ${
+        theme === "dark" ? "bg-background text-foreground" : "bg-background text-foreground"
+      }`}
+    >
       {/* Hero Section */}
       <section className="container px-4 py-16 mx-auto sm:px-6 lg:px-12 lg:py-20">
         <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -106,79 +113,84 @@ const Main = () => {
       </section>
 
       {/* Values Section */}
-          
-        <section className="py-20 bg-africa-warm sm:py-24 lg:py-28">
-          <div className="container max-w-6xl px-4 mx-auto sm:px-6 lg:px-12">
-            {/* Heading */}
-            <div className="mb-12 text-center sm:mb-16 lg:mb-20">
-              <p className="font-extralight ppEditorial text-[28px] sm:text-[36px] md:text-[48px] leading-[36px] sm:leading-[44px] md:leading-[58px] tracking-[0.02em] text-foreground">
-                Our Values
-              </p>
-            </div>
+      <section className="py-20 bg-africa-warm sm:py-24 lg:py-28">
+        <div className="container max-w-6xl px-4 mx-auto sm:px-6 lg:px-12">
+          {/* Heading */}
+          <div className="mb-12 text-center sm:mb-16 lg:mb-20">
+            <p className="font-extralight ppEditorial text-[28px] sm:text-[36px] md:text-[48px] leading-[36px] sm:leading-[44px] md:leading-[58px] tracking-[0.02em] text-foreground">
+              Our Values
+            </p>
+          </div>
 
-            {/* Cards */}
-            <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4 justify-items-center">
-              {values.map((value, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col items-start w-full sm:w-[266px] h-auto sm:h-[254px]"
+          {/* Cards */}
+          <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4 justify-items-center">
+            {values.map((value, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-start w-full sm:w-[266px] h-auto sm:h-[254px]  bg-card dark:bg-muted"
+                style={{
+                  borderRadius: "20px",
+                  border: "1px solid #EAECE9",
+                  display: "flex",
+                  padding: "24px",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                }}
+              >
+                <h3
+                  className="text-foreground text-[20px] sm:text-[24px] leading-[26px] sm:leading-[28.8px]"
                   style={{
-                    borderRadius: "20px",
-                    border: "1px solid #EAECE9",
-                    background: "#FFF",
-                    display: "flex",
-                    padding: "24px",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
+                    fontFamily: "Satoshi",
+                    fontWeight: 500,
+                    letterSpacing: "0.01em",
                   }}
                 >
-                  <h3
-                    className="text-foreground text-[20px] sm:text-[24px] leading-[26px] sm:leading-[28.8px]"
-                    style={{
-                      fontFamily: "Satoshi",
-                      fontWeight: 500,
-                      letterSpacing: "0.01em",
-                    }}
-                  >
-                    {value.title}
-                  </h3>
-                  <p
-                    className="text-muted-foreground text-[14px] sm:text-[16px] leading-[22px] sm:leading-[24px]"
-                    style={{
-                      fontFamily: "Satoshi",
-                      fontWeight: 400,
-                      letterSpacing: "0.01em",
-                    }}
-                  >
-                    {value.description}
-                  </p>
-                </div>
-              ))}
-            </div>
+                  {value.title}
+                </h3>
+                <p
+                  className="text-muted-foreground text-[14px] sm:text-[16px] leading-[22px] sm:leading-[24px]"
+                  style={{
+                    fontFamily: "Satoshi",
+                    fontWeight: 400,
+                    letterSpacing: "0.01em",
+                  }}
+                >
+                  {value.description}
+                </p>
+              </div>
+            ))}
           </div>
-        </section>
-
-
-
-
-      {/* Vision Section */}
-      <section className="py-16 sm:py-20 bg-gradient-hero">
-        <div className="container max-w-5xl px-4 mx-auto sm:px-6 lg:px-12">
-          <p
-            className="text-primary-foreground text-[20px] sm:text-[28px] md:text-[36px] leading-[28px] sm:leading-[36px] md:leading-[43.2px] tracking-[0.01em]"
-            style={{
-              fontFamily: "Satoshi",
-              fontWeight: 400,
-              color: "#13492D",
-            }}
-          >
-            Our Vision <span className="text-[#717171]">is to</span> position Africa{" "}
-            <span className="text-[#717171]">as a global leader</span> in digital
-            innovation and sustainability.
-          </p>
         </div>
       </section>
+
+      {/* Vision Section */}
+{/* Vision Section */}
+<section className="py-16 sm:py-20 bg-gradient-hero">
+  <div className="container max-w-5xl px-4 mx-auto sm:px-6 lg:px-12">
+    <p
+      className="
+        text-[20px] sm:text-[28px] md:text-[36px]
+        leading-[28px] sm:leading-[36px] md:leading-[43.2px]
+        tracking-[0.01em]
+        text-[#13492D] dark:text-[#EAEAEA]
+      "
+      style={{
+        fontFamily: "Satoshi",
+        fontWeight: 400,
+      }}
+    >
+      Our Vision{" "}
+      <span className="text-[#717171] dark:text-[#BFBFBF]">is to</span>{" "}
+      position Africa{" "}
+      <span className="text-[#717171] dark:text-[#BFBFBF]">
+        as a global leader
+      </span>{" "}
+      in digital innovation and sustainability.
+    </p>
+  </div>
+</section>
+
     </main>
   );
 };

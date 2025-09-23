@@ -30,6 +30,7 @@ export const Footer = () => {
               <ul className="flex flex-col gap-2 text-[14px] font-normal leading-[21px] text-[var(--footer-link)]">
                 <li><Link href="/" className="hover:text-[var(--footer-link-hover)]">Home</Link></li>
                 <li><Link href="/about" className="hover:text-[var(--footer-link-hover)]">About</Link></li>
+                <li><Link href="/team" className="hover:text-[var(--footer-link-hover)]">Team</Link></li>
                 <li><Link href="/services" className="hover:text-[var(--footer-link-hover)]">Services</Link></li>
                 <li><Link href="/portfolio" className="hover:text-[var(--footer-link-hover)]">Portfolio</Link></li>
                 <li><Link href="/blog" className="hover:text-[var(--footer-link-hover)]">Blog</Link></li>
