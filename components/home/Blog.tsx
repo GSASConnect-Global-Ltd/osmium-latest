@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import BlogCard from "../blog/BlogCard";
 import { useTheme } from "next-themes";
@@ -9,6 +10,7 @@ interface BlogPostFromAPI {
   title: string;
   summary: string;
   images: string[];
+  slug: string; // new slug field
 }
 
 export default function LatestBlogs() {
@@ -28,6 +30,7 @@ export default function LatestBlogs() {
 
         const data: BlogPostFromAPI[] = await res.json();
 
+        // Map images, filter nulls
         const mapped = data.map((post) => ({
           ...post,
           images: post.images
@@ -48,7 +51,7 @@ export default function LatestBlogs() {
     fetchBlogPosts();
   }, []);
 
-  // Determine if dark mode is active (use resolvedTheme to respect system/default)
+  // Determine if dark mode is active
   const isDark =
     (typeof resolvedTheme === "string" && resolvedTheme === "dark") ||
     theme === "dark";
@@ -74,7 +77,7 @@ export default function LatestBlogs() {
           Latest Blog & Resources
         </h2>
 
-        {/* States */}
+        {/* Blog States */}
         {loading ? (
           <p className="text-center text-muted-foreground">
             Loading blog posts...
@@ -88,7 +91,7 @@ export default function LatestBlogs() {
             {blogPosts.map((post) => (
               <BlogCard
                 key={post._id}
-                id={post._id}
+                slug={post.slug} // use slug for linking
                 title={post.title}
                 summary={post.summary}
                 image={post.images[0]}

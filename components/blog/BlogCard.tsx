@@ -5,13 +5,13 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 interface BlogCardProps {
-  id: string;
+  slug: string;
   title: string;
   summary: string;
   image?: string;
 }
 
-const BlogCard = ({ id, title, summary, image }: BlogCardProps) => {
+const BlogCard = ({ slug, title, summary, image }: BlogCardProps) => {
   return (
     <div
       className="flex flex-col items-center overflow-hidden bg-gray-100 rounded-[32px] gap-3 p-2"
@@ -77,7 +77,7 @@ const BlogCard = ({ id, title, summary, image }: BlogCardProps) => {
 
         {/* Read Article Button */}
         <Link
-          href={`/blog/${id}`}
+          href={`/blog/${slug}`}
           className="flex items-center justify-center gap-2 px-3 py-2 transition-colors rounded-[8px] border border-[#E9E9E9] hover:bg-gray-100"
           style={{
             fontFamily: "Satoshi",

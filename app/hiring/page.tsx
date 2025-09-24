@@ -23,13 +23,15 @@ const HiringPage = () => {
   const [applicationMessage, setApplicationMessage] = useState("");
 
   const jobsPerPage = 6;
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL!;
+
 
   // ✅ Fetch jobs from backend
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         setLoading(true);
-        const res = await fetch("https://osmium-blog-admin-backend.onrender.com/api/hirings"); // change when deployed
+        const res = await fetch(`${API_BASE_URL}/api/hirings`);
         const data = await res.json();
         setJobs(data);
       } catch (error) {
@@ -86,9 +88,9 @@ const HiringPage = () => {
 
     try {
       setApplicationLoading(true);
-      const res = await fetch(`https://osmium-blog-admin-backend.onrender.com/api/hirings/${jobId}`, {
-        method: "POST",
-        body: formData,
+      const res = await fetch(`${API_BASE_URL}/api/hirings/${jobId}`, {
+      method: "POST",
+      body: formData,
       });
 
       const data = await res.json();

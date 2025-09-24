@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Twitter, Linkedin, Facebook } from "lucide-react";
 
 interface BlogPost {
   _id: string;
@@ -15,6 +16,7 @@ interface BlogPost {
   category: string;
   images: (string | null)[];
   content: string;
+  slug: string;
 }
 
 interface BlogPostFromAPI {
@@ -27,10 +29,11 @@ interface BlogPostFromAPI {
   category: string;
   images: string[];
   content: string;
+  slug: string;
 }
 
 export default function BlogPostPage() {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const router = useRouter();
 
   const [post, setPost] = useState<BlogPost | null>(null);
@@ -38,7 +41,7 @@ export default function BlogPostPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) {
+    if (!slug) {
       router.replace("/blog");
       return;
     }
@@ -46,9 +49,10 @@ export default function BlogPostPage() {
     const fetchPost = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/${id}`
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/${slug}`
         );
         if (!res.ok) throw new Error("Failed to fetch post");
+
         const data: BlogPostFromAPI = await res.json();
 
         const mappedPost: BlogPost = {
@@ -57,17 +61,18 @@ export default function BlogPostPage() {
           summary: data.summary,
           author: data.author,
           date: data.date,
-          readTime: data.readTime,
+          readTime: data.readTime || "5 min read",
           category: data.category,
           images: (data.images || []).map(
             (img) => (img ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}` : null)
           ),
           content: data.content,
+          slug: data.slug,
         };
         setPost(mappedPost);
 
         const relatedRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs?category=${data.category}&excludeId=${data._id}`
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs?category=${data.category}&excludeSlug=${data.slug}`
         );
         if (relatedRes.ok) {
           const relatedData: BlogPostFromAPI[] = await relatedRes.json();
@@ -77,12 +82,13 @@ export default function BlogPostPage() {
             summary: p.summary,
             author: p.author,
             date: p.date,
-            readTime: p.readTime,
+            readTime: p.readTime || "5 min read",
             category: p.category,
-            images: (p.images || []).map((img) =>
-              img ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}` : null
+            images: (p.images || []).map(
+              (img) => (img ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}` : null)
             ),
             content: p.content,
+            slug: p.slug,
           }));
           setRelatedPosts(mappedRelated);
         }
@@ -95,7 +101,7 @@ export default function BlogPostPage() {
     };
 
     fetchPost();
-  }, [id, router]);
+  }, [slug, router]);
 
   if (loading) {
     return (
@@ -106,6 +112,17 @@ export default function BlogPostPage() {
   }
 
   if (!post) return null;
+
+  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
+  const twitterShare = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+    currentUrl
+  )}&text=${encodeURIComponent(post.title)}`;
+  const linkedinShare = `https://www.linkedin.com/shareArticle?url=${encodeURIComponent(
+    currentUrl
+  )}&title=${encodeURIComponent(post.title)}`;
+  const facebookShare = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+    currentUrl
+  )}`;
 
   return (
     <main className="min-h-screen text-black bg-white">
@@ -138,11 +155,8 @@ export default function BlogPostPage() {
       <article className="container flex flex-col max-w-6xl px-6 py-12 mx-auto md:flex-row md:gap-12">
         {/* Content */}
         <section className="flex-1 prose prose-lg text-black max-w-none">
-          <p className="text-lg text-gray-700 whitespace-pre-line">
-            {post.summary}
-          </p>
+          <p className="text-lg text-gray-700 whitespace-pre-line">{post.summary}</p>
 
-          {/* Inline Images */}
           {post.images.slice(1).map(
             (img, i) =>
               img && (
@@ -164,6 +178,35 @@ export default function BlogPostPage() {
           <div className="mt-8 leading-relaxed text-gray-800 whitespace-pre-line">
             {post.content}
           </div>
+
+          {/* Social Share Buttons */}
+          <div className="flex items-center mt-8 space-x-4">
+            <span className="font-semibold">Share:</span>
+            <a
+              href={twitterShare}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 transition-colors hover:text-blue-700"
+            >
+              <Twitter size={24} />
+            </a>
+            <a
+              href={linkedinShare}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-700 transition-colors hover:text-blue-900"
+            >
+              <Linkedin size={24} />
+            </a>
+            <a
+              href={facebookShare}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 transition-colors hover:text-blue-800"
+            >
+              <Facebook size={24} />
+            </a>
+          </div>
         </section>
 
         {/* Sidebar */}
@@ -173,7 +216,7 @@ export default function BlogPostPage() {
             {relatedPosts.map((related) => (
               <li key={related._id}>
                 <Link
-                  href={`/blog/${related._id}`}
+                  href={`/blog/${related.slug}`}
                   className="block overflow-hidden transition bg-white border border-gray-200 shadow rounded-xl hover:shadow-md"
                 >
                   {related.images[0] && (
