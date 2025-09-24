@@ -43,27 +43,27 @@ const serviceData = [
     title: "Enterprise SaaS Platforms",
     description:
       "Develop comprehensive Software-as-a-Service solutions that streamline operations, from custom ERPs and CRMs to specialized industry tools, all built for the cloud.",
-    image: "/digital/digital1.png",
+    image: "/software/software1.jpg",
   },
   {
     title: "Fintech and Digital Payment Systems",
     description:
       "Engineer secure, reliable, and compliant financial technology platforms, including payment gateways, wallet systems, and lending platforms, like our own OrrellFX.",
-    image: "/digital/digital2.png",
+    image: "/software/software2.jpg",
   },
 
   {
     title: "IOT and Smart system Integration",
     description:
       "Build the central software platforms that power Smart Homes, Smart Farms, and Industrial IoT, collecting sensor data and enabling automation and control.",
-    image: "/digital/digital3.png",
+    image: "/software/software3.jpg",
   },
 
     {
     title: "Legacy System Modernization",
     description:
       "Breathe new life into outdated applications. We refactor, re-architect, and migrate old systems to modern, secure, and maintainable cloud-based platforms.",
-    image: "/digital/digital4.png",
+    image: "/software/software3.jpg",
   },
   
 ];
@@ -79,7 +79,7 @@ const Services = () => {
       tag="Software Engineering"
       headline="Engineering the Digital Backbone of Africa's Future"
       description="We design and develop robust, scalable, and secure software applications, platforms, and APIs that form the core of modern digital transformation for businesses and institutions. "
-      backgroundImage="/dwt/dwt-hero.png"
+      backgroundImage="/software/software-hero.jpg"
       buttonText="Partner with us"
       buttonLink="#"
       width="900px" 

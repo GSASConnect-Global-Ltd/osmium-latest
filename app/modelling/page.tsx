@@ -54,25 +54,29 @@ const serviceData = [
     title: "Crash Safety Engineering",
     description:
       "Leverage finite element simulations to predict structural failure and improve vehicle crash worthiness without relying solely on physical crash tests.",
-    image: "/modeling/model1.png",
+    image:
+      "https://images.unsplash.com/photo-1599939549860-9e25f70e4cb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80", // crash test car
   },
   {
     title: "Aerodynamic Optimization",
     description:
       "Apply CFD to racing car design, analyzing airflow and drag forces to boost speed and efficiency in motorsport applications.",
-    image: "/modeling/model2.png",
+    image:
+      "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80", // racing car aerodynamics
   },
   {
     title: "Marine Engineering",
     description:
       "Use molecular dynamics to develop advanced corrosion protection strategies for ships, pipelines, and offshore structures.",
-    image: "/modeling/model3.png",
+    image:
+      "https://images.unsplash.com/photo-1501630834273-4b5604d2ee31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80", // marine ship
   },
   {
     title: "Sustainable Energy",
     description:
       "Simulate biomass pyrolysis processes for renewable energy, reducing emissions and optimizing conversion efficiency.",
-    image: "/modeling/model4.png",
+    image:
+      "https://images.unsplash.com/photo-1509395176047-4a66953fd231?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80", // renewable energy / biomass
   },
 ];
 
@@ -83,7 +87,7 @@ const Services = () => {
         tag="Modeling and Simulation"
         headline="Advanced Simulations for Modern Engineering"
         description="We specialize in applying advanced modeling and simulation techniques—FEA, CFD, Molecular Dynamics, and Process Modeling—to solve critical engineering challenges."
-        backgroundImage="/modeling/hero.jpg"
+        backgroundImage="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" // futuristic engineering simulation
         buttonText="Request a Demo"
         buttonLink="#"
         width="900px"
@@ -103,10 +107,7 @@ const Services = () => {
         services={servicesDetailData}
       />
 
-      <Service
-        heading="Applications of Our Expertise"
-        services={serviceData}
-      />
+      <Service heading="Applications of Our Expertise" services={serviceData} />
 
       <AdvantageSection
         heading="Why Our Simulations Stand Out"
