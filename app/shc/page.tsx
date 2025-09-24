@@ -1,132 +1,114 @@
-
 import Hero from "@/components/services/Hero";
-import { ServiceInfo } from "@/components/services/ServiceInfo"
+import { ServiceInfo } from "@/components/services/ServiceInfo";
 import ServiceSection from "@/components/services/ServiceSection";
 import Service from "@/components/services/Service";
 import AdvantageSection from "@/components/services/AdvantageSection";
 import CTASection from "@/components/home/CTA";
- 
-
-
 
 const features = [
   {
-    icon: "chart",
-    title: "Focus on Integration",
-    description: "We ensure the digital twin is fed by live data from your sensors and systems for a true live view.",
+    icon: "wifi",
+    title: "Seamless Connectivity",
+    description: "Your devices, appliances, and systems communicate flawlessly, creating a unified living experience.",
   },
   {
-    icon: "gear",
-    title: "Tailored to your needs",
-    description: "We build solutions that are robust and effective even with specific local infrastructure challenges in mind.",
+    icon: "shield",
+    title: "Enhanced Security",
+    description: "Protect your home with AI-driven monitoring, real-time alerts, and smart access control.",
   },
   {
-    icon: "vector",
-    title: "End to End service",
-    description: "From data acquisition and 3D modeling to software development and analytics, we handle the entire process.",
+    icon: "sun",
+    title: "Energy Efficiency",
+    description: "Smart lighting, HVAC, and energy monitoring save costs while reducing environmental impact.",
   },
 ];
 
-
-
-
 const servicesDetailData = [
   {
-    title: "Predictive Performance Analysis",
+    title: "Intelligent Lighting and Climate Control",
     description:
-      "Run simulations to foresee how your system will perform under different conditions, preventing costly failures and optimizing output.",
-    
+      "Automate your lighting and air conditioning based on presence, time of day, or weather—balancing comfort with efficiency.",
   },
   {
-    title: "Virtual Training and Onboarding",
+    title: "Voice and App Control",
     description:
-      "Train operators, engineers, and students on complex equipment in a completely safe, virtual environment. Drastically reduce training costs and risks.",
-    
+      "Control every device in your home through simple voice commands or a single mobile app dashboard.",
   },
-
   {
-    title: "Remote Monitoring and Control",
+    title: "Smart Security and Surveillance",
     description:
-      "Monitor the status and health of remote or inaccessible assets in real-time through their digital twin, enabling proactive maintenance.",
-    
+      "Integrate cameras, motion sensors, and door locks to receive instant alerts and monitor your home remotely.",
   },
-
-    {
-    title: "Design and Prototyping Validation",
+  {
+    title: "Energy Usage Monitoring",
     description:
-      "Test and validate new designs, concepts, and modifications in the digital world first, eliminating the need for costly physical prototypes.",
+      "Track real-time energy usage across appliances, receive insights, and optimize to lower bills and carbon footprint.",
   },
-  
 ];
 
 const serviceData = [
   {
-    title: "Manufacturing and Industrial Plants",
+    title: "Smart Living Rooms",
     description:
-      "Create digital twins of entire production lines to optimize workflow, simulate bottlenecks, and train new operators without stopping production.",
-    image: "/digital/digital1.png",
+      "Create personalized entertainment hubs with voice-controlled TVs, immersive sound systems, and ambient lighting.",
+    image: "https://images.unsplash.com/photo-1600607687565-cd4f95b6a8b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
   },
   {
-    title: "Education and Research",
+    title: "Connected Kitchens",
     description:
-      "Power the next generation of engineers. Students can interact with, disassemble, and experiment on complex digital twins of machinery, from engines to power grids, in an immersive VR environment.",
-    image: "/digital/digital2.png",
+      "Experience kitchens where appliances talk to each other. Get recipe suggestions, automate grocery lists, and track food freshness.",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
   },
-
   {
-    title: "Renewable Energy Systems",
+    title: "Smart Bedrooms",
     description:
-      "Model and monitor solar farms or hybrid energy systems. Predict energy output based on weather data, simulate component failures, and plan maintenance schedules virtually.",
-    image: "/digital/digital3.png",
+      "Automate curtains, lights, and thermostats to create a personalized sleep environment tailored to your lifestyle.",
+    image: "https://images.unsplash.com/photo-1600488995691-3c8c00f87e5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
   },
-
-    {
-    title: "RSmart City and Infrastructure Planning",
+  {
+    title: "Home Security & Outdoor Systems",
     description:
-      "Plan urban infrastructure projects, model traffic flow, and assess the environmental impact of new developments before a single foundation is poured.",
-    image: "/digital/digital4.png",
+      "Smart locks, connected cameras, and automated outdoor lighting ensure your family and property are always safe.",
+    image: "https://images.unsplash.com/photo-1560185127-6ed189bf02f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
   },
-  
 ];
 
-
-
-
 const Services = () => {
-  
   return (
     <>
-       <Hero
-      tag="Digital Twin Technology"
-      headline="See the Future of Your Operations Before You Build It"
-      description="Create a dynamic, virtual replica of your physical assets to simulate, predict, and optimize performance—all before implementing changes in the real world. "
-      backgroundImage="/dwt/dwt-hero.png"
-      buttonText="Request a Demo"
-      buttonLink="#"
-      width="900px" 
-    />
-      
+      <Hero
+        tag="Smart Home Concept"
+        headline="Experience the Future of Connected Living"
+        description="Transform your home into a smart ecosystem—intelligent, secure, and energy-efficient—designed to adapt to your lifestyle."
+        backgroundImage="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
+        buttonText="Book a Consultation"
+        buttonLink="#"
+        width="900px"
+      />
+
       <ServiceInfo
-        text="Traditional design and operational processes are linear and siloed. Unexpected downtime costs millions. Training on complex machinery is dangerous and expensive. Without a way to simulate and predict, every change is a gamble."
+        text="Homes are evolving from static spaces into adaptive environments. Traditional systems waste energy and lack flexibility. Smart homes solve this by connecting devices, automating tasks, and giving you full control—whether you’re inside or halfway across the world."
         maxWidth="900px"
       />
-      <ServiceSection
-      heading={{ main: "A Digital Crystal Ball for ", highlight: " Your Business" }}
-      subtitle="We build living digital replicas of your products, processes, and systems. These twins sync with real-world data, allowing you to run simulations, test scenarios, and uncover insights that were previously impossible, saving time, money, and resources."
-      services={servicesDetailData}
-    />
-       <Service
-      heading="Transformative Energy Across Sectors"
-      services={serviceData}
-    />
-       <AdvantageSection
-      heading="More Than a Model—A Strategic Partner"
-      subtitle="Our digital twins are not just static 3D models; they are data-rich, interactive decision-making tools. We focus on building twins that are directly tied to your key performance indicators and business outcomes, ensuring you get a clear return on investment."
-      features={features}
-    />
-      <CTASection />
-      
 
+      <ServiceSection
+        heading={{ main: "Smart Homes Built Around ", highlight: "Your Lifestyle" }}
+        subtitle="We design intelligent home systems that bring comfort, security, and efficiency into everyday life. Every smart home we build is tailored to how you live, ensuring convenience without compromise."
+        services={servicesDetailData}
+      />
+
+      <Service
+        heading="Transform Every Corner of Your Home"
+        services={serviceData}
+      />
+
+      <AdvantageSection
+        heading="Why Choose Our Smart Home Solutions?"
+        subtitle="We deliver more than devices—we create connected experiences that adapt to your needs, reduce costs, and give peace of mind. Your home becomes smarter, safer, and more sustainable."
+        features={features}
+      />
+
+      <CTASection />
     </>
   );
 };

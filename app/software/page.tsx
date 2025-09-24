@@ -3,87 +3,66 @@ import Hero from "@/components/services/Hero";
 import { ServiceInfo } from "@/components/services/ServiceInfo"
 import ServiceSection from "@/components/services/ServiceSection";
 import Service from "@/components/services/Service";
-import AdvantageSection from "@/components/services/AdvantageSection";
+
 import CTASection from "@/components/home/CTA";
  
 
 
 
-const features = [
-  {
-    icon: "chart",
-    title: "Focus on Integration",
-    description: "We ensure the digital twin is fed by live data from your sensors and systems for a true live view.",
-  },
-  {
-    icon: "gear",
-    title: "Tailored to your needs",
-    description: "We build solutions that are robust and effective even with specific local infrastructure challenges in mind.",
-  },
-  {
-    icon: "vector",
-    title: "End to End service",
-    description: "From data acquisition and 3D modeling to software development and analytics, we handle the entire process.",
-  },
-];
-
-
-
-
 const servicesDetailData = [
   {
-    title: "Gamified STEM Labs",
+    title: "Custom Web and Mobile Application",
     description:
-      "We transform standard curriculum experiments into captivating VR challenges. Students conduct chemistry, physics, and biology activities in a safe, immersive digital environment, free from cost and safety constraints.",
+      "Build user-centric, high-performance web and mobile apps that deliver exceptional experiences and drive engagement.",
     
   },
   {
-    title: "Experiential Learning",
+    title: "API Integration and Development",
     description:
-      "Learners interact with complex systems—from engineering assemblies to historical events— fostering deep understanding through doing, not just reading.",
+      "We create powerful APIs and seamless integrations that connect your existing tools and unlock your data's potential.",
     
   },
 
   {
-    title: "Industrial Procedure Training",
+    title: "Claude Native and Dev-Ops Integration",
     description:
-      "Create risk-free training simulations for high-stakes industrial environments. Practice equipment operation, safety protocols, and emergency responses without real-world danger.",
+      "Design and deploy scalable, resilient systems on cloud infrastructure (AWS, Azure, GCP) with automated CI/CD pipelines for rapid, reliable updates.",
     
   },
 
     {
-    title: "Performance Analytics",
+    title: "Data Engineering and Analytics",
     description:
-      "Track engagement and mastery in real-time. Our platforms provide educators and trainers with data on student progress, knowledge gaps, and skill proficiency.",
+      "Transform raw data into actionable intelligence. We build pipelines, warehouses, and dashboards that inform strategic decision-making.",
   },
   
 ];
 
 const serviceData = [
   {
-    title: "Primary & Secondary STEM Education",
+    title: "Enterprise SaaS Platforms",
     description:
-      "Our flagship VR school platform allows students to perform every required science experiment in the curriculum without a physical lab. We turn learning into an adventure.",
+      "Develop comprehensive Software-as-a-Service solutions that streamline operations, from custom ERPs and CRMs to specialized industry tools, all built for the cloud.",
     image: "/digital/digital1.png",
   },
   {
-    title: "University & Vocational Engineering Labs",
+    title: "Fintech and Digital Payment Systems",
     description:
-      "Provide engineering students with unlimited access to expensive, complex machinery through digital twins and gamified simulations. They can design, test, fail, and optimize in a virtual sandbox.",
+      "Engineer secure, reliable, and compliant financial technology platforms, including payment gateways, wallet systems, and lending platforms, like our own OrrellFX.",
     image: "/digital/digital2.png",
   },
 
   {
-    title: "Industrial Safety & Skills Training",
+    title: "IOT and Smart system Integration",
     description:
-      "Train employees on standard operating procedures, safety protocols, and equipment handling for manufacturing, energy, and construction sectors in a zero-risk environment.",
+      "Build the central software platforms that power Smart Homes, Smart Farms, and Industrial IoT, collecting sensor data and enabling automation and control.",
     image: "/digital/digital3.png",
   },
 
     {
-    title: "RSmart City and Infrastructure Planning",
+    title: "Legacy System Modernization",
     description:
-      "Plan urban infrastructure projects, model traffic flow, and assess the environmental impact of new developments before a single foundation is poured.",
+      "Breathe new life into outdated applications. We refactor, re-architect, and migrate old systems to modern, secure, and maintainable cloud-based platforms.",
     image: "/digital/digital4.png",
   },
   
@@ -119,11 +98,7 @@ const Services = () => {
       heading="Revolutionizing How Africa Learns and Trains"
       services={serviceData}
     />
-       <AdvantageSection
-      heading="More Than a Model—A Strategic Partner"
-      subtitle="Our digital twins are not just static 3D models; they are data-rich, interactive decision-making tools. We focus on building twins that are directly tied to your key performance indicators and business outcomes, ensuring you get a clear return on investment."
-      features={features}
-    />
+       
       <CTASection />
       
 

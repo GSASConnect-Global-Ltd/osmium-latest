@@ -1,132 +1,93 @@
-
 import Hero from "@/components/services/Hero";
-import { ServiceInfo } from "@/components/services/ServiceInfo"
+import { ServiceInfo } from "@/components/services/ServiceInfo";
 import ServiceSection from "@/components/services/ServiceSection";
 import Service from "@/components/services/Service";
-import AdvantageSection from "@/components/services/AdvantageSection";
 import CTASection from "@/components/home/CTA";
- 
-
-
-
-const features = [
-  {
-    icon: "chart",
-    title: "Focus on Integration",
-    description: "We ensure the digital twin is fed by live data from your sensors and systems for a true live view.",
-  },
-  {
-    icon: "gear",
-    title: "Tailored to your needs",
-    description: "We build solutions that are robust and effective even with specific local infrastructure challenges in mind.",
-  },
-  {
-    icon: "vector",
-    title: "End to End service",
-    description: "From data acquisition and 3D modeling to software development and analytics, we handle the entire process.",
-  },
-];
-
-
-
 
 const servicesDetailData = [
   {
-    title: "Predictive Performance Analysis",
+    title: "Decentralized Applications (dApps)",
     description:
-      "Run simulations to foresee how your system will perform under different conditions, preventing costly failures and optimizing output.",
-    
+      "We design and build secure, scalable decentralized applications tailored for finance, supply chain, healthcare, and more.",
   },
   {
-    title: "Virtual Training and Onboarding",
+    title: "Smart Contracts",
     description:
-      "Train operators, engineers, and students on complex equipment in a completely safe, virtual environment. Drastically reduce training costs and risks.",
-    
+      "Automate trust with audited smart contracts that reduce intermediaries and enforce business logic on-chain.",
   },
-
   {
-    title: "Remote Monitoring and Control",
+    title: "Crypto Wallet & Custody",
     description:
-      "Monitor the status and health of remote or inaccessible assets in real-time through their digital twin, enabling proactive maintenance.",
-    
+      "Develop secure, user-friendly wallets and custody solutions with multi-chain support and strong key-management best practices.",
   },
-
-    {
-    title: "Design and Prototyping Validation",
+  {
+    title: "Blockchain Strategy & Compliance",
     description:
-      "Test and validate new designs, concepts, and modifications in the digital world first, eliminating the need for costly physical prototypes.",
+      "From tokenomics to regulatory readiness, we help you create a viable blockchain strategy and navigate compliance and risk.",
   },
-  
 ];
 
 const serviceData = [
   {
-    title: "Manufacturing and Industrial Plants",
+    title: "Decentralized Finance (DeFi)",
     description:
-      "Create digital twins of entire production lines to optimize workflow, simulate bottlenecks, and train new operators without stopping production.",
-    image: "/digital/digital1.png",
+      "Build lending platforms, DEXs, and staking solutions that expand financial access while prioritizing security and liquidity.",
+    image:
+      "/block/block1.jpg",
   },
   {
-    title: "Education and Research",
+    title: "Supply Chain Transparency",
     description:
-      "Power the next generation of engineers. Students can interact with, disassemble, and experiment on complex digital twins of machinery, from engines to power grids, in an immersive VR environment.",
-    image: "/digital/digital2.png",
+      "Track goods end-to-end with immutable ledgers and verifiable provenance to reduce fraud and improve traceability.",
+    image:
+      "/block/block2.jpg",
   },
-
   {
-    title: "Renewable Energy Systems",
+    title: "NFT Platforms & Marketplaces",
     description:
-      "Model and monitor solar farms or hybrid energy systems. Predict energy output based on weather data, simulate component failures, and plan maintenance schedules virtually.",
-    image: "/digital/digital3.png",
+      "Create minting, marketplace, and royalty mechanics for digital collectors, artists, and in-game economies.",
+    image:
+      "/block/block3.png",
   },
-
-    {
-    title: "RSmart City and Infrastructure Planning",
+  {
+    title: "Enterprise Blockchain Solutions",
     description:
-      "Plan urban infrastructure projects, model traffic flow, and assess the environmental impact of new developments before a single foundation is poured.",
-    image: "/digital/digital4.png",
+      "Design permissioned networks, private ledgers, and integration layers for enterprises needing scalability and data privacy.",
+    image:
+      "/block/block2.jpg",
   },
-  
 ];
 
-
-
-
 const Services = () => {
-  
   return (
     <>
-       <Hero
-      tag="Digital Twin Technology"
-      headline="See the Future of Your Operations Before You Build It"
-      description="Create a dynamic, virtual replica of your physical assets to simulate, predict, and optimize performance—all before implementing changes in the real world. "
-      backgroundImage="/dwt/dwt-hero.png"
-      buttonText="Request a Demo"
-      buttonLink="#"
-      width="900px" 
-    />
-      
+      <Hero
+        tag="Blockchain"
+        headline="Powering the Next Era of Digital Trust"
+        description="We harness blockchain to build decentralized, transparent, and secure solutions that redefine industries and empower individuals."
+        backgroundImage="/block/block-hero.jpg"
+        buttonText="Explore Blockchain Solutions"
+        buttonLink="#"
+        width="900px"
+      />
+
       <ServiceInfo
-        text="Traditional design and operational processes are linear and siloed. Unexpected downtime costs millions. Training on complex machinery is dangerous and expensive. Without a way to simulate and predict, every change is a gamble."
+        text="Traditional systems often suffer from inefficiencies, high costs, and lack of transparency. Blockchain enables automation, auditability, and new business models—without sacrificing security."
         maxWidth="900px"
       />
-      <ServiceSection
-      heading={{ main: "A Digital Crystal Ball for ", highlight: " Your Business" }}
-      subtitle="We build living digital replicas of your products, processes, and systems. These twins sync with real-world data, allowing you to run simulations, test scenarios, and uncover insights that were previously impossible, saving time, money, and resources."
-      services={servicesDetailData}
-    />
-       <Service
-      heading="Transformative Energy Across Sectors"
-      services={serviceData}
-    />
-       <AdvantageSection
-      heading="More Than a Model—A Strategic Partner"
-      subtitle="Our digital twins are not just static 3D models; they are data-rich, interactive decision-making tools. We focus on building twins that are directly tied to your key performance indicators and business outcomes, ensuring you get a clear return on investment."
-      features={features}
-    />
-      <CTASection />
-      
 
+      <ServiceSection
+        heading={{
+          main: "Blockchain Solutions ",
+          highlight: " That Drive Real Impact",
+        }}
+        subtitle="Whether you’re building financial products, NFTs, or enterprise-grade systems, our blockchain expertise helps you design, build, and scale with confidence."
+        services={servicesDetailData}
+      />
+
+      <Service heading="Blockchain in Action" services={serviceData} />
+
+      <CTASection />
     </>
   );
 };

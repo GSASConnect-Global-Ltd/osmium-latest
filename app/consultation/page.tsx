@@ -1,132 +1,89 @@
-
 import Hero from "@/components/services/Hero";
-import { ServiceInfo } from "@/components/services/ServiceInfo"
+import { ServiceInfo } from "@/components/services/ServiceInfo";
 import ServiceSection from "@/components/services/ServiceSection";
 import Service from "@/components/services/Service";
-import AdvantageSection from "@/components/services/AdvantageSection";
 import CTASection from "@/components/home/CTA";
- 
-
-
-
-const features = [
-  {
-    icon: "chart",
-    title: "Focus on Integration",
-    description: "We ensure the digital twin is fed by live data from your sensors and systems for a true live view.",
-  },
-  {
-    icon: "gear",
-    title: "Tailored to your needs",
-    description: "We build solutions that are robust and effective even with specific local infrastructure challenges in mind.",
-  },
-  {
-    icon: "vector",
-    title: "End to End service",
-    description: "From data acquisition and 3D modeling to software development and analytics, we handle the entire process.",
-  },
-];
-
-
-
 
 const servicesDetailData = [
   {
-    title: "Predictive Performance Analysis",
+    title: "Business Strategy Alignment",
     description:
-      "Run simulations to foresee how your system will perform under different conditions, preventing costly failures and optimizing output.",
-    
+      "We help you define clear digital strategies aligned with your core objectives, ensuring technology investments deliver measurable ROI.",
   },
   {
-    title: "Virtual Training and Onboarding",
+    title: "Technology Roadmapping",
     description:
-      "Train operators, engineers, and students on complex equipment in a completely safe, virtual environment. Drastically reduce training costs and risks.",
-    
+      "Plan the next 3–5 years of your digital journey with structured roadmaps that balance innovation, scalability, and cost.",
   },
-
   {
-    title: "Remote Monitoring and Control",
+    title: "Process Optimization",
     description:
-      "Monitor the status and health of remote or inaccessible assets in real-time through their digital twin, enabling proactive maintenance.",
-    
+      "Identify inefficiencies, streamline operations, and introduce automation that improves productivity and reduces overhead.",
   },
-
-    {
-    title: "Design and Prototyping Validation",
+  {
+    title: "Change Management and Training",
     description:
-      "Test and validate new designs, concepts, and modifications in the digital world first, eliminating the need for costly physical prototypes.",
+      "Support your teams in adopting new tools and workflows through tailored training and onboarding programs.",
   },
-  
 ];
 
 const serviceData = [
   {
-    title: "Manufacturing and Industrial Plants",
+    title: "Startups and SMEs",
     description:
-      "Create digital twins of entire production lines to optimize workflow, simulate bottlenecks, and train new operators without stopping production.",
-    image: "/digital/digital1.png",
+      "We guide early-stage companies in refining business models, scaling operations, and leveraging affordable digital solutions.",
+    image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
   },
   {
-    title: "Education and Research",
+    title: "Large Enterprises",
     description:
-      "Power the next generation of engineers. Students can interact with, disassemble, and experiment on complex digital twins of machinery, from engines to power grids, in an immersive VR environment.",
-    image: "/digital/digital2.png",
+      "Assist corporations in digital transformation initiatives, legacy modernization, and change management strategies.",
+    image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
   },
-
   {
-    title: "Renewable Energy Systems",
+    title: "Public Sector",
     description:
-      "Model and monitor solar farms or hybrid energy systems. Predict energy output based on weather data, simulate component failures, and plan maintenance schedules virtually.",
-    image: "/digital/digital3.png",
+      "Support government and NGOs with digital policy implementation, IT governance, and citizen-facing service improvements.",
+    image: "https://images.unsplash.com/photo-1529101091764-c3526daf38fe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
   },
-
-    {
-    title: "RSmart City and Infrastructure Planning",
+  {
+    title: "Education & Nonprofits",
     description:
-      "Plan urban infrastructure projects, model traffic flow, and assess the environmental impact of new developments before a single foundation is poured.",
-    image: "/digital/digital4.png",
+      "Advise institutions on digital tools for remote learning, fundraising platforms, and resource management systems.",
+    image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
   },
-  
 ];
 
-
-
-
 const Services = () => {
-  
   return (
     <>
-       <Hero
-      tag="Digital Twin Technology"
-      headline="See the Future of Your Operations Before You Build It"
-      description="Create a dynamic, virtual replica of your physical assets to simulate, predict, and optimize performance—all before implementing changes in the real world. "
-      backgroundImage="/dwt/dwt-hero.png"
-      buttonText="Request a Demo"
-      buttonLink="#"
-      width="900px" 
-    />
-      
+      <Hero
+        tag="Consultation"
+        headline="Guiding Businesses Through Digital Transformation"
+        description="Our consultation services empower organizations to make informed technology decisions, align strategy with execution, and achieve long-term impact."
+        backgroundImage="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
+        buttonText="Schedule a Consultation"
+        buttonLink="#"
+        width="900px"
+      />
+
       <ServiceInfo
-        text="Traditional design and operational processes are linear and siloed. Unexpected downtime costs millions. Training on complex machinery is dangerous and expensive. Without a way to simulate and predict, every change is a gamble."
+        text="Organizations often invest in technology without clear alignment to business goals, resulting in wasted resources and slow adoption. Our consultation bridges this gap, turning digital ambition into tangible results."
         maxWidth="900px"
       />
-      <ServiceSection
-      heading={{ main: "A Digital Crystal Ball for ", highlight: " Your Business" }}
-      subtitle="We build living digital replicas of your products, processes, and systems. These twins sync with real-world data, allowing you to run simulations, test scenarios, and uncover insights that were previously impossible, saving time, money, and resources."
-      services={servicesDetailData}
-    />
-       <Service
-      heading="Transformative Energy Across Sectors"
-      services={serviceData}
-    />
-       <AdvantageSection
-      heading="More Than a Model—A Strategic Partner"
-      subtitle="Our digital twins are not just static 3D models; they are data-rich, interactive decision-making tools. We focus on building twins that are directly tied to your key performance indicators and business outcomes, ensuring you get a clear return on investment."
-      features={features}
-    />
-      <CTASection />
-      
 
+      <ServiceSection
+        heading={{ main: "Tailored Consulting ", highlight: " for Lasting Impact" }}
+        subtitle="We combine deep technical expertise with business acumen to provide consultation that is practical, actionable, and future-proof."
+        services={servicesDetailData}
+      />
+
+      <Service
+        heading="Who We Consult For"
+        services={serviceData}
+      />
+
+      <CTASection />
     </>
   );
 };
