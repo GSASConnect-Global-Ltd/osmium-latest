@@ -42,7 +42,6 @@ const Navbar = () => {
   // ✅ Static pages (Services handled separately)
   const navigationItems = [
     { name: "About", href: "/about", type: "link" },
-    { name: "Team", href: "/team", type: "link" },
     { name: "Services", type: "services" }, // 👈 Services now comes second
     { name: "Portfolio", href: "/portfolio", type: "link" },
     { name: "Blog", href: "/blog", type: "link" },
