@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
  
 import "./globals.css";
+import Chatbot from "@/components/layout/Chatbot"; // 👈 Add this import
 import {ppEditorialNew} from "./fonts" 
 import Navbar from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </main>
     <Footer />
     <ThemeToggle />
+    <Chatbot /> 
   </ThemeProvider>
 </body>
     </html>
