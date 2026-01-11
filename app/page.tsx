@@ -4,6 +4,7 @@ import Hero from "@/components/home/Hero";
 import {AboutSection} from "@/components/home/About";
 import SolutionsSection from "@/components/home/SolutionsSection";
 import TechSection from "@/components/home/TechSection";
+import Hiring from "@/components/home/Hiring";
 import { ProjectsShowcase } from "@/components/home/Project";
 import CTASection from "@/components/home/CTA";
 import Blog from "@/components/home/Blog";
@@ -16,6 +17,8 @@ export default function Home() {
       <SolutionsSection />
       <TechSection />
       <ProjectsShowcase />
+      <Hiring/>
+
       <Blog />
       <CTASection />
     </div>
