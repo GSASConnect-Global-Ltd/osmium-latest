@@ -117,7 +117,7 @@ jobs:
           EOF
           
           # Add secret environment variables
-          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY_VPS }}" >> .env.local
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env.local
           
           echo "🏗️ Building application..."
           npm run build
