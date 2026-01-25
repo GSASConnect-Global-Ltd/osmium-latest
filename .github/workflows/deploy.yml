@@ -967,7 +967,10 @@ jobs:
             EOF
             
             # Build
-            npm run build
+            timeout 300 npm run build || {
+              echo "⚠️ Build timed out, trying with less memory..."
+              NODE_OPTIONS="--max-old-space-size=4096" npm run build
+            }
             
             # Start with PM2
             pm2 delete orrelng.com 2>/dev/null || true
