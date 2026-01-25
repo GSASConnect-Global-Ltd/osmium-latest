@@ -872,19 +872,23 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -p 22222 ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
 
+      - name: Test SSH connection
+        run: |
+          ssh -p 22222 -T ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "echo 'SSH connection successful'"
+
       - name: Deploy to VPS
         run: |
-          ssh -p 22222 ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "
+          ssh -p 22222 ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} '
             set -e
+            echo "🚀 Starting deployment..."
             
-            echo '🚀 Deploying orrelng.com...'
+            DEPLOY_DIR="/var/www/orrelng.com"
             
             # Setup directory
-            DEPLOY_DIR=\"/var/www/orrelng.com\"
-            sudo mkdir -p \"\$DEPLOY_DIR\"
-            sudo chown -R $USER:$USER \"\$DEPLOY_DIR\"
+            sudo mkdir -p "$DEPLOY_DIR"
+            sudo chown -R $USER:$USER "$DEPLOY_DIR"
             
-            cd \"\$DEPLOY_DIR\"
+            cd "$DEPLOY_DIR"
             
             # Get latest code
             if [ -d .git ]; then
@@ -896,19 +900,19 @@ jobs:
             # Install dependencies
             npm ci
             
-            # Create .env.local with OpenAI API key
-            echo 'PORT=3000' > .env.local
-            echo 'NODE_ENV=production' >> .env.local
-            echo 'OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}' >> .env.local
+            # Create environment file
+            cat > .env.local << END
+            PORT=3000
+            NODE_ENV=production
+            END
             
             # Build
-            NODE_ENV=production npm run build
+            npm run build
             
             # Start with PM2
             pm2 delete orrelng.com 2>/dev/null || true
-            pm2 start npm --name \"orrelng.com\" -- start
+            pm2 start npm --name "orrelng.com" -- start -- -p 8006
             
-            sudo systemctl reload nginx
             
-            echo '✅ Deployment complete!'
-          "
+            echo "✅ Deployment complete!"
+          '
