@@ -169,12 +169,124 @@
 #           pm2 restart ecosystem.config.js
 
 
+# name: Deploy Frontend to VPS
+
+# on:
+#   push:
+#     branches:
+#       - main  # Only main branch
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Set up SSH
+#         uses: webfactory/ssh-agent@v0.7.0
+#         with:
+#           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+#       - name: Add VPS to known_hosts
+#         run: |
+#           ssh-keyscan -p 22222 ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+
+#       - name: Deploy to VPS
+#         run: |
+#           set -e
+          
+#           ssh -p 22222 ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "
+#             set -e
+            
+#             echo '🚀 ========== STARTING DEPLOYMENT =========='
+            
+#             # Changed to orrelng.com directory
+#             DEPLOY_DIR=\"/var/www/orrelng.com\"
+            
+#             if [ ! -d \"\$DEPLOY_DIR\" ]; then
+#               echo '📁 Creating deployment directory...'
+#               sudo mkdir -p \"\$DEPLOY_DIR\"
+#               # sudo chown -R gsas-admin:gsas-admin /var/www/orrelng.com
+#               # sudo chmod 755 /var/www/orrelng.com
+#               sudo chown -R $USER:$USER \"\$DEPLOY_DIR\"
+#             fi
+            
+#             cd \"\$DEPLOY_DIR\"
+            
+#             echo '📂 Current directory:'
+#             pwd
+            
+#             # Initialize git if needed
+#             if [ ! -d .git ]; then
+#               echo '🔧 Initializing git repository...'
+#               git init
+#               git remote add origin https://github.com/${{ github.repository }}.git
+#             fi
+            
+#             # Fetch and reset to latest code (always main branch)
+#             echo '⬇️ Fetching latest code from main branch...'
+#             git fetch origin
+#             git reset --hard origin/main  # Always use main branch
+            
+#             echo '📝 Latest commit:'
+#             git log --oneline -1
+            
+#             # ===== CRITICAL FIX: INSTALL DEPENDENCIES BEFORE CHECKING FILES =====
+#             echo '📦 Installing ALL dependencies...'
+#             npm ci
+            
+#             echo '🔍 Checking TypeScript configuration...'
+#             if [ -f tsconfig.json ]; then
+#               echo '📄 tsconfig.json found:'
+#               cat tsconfig.json | grep -A 10 '"paths"'
+#             elif [ -f jsconfig.json ]; then
+#               echo '📄 jsconfig.json found:'
+#               cat jsconfig.json | grep -A 10 '"paths"'
+#             else
+#               echo '⚠️ No TypeScript/JavaScript config found!'
+#             fi
+            
+#             echo '🔍 Checking if @/lib directory exists...'
+#             find . -type d -name "lib" | head -5
+#             ls -la ./lib/ 2>/dev/null || echo 'No ./lib directory'
+#             ls -la ./src/lib/ 2>/dev/null || echo 'No ./src/lib directory'
+            
+#             echo '🚀 Deploying PRODUCTION environment (main branch only)...'
+            
+#             # SIMPLIFIED: Use only .env file
+#             if [ -f .env ]; then
+#               echo '📄 Using .env file'
+#               cp .env .env.local
+#             else
+#               echo '⚠️ Warning: .env file not found!'
+#             fi
+            
+#             # Build for production
+#             echo '🏗️ Building application for production...'
+#             NODE_ENV=production npm run build  # Assuming your build script is 'build'
+            
+#             # Restart PM2 process with orrelng.com name
+#             echo '🔄 Managing PM2 production process...'
+#             pm2 delete orrelng.com 2>/dev/null || true
+#             pm2 start npm --name \"orrelng.com\" -- run start -- -p 8006  # Assuming start script is 'start'
+            
+#             pm2 save
+            
+#             echo '🌐 Reloading nginx for orrelng.com...'
+#             sudo systemctl reload nginx
+            
+#             echo '✅ ========== DEPLOYMENT COMPLETE =========='
+#           "
+
+
 name: Deploy Frontend to VPS
 
 on:
   push:
     branches:
-      - main  # Only main branch
+      - main
 
 jobs:
   deploy:
@@ -189,91 +301,26 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Add VPS to known_hosts
+      - name: Update Code
         run: |
-          ssh-keyscan -p 22222 ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+          ssh -p 22222 -o ServerAliveInterval=30 gsas-admin@${{ secrets.VPS_IP }} "
+            cd /var/www/orrelng.com || (sudo mkdir -p /var/www/orrelng.com && sudo chown gsas-admin:gsas-admin /var/www/orrelng.com && cd /var/www/orrelng.com)
+            git pull origin main || git clone https://github.com/${{ github.repository }}.git .
+          "
 
-      - name: Deploy to VPS
+      - name: Install and Build
         run: |
-          set -e
-          
-          ssh -p 22222 ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "
-            set -e
-            
-            echo '🚀 ========== STARTING DEPLOYMENT =========='
-            
-            # Changed to orrelng.com directory
-            DEPLOY_DIR=\"/var/www/orrelng.com\"
-            
-            if [ ! -d \"\$DEPLOY_DIR\" ]; then
-              echo '📁 Creating deployment directory...'
-              sudo mkdir -p \"\$DEPLOY_DIR\"
-              sudo chown -R $USER:$USER \"\$DEPLOY_DIR\"
-            fi
-            
-            cd \"\$DEPLOY_DIR\"
-            
-            echo '📂 Current directory:'
-            pwd
-            
-            # Initialize git if needed
-            if [ ! -d .git ]; then
-              echo '🔧 Initializing git repository...'
-              git init
-              git remote add origin https://github.com/${{ github.repository }}.git
-            fi
-            
-            # Fetch and reset to latest code (always main branch)
-            echo '⬇️ Fetching latest code from main branch...'
-            git fetch origin
-            git reset --hard origin/main  # Always use main branch
-            
-            echo '📝 Latest commit:'
-            git log --oneline -1
-            
-            # ===== CRITICAL FIX: INSTALL DEPENDENCIES BEFORE CHECKING FILES =====
-            echo '📦 Installing ALL dependencies...'
-            npm ci
-            
-            echo '🔍 Checking TypeScript configuration...'
-            if [ -f tsconfig.json ]; then
-              echo '📄 tsconfig.json found:'
-              cat tsconfig.json | grep -A 10 '"paths"'
-            elif [ -f jsconfig.json ]; then
-              echo '📄 jsconfig.json found:'
-              cat jsconfig.json | grep -A 10 '"paths"'
-            else
-              echo '⚠️ No TypeScript/JavaScript config found!'
-            fi
-            
-            echo '🔍 Checking if @/lib directory exists...'
-            find . -type d -name "lib" | head -5
-            ls -la ./lib/ 2>/dev/null || echo 'No ./lib directory'
-            ls -la ./src/lib/ 2>/dev/null || echo 'No ./src/lib directory'
-            
-            echo '🚀 Deploying PRODUCTION environment (main branch only)...'
-            
-            # SIMPLIFIED: Use only .env file
-            if [ -f .env ]; then
-              echo '📄 Using .env file'
-              cp .env .env.local
-            else
-              echo '⚠️ Warning: .env file not found!'
-            fi
-            
-            # Build for production
-            echo '🏗️ Building application for production...'
-            NODE_ENV=production npm run build  # Assuming your build script is 'build'
-            
-            # Restart PM2 process with orrelng.com name
-            echo '🔄 Managing PM2 production process...'
+          ssh -p 22222 -o ServerAliveInterval=30 gsas-admin@${{ secrets.VPS_IP }} "
+            cd /var/www/orrelng.com
+            npm install --no-optional
+            npm run build
+          "
+
+      - name: Start Application
+        run: |
+          ssh -p 22222 -o ServerAliveInterval=30 gsas-admin@${{ secrets.VPS_IP }} "
+            cd /var/www/orrelng.com
             pm2 delete orrelng.com 2>/dev/null || true
-            pm2 start npm --name \"orrelng.com\" -- run start -- -p 8006  # Assuming start script is 'start'
-            
-            pm2 save
-            
-            echo '🌐 Reloading nginx for orrelng.com...'
+            PORT=8006 pm2 start npm --name 'orrelng.com' -- start
             sudo systemctl reload nginx
-            
-            echo '✅ ========== DEPLOYMENT COMPLETE =========='
           "
