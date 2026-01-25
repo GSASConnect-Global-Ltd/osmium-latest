@@ -133,40 +133,40 @@
 #           echo "✅ Deployment completed successfully!"
 #           echo "📊 Check status with: pm2 status"
 
-# name: Deploy to Production
+name: Deploy to Production
 
-# on:
-#   push:
-#     branches: [ main ]
+on:
+  push:
+    branches: [ main ]
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
     
-#     steps:
-#     - uses: actions/checkout@v3
+    steps:
+    - uses: actions/checkout@v3
     
-#     - name: Deploy via SSH
-#       uses: appleboy/ssh-action@v0.1.6
-#       with:
-#         host: ${{ secrets.VPS_IP }}
-#         username: ${{ secrets.VPS_USER }}
-#         key: ${{ secrets.SSH_PRIVATE_KEY }}
-#         script: |
-#           cd /var/www/orrel-app
-#           git pull origin main
-#           npm ci --omit=dev
+    - name: Deploy via SSH
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.VPS_IP }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/orrel-app
+          git pull origin main
+          npm ci --omit=dev
           
-#           # Create .env.local with OpenAI key
-#           cat > .env.local << EOF
-#           NODE_ENV=production
-#           PORT=8006
-#           NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
-#           OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-#           EOF
+          # Create .env.local with OpenAI key
+          cat > .env.local << EOF
+          NODE_ENV=production
+          PORT=8006
+          # NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
+          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          EOF
           
-#           npm run build
-#           pm2 restart ecosystem.config.js
+          npm run build
+          pm2 restart ecosystem.config.js
 
 
 # name: Deploy Frontend to VPS
@@ -535,64 +535,64 @@
 #             echo '✅ Deployment complete!'
 #           "
 
-name: Deploy Frontend to VPS
+# name: Deploy Frontend to VPS
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#       - name: Set up SSH
+#         uses: webfactory/ssh-agent@v0.7.0
+#         with:
+#           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Add VPS to known_hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -p 22222 ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+#       - name: Add VPS to known_hosts
+#         run: |
+#           mkdir -p ~/.ssh
+#           ssh-keyscan -p 22222 ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
 
-      - name: Deploy
-        run: |
-          # Single SSH command with simple commands
-          ssh -p 22222 -o ServerAliveInterval=30 gsas-admin@${{ secrets.VPS_IP }} "
-            set -e
-            echo '🚀 Starting deployment...'
+#       - name: Deploy
+#         run: |
+#           # Single SSH command with simple commands
+#           ssh -p 22222 -o ServerAliveInterval=30 gsas-admin@${{ secrets.VPS_IP }} "
+#             set -e
+#             echo '🚀 Starting deployment...'
             
-            # Setup
-            sudo mkdir -p /var/www/orrelng.com
-            sudo chown -R gsas-admin:gsas-admin /var/www/orrelng.com
-            cd /var/www/orrelng.com
+#             # Setup
+#             sudo mkdir -p /var/www/orrelng.com
+#             sudo chown -R gsas-admin:gsas-admin /var/www/orrelng.com
+#             cd /var/www/orrelng.com
             
-            # Update code
-            if [ -d .git ]; then
-              git pull origin main
-            else
-              git clone https://github.com/${{ github.repository }}.git .
-            fi
+#             # Update code
+#             if [ -d .git ]; then
+#               git pull origin main
+#             else
+#               git clone https://github.com/${{ github.repository }}.git .
+#             fi
             
-            # Install
-            npm install --legacy-peer-deps
+#             # Install
+#             npm install --legacy-peer-deps
             
-            # Environment
-            echo 'PORT=8006' > .env
-            echo 'NODE_ENV=production' >> .env
-            cp .env .env.local
+#             # Environment
+#             echo 'PORT=8006' > .env
+#             echo 'NODE_ENV=production' >> .env
+#             cp .env .env.local
             
-            # Build
-            NODE_ENV=production npm run build
+#             # Build
+#             NODE_ENV=production npm run build
             
-            # Start
-            pm2 delete orrelng.com 2>/dev/null || true
-            pm2 start npm --name 'orrelng.com' -- start -- -p 8006
+#             # Start
+#             pm2 delete orrelng.com 2>/dev/null || true
+#             pm2 start npm --name 'orrelng.com' -- start -- -p 8006
             
-            echo '✅ Done!'
-          "
+#             echo '✅ Done!'
+#           "
