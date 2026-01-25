@@ -961,7 +961,7 @@ jobs:
             
             # Create .env.local with OpenAI key from secret
             cat > .env.local << 'EOF'
-            PORT=3000
+            PORT=8006
             NODE_ENV=production
             OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
             EOF
@@ -971,7 +971,7 @@ jobs:
             
             # Start with PM2
             pm2 delete orrelng.com 2>/dev/null || true
-            pm2 start npm --name "orrelng.com" -- start
+            pm2 start npm --name "orrelng.com" -- start -- -p 8006
             
             # Reload nginx
             sudo systemctl reload nginx
