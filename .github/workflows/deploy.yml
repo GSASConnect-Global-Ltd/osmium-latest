@@ -1032,7 +1032,7 @@ jobs:
             
             # Install dependencies
             echo '📦 Installing dependencies...'
-            npm ci
+            npm install
             
             # Create environment file (port 8006 as shown in your logs)
             echo '🔧 Creating .env.local...'
