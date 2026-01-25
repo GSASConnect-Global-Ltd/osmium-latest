@@ -133,41 +133,41 @@
 #           echo "✅ Deployment completed successfully!"
 #           echo "📊 Check status with: pm2 status"
 
-# name: Deploy to Production
+name: Deploy to Production
 
-# on:
-#   push:
-#     branches: [ main ]
+on:
+  push:
+    branches: [ main ]
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
     
-#     steps:
-#     - uses: actions/checkout@v3
+    steps:
+    - uses: actions/checkout@v3
     
-#     - name: Deploy via SSH
-#       uses: appleboy/ssh-action@v0.1.6
-#       with:
-#         host: ${{ secrets.VPS_IP }}
-#         username: ${{ secrets.VPS_USER }}
-#         port: 22222
-#         key: ${{ secrets.SSH_PRIVATE_KEY }}
-#         script: |
-#           cd /var/www/orrel-app
-#           git pull origin main
-#           npm ci --omit=dev
+    - name: Deploy via SSH
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.VPS_IP }}
+        username: ${{ secrets.VPS_USER }}
+        port: 22222
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/orrel-app
+          git pull origin main
+          npm ci --omit=dev
           
-#           # Create .env.local with OpenAI key
-#           cat > .env.local << EOF
-#           NODE_ENV=production
-#           PORT=8006
-#           # NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
-#           OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-#           EOF
+          # Create .env.local with OpenAI key
+          cat > .env.local << EOF
+          NODE_ENV=production
+          PORT=8006
+          # NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
+          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          EOF
           
-#           npm run build
-#           pm2 restart ecosystem.config.js
+          npm run build
+          pm2 restart ecosystem.config.js
 
 # name: Deploy to Production
 
@@ -1080,50 +1080,50 @@
 #             echo '🌍 App should be running on port 8006'
 #           "
 
-name: Deploy to Production
+# name: Deploy to Production
 
-on:
-  push:
-    branches: [ main ]
+# on:
+#   push:
+#     branches: [ main ]
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
     
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
+#     - name: Setup Node.js
+#       uses: actions/setup-node@v3
+#       with:
+#         node-version: '18'
+#         cache: 'npm'
 
-    # - name: Install dependencies
-    #   run: npm ci
+#     # - name: Install dependencies
+#     #   run: npm ci
 
-    # - name: Build application
-    #   run: npm run build
+#     # - name: Build application
+#     #   run: npm run build
 
-    - name: Deploy to VPS
-      uses: appleboy/ssh-action@v0.1.6
-      with:
-        host: ${{ secrets.VPS_IP }}
-        username: ${{ secrets.VPS_USER }}
-        port: 22222
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          # Export OpenAI API key as environment variable
-          export OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}"
+#     - name: Deploy to VPS
+#       uses: appleboy/ssh-action@v0.1.6
+#       with:
+#         host: ${{ secrets.VPS_IP }}
+#         username: ${{ secrets.VPS_USER }}
+#         port: 22222
+#         key: ${{ secrets.SSH_PRIVATE_KEY }}
+#         script: |
+#           # Export OpenAI API key as environment variable
+#           export OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}"
           
-          # Go to deployment directory
-          cd /var/www/orrelng.com
+#           # Go to deployment directory
+#           cd /var/www/orrelng.com
           
-          # Make sure deploy.sh is executable
-          chmod +x deploy.sh
+#           # Make sure deploy.sh is executable
+#           chmod +x deploy.sh
           
-          # Run deployment script
-          ./deploy.sh
+#           # Run deployment script
+#           ./deploy.sh
           
-          echo "🌐 Deployment complete! App running on port 8006"
+#           echo "🌐 Deployment complete! App running on port 8006"
