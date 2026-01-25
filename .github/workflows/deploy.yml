@@ -325,6 +325,70 @@
 #             sudo systemctl reload nginx
 #           "
 
+# name: Deploy Frontend to VPS
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Set up SSH
+#         uses: webfactory/ssh-agent@v0.7.0
+#         with:
+#           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+#       - name: Deploy
+#         run: |
+#           # Add to known_hosts
+#           mkdir -p ~/.ssh
+#           ssh-keyscan -p 22222 ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+          
+#           # Deploy in one go with keepalive
+#           ssh -p 22222 -o ServerAliveInterval=30 gsas-admin@${{ secrets.VPS_IP }} "
+#             set -e
+            
+#             echo '🚀 Starting deployment...'
+            
+#             # Setup directory
+#             sudo mkdir -p /var/www/orrelng.com
+#             sudo chown -R gsas-admin:gsas-admin /var/www/orrelng.com
+            
+#             cd /var/www/orrelng.com
+            
+#             # Update code
+#             if [ -d .git ]; then
+#               git pull origin main
+#             else
+#               git clone https://github.com/${{ github.repository }}.git .
+#             fi
+            
+#             # Install and build
+#             echo '📦 Installing dependencies...'
+#             npm install --no-optional
+            
+#             echo '🏗️ Building...'
+#             npm run build
+            
+#             # Start app
+#             echo '🔄 Starting application...'
+#             pm2 delete orrelng.com 2>/dev/null || true
+#             PORT=8006 pm2 start npm --name 'orrelng.com' -- start
+#             pm2 save
+            
+#             # Reload nginx
+#             sudo systemctl reload nginx
+            
+#             echo '✅ Deployment complete!'
+#           "
+
 name: Deploy Frontend to VPS
 
 on:
@@ -345,46 +409,58 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Deploy
+      - name: Add VPS to known_hosts
         run: |
-          # Add to known_hosts
           mkdir -p ~/.ssh
           ssh-keyscan -p 22222 ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
-          
-          # Deploy in one go with keepalive
+
+      - name: Deploy
+        run: |
           ssh -p 22222 -o ServerAliveInterval=30 gsas-admin@${{ secrets.VPS_IP }} "
             set -e
             
             echo '🚀 Starting deployment...'
             
             # Setup directory
-            sudo mkdir -p /var/www/orrelng.com
-            sudo chown -R gsas-admin:gsas-admin /var/www/orrelng.com
+            DEPLOY_DIR=\"/var/www/orrelng.com\"
+            sudo mkdir -p \"\$DEPLOY_DIR\"
+            sudo chown -R gsas-admin:gsas-admin \"\$DEPLOY_DIR\"
             
-            cd /var/www/orrelng.com
+            cd \"\$DEPLOY_DIR\"
             
-            # Update code
-            if [ -d .git ]; then
-              git pull origin main
-            else
-              git clone https://github.com/${{ github.repository }}.git .
-            fi
+            echo '🗑️ Cleaning previous build...'
+            rm -rf .next node_modules package-lock.json
             
-            # Install and build
-            echo '📦 Installing dependencies...'
-            npm install --no-optional
+            echo '📥 Cloning fresh code...'
+            git clone https://github.com/${{ github.repository }}.git . 2>/dev/null || git pull origin main
             
-            echo '🏗️ Building...'
-            npm run build
+            echo '📦 Installing dependencies with exact versions...'
+            # Force clean install
+            npm cache clean --force
+            npm install --legacy-peer-deps
             
-            # Start app
-            echo '🔄 Starting application...'
+            echo '🔧 Checking architecture...'
+            echo \"Node version: \$(node --version)\"
+            echo \"NPM version: \$(npm --version)\"
+            echo \"Architecture: \$(uname -m)\"
+            echo \"Kernel: \$(uname -s)\"
+            
+            echo '🏗️ Building for production on VPS...'
+            # Clear Next.js cache
+            rm -rf /home/gsas-admin/.cache/next-swc
+            
+            # Set environment and build
+            NODE_ENV=production npm run build
+            
+            echo '✅ Build complete!'
+            
+            echo '🔄 Restarting application...'
             pm2 delete orrelng.com 2>/dev/null || true
-            PORT=8006 pm2 start npm --name 'orrelng.com' -- start
+            PORT=3000 pm2 start npm --name 'orrelng.com' -- start
             pm2 save
             
-            # Reload nginx
+            echo '🌐 Reloading nginx...'
             sudo systemctl reload nginx
             
-            echo '✅ Deployment complete!'
+            echo '🎉 Deployment complete!'
           "
