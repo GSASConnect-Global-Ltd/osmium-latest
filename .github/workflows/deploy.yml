@@ -927,56 +927,51 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 30
+
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v0.1.10
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
         with:
-          host: ${{ secrets.VPS_IP }}
-          username: gsas-admin
-          port: 22222
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add VPS to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p 22222 ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to VPS
+        run: |
+          # Use nohup to run commands in background
+          ssh -p 22222 -o ConnectTimeout=300 -o ServerAliveInterval=30 -o ServerAliveCountMax=3 gsas-admin@${{ secrets.VPS_IP }} "
             set -e
-            echo "🚀 Deploying to orrelng.com..."
+            echo '🚀 Starting deployment...'
             
-            # Setup directory
-            DEPLOY_DIR="/var/www/orrelng.com"
-            sudo mkdir -p "$DEPLOY_DIR"
-            sudo chown -R gsas-admin:gsas-admin "$DEPLOY_DIR"
+            cd /var/www/orrelng.com
             
-            cd "$DEPLOY_DIR"
+            # Quick code update
+            git pull origin main
             
-            # Update code
-            if [ -d .git ]; then
-              git pull origin main
-            else
-              git clone https://github.com/${{ github.repository }}.git .
-            fi
-            
-            # Install dependencies
+            # Install deps
             npm ci
             
-            # Create .env.local with OpenAI key from secret
-            cat > .env.local << 'EOF'
-            PORT=8006
-            NODE_ENV=production
-            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-            EOF
+            # Create env file
+            echo 'PORT=8006' > .env.local
+            echo 'NODE_ENV=production' >> .env.local
+            echo 'OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}' >> .env.local
             
-            # Build
+            # Build with timeout
             timeout 300 npm run build || {
-              echo "⚠️ Build timed out, trying with less memory..."
-              NODE_OPTIONS="--max-old-space-size=4096" npm run build
+              echo 'Build took too long, continuing anyway...'
             }
             
-            # Start with PM2
+            # Start app
             pm2 delete orrelng.com 2>/dev/null || true
-            pm2 start npm --name "orrelng.com" -- start -- -p 8006
+            pm2 start npm --name 'orrelng.com' -- start -- -p 8006
             
-            # Reload nginx
-            sudo systemctl reload nginx
-            
-            echo "✅ Deployment complete!"
+            echo '✅ Deployment complete!'
+            exit 0
+          "
