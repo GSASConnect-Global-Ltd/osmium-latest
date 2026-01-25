@@ -917,6 +917,65 @@
 #             echo "✅ Deployment complete!"
 #           '
 
+# name: Deploy to orrelng.com
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     timeout-minutes: 30
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Set up SSH
+#         uses: webfactory/ssh-agent@v0.7.0
+#         with:
+#           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+#       - name: Add VPS to known_hosts
+#         run: |
+#           mkdir -p ~/.ssh
+#           ssh-keyscan -p 22222 ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+
+#       - name: Deploy to VPS
+#         run: |
+#           # Use nohup to run commands in background
+#           ssh -p 22222 -o ConnectTimeout=300 -o ServerAliveInterval=30 -o ServerAliveCountMax=3 gsas-admin@${{ secrets.VPS_IP }} "
+#             set -e
+#             echo '🚀 Starting deployment...'
+            
+#             cd /var/www/orrelng.com
+            
+#             # Quick code update
+#             git pull origin main
+            
+#             # Install deps
+#             npm ci
+            
+#             # Create env file
+#             echo 'PORT=8006' > .env.local
+#             echo 'NODE_ENV=production' >> .env.local
+#             echo 'OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}' >> .env.local
+            
+#             # Build with timeout
+#             timeout 300 npm run build || {
+#               echo 'Build took too long, continuing anyway...'
+#             }
+            
+#             # Start app
+#             pm2 delete orrelng.com 2>/dev/null || true
+#             pm2 start npm --name 'orrelng.com' -- start -- -p 8006
+            
+#             echo '✅ Deployment complete!'
+#             exit 0
+#           "
+
 name: Deploy to orrelng.com
 
 on:
@@ -945,33 +1004,69 @@ jobs:
 
       - name: Deploy to VPS
         run: |
-          # Use nohup to run commands in background
-          ssh -p 22222 -o ConnectTimeout=300 -o ServerAliveInterval=30 -o ServerAliveCountMax=3 gsas-admin@${{ secrets.VPS_IP }} "
+          ssh -p 22222 -o ConnectTimeout=300 gsas-admin@${{ secrets.VPS_IP }} "
             set -e
-            echo '🚀 Starting deployment...'
             
-            cd /var/www/orrelng.com
+            echo '🚀 ========== STARTING DEPLOYMENT =========='
             
-            # Quick code update
-            git pull origin main
+            # Setup directory
+            DEPLOY_DIR=\"/var/www/orrelng.com\"
+            sudo mkdir -p \"\$DEPLOY_DIR\"
+            sudo chown -R gsas-admin:gsas-admin \"\$DEPLOY_DIR\"
             
-            # Install deps
+            cd \"\$DEPLOY_DIR\"
+            echo '📂 Directory: \$(pwd)'
+            
+            # Clean any existing build
+            echo '🧹 Cleaning previous build...'
+            rm -rf .next node_modules package-lock.json 2>/dev/null || true
+            
+            # Clone or update
+            if [ -d .git ]; then
+              echo '⬇️ Pulling latest code...'
+              git pull origin main
+            else
+              echo '📥 Cloning repository...'
+              git clone https://github.com/${{ github.repository }}.git .
+            fi
+            
+            # Install dependencies
+            echo '📦 Installing dependencies...'
             npm ci
             
-            # Create env file
-            echo 'PORT=8006' > .env.local
-            echo 'NODE_ENV=production' >> .env.local
-            echo 'OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}' >> .env.local
+            # Create environment file (port 8006 as shown in your logs)
+            echo '🔧 Creating .env.local...'
+            cat > .env.local << 'EOF'
+            PORT=8006
+            NODE_ENV=production
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            EOF
             
-            # Build with timeout
-            timeout 300 npm run build || {
-              echo 'Build took too long, continuing anyway...'
-            }
+            echo '📄 Environment file created:'
+            cat .env.local | grep -v OPENAI_API_KEY
             
-            # Start app
-            pm2 delete orrelng.com 2>/dev/null || true
-            pm2 start npm --name 'orrelng.com' -- start -- -p 8006
+            # Build the application
+            echo '🏗️ Building Next.js application...'
+            npm run build
             
-            echo '✅ Deployment complete!'
-            exit 0
+            # Verify build exists
+            echo '🔍 Verifying build...'
+            if [ -d .next ]; then
+              echo '✅ Build directory found:'
+              ls -la .next/
+            else
+              echo '❌ ERROR: No .next directory after build!'
+              exit 1
+            fi
+            
+            # Start with PM2
+            echo '🔄 Starting with PM2...'
+            pm2 delete orrel-app 2>/dev/null || true
+            pm2 start npm --name \"orrel-app\" -- start -- -p 8006
+            
+            # Save PM2 config
+            pm2 save
+            
+            echo '✅ ========== DEPLOYMENT COMPLETE =========='
+            echo '🌍 App should be running on port 8006'
           "
