@@ -847,7 +847,77 @@
 #             echo '✅ ========== DEPLOYMENT COMPLETE =========='
 #           "
 
-name: Deploy Frontend to VPS
+# name: Deploy Frontend to VPS
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Set up SSH
+#         uses: webfactory/ssh-agent@v0.7.0
+#         with:
+#           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+#       - name: Add VPS to known_hosts
+#         run: |
+#           mkdir -p ~/.ssh
+#           ssh-keyscan -p 22222 ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+
+#       - name: Test SSH connection
+#         run: |
+#           ssh -p 22222 -T ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "echo 'SSH connection successful'"
+
+#       - name: Deploy to VPS
+#         run: |
+#           ssh -p 22222 ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} '
+#             set -e
+#             echo "🚀 Starting deployment..."
+            
+#             DEPLOY_DIR="/var/www/orrelng.com"
+            
+#             # Setup directory
+#             sudo mkdir -p "$DEPLOY_DIR"
+#             sudo chown -R $USER:$USER "$DEPLOY_DIR"
+            
+#             cd "$DEPLOY_DIR"
+            
+#             # Get latest code
+#             if [ -d .git ]; then
+#               git pull origin main
+#             else
+#               git clone https://github.com/${{ github.repository }}.git .
+#             fi
+            
+#             # Install dependencies
+#             npm ci
+            
+#             # Create environment file
+#             cat > .env.local << END
+#             PORT=3000
+#             NODE_ENV=production
+#             END
+            
+#             # Build
+#             npm run build
+            
+#             # Start with PM2
+#             pm2 delete orrelng.com 2>/dev/null || true
+#             pm2 start npm --name "orrelng.com" -- start -- -p 8006
+            
+            
+#             echo "✅ Deployment complete!"
+#           '
+
+name: Deploy to orrelng.com
 
 on:
   push:
@@ -857,40 +927,29 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.7.0
+      - uses: actions/checkout@v3
+      
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.10
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Add VPS to known_hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -p 22222 ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
-
-      - name: Test SSH connection
-        run: |
-          ssh -p 22222 -T ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "echo 'SSH connection successful'"
-
-      - name: Deploy to VPS
-        run: |
-          ssh -p 22222 ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} '
+          host: ${{ secrets.VPS_IP }}
+          username: gsas-admin
+          port: 22222
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
             set -e
-            echo "🚀 Starting deployment..."
-            
-            DEPLOY_DIR="/var/www/orrelng.com"
+            echo "🚀 Deploying to orrelng.com..."
             
             # Setup directory
+            DEPLOY_DIR="/var/www/orrelng.com"
             sudo mkdir -p "$DEPLOY_DIR"
-            sudo chown -R $USER:$USER "$DEPLOY_DIR"
+            sudo chown -R gsas-admin:gsas-admin "$DEPLOY_DIR"
             
             cd "$DEPLOY_DIR"
             
-            # Get latest code
+            # Update code
             if [ -d .git ]; then
               git pull origin main
             else
@@ -900,19 +959,21 @@ jobs:
             # Install dependencies
             npm ci
             
-            # Create environment file
-            cat > .env.local << END
+            # Create .env.local with OpenAI key from secret
+            cat > .env.local << 'EOF'
             PORT=3000
             NODE_ENV=production
-            END
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            EOF
             
             # Build
             npm run build
             
             # Start with PM2
             pm2 delete orrelng.com 2>/dev/null || true
-            pm2 start npm --name "orrelng.com" -- start -- -p 8006
+            pm2 start npm --name "orrelng.com" -- start
             
+            # Reload nginx
+            sudo systemctl reload nginx
             
             echo "✅ Deployment complete!"
-          '
