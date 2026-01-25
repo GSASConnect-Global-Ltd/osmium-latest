@@ -211,6 +211,63 @@
 #           pm2 restart ecosystem.config.js
 #         "
 
+# name: Deploy to Production
+
+# on:
+#   push:
+#     branches: [ main ]
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#     - uses: actions/checkout@v3
+    
+#     - name: Setup SSH
+#       uses: webfactory/ssh-agent@v0.7.0
+#       with:
+#         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    
+#     - name: Add VPS to known_hosts
+#       run: |
+#         mkdir -p ~/.ssh
+#         ssh-keyscan -p 22222 ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+    
+#     - name: Deploy
+#       run: |
+#         ssh -p 22222 ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "
+#           set -e
+#           cd /var/www/orrel-app
+          
+#           echo 'Resetting git changes...'
+#           git reset --hard HEAD
+#           git clean -fd
+          
+#           echo 'Pulling latest code...'
+#           git fetch origin
+#           git checkout main
+#           git reset --hard origin/main
+          
+#           echo 'Installing dependencies...'
+#           npm ci --omit=dev
+          
+#           echo 'Creating environment file...'
+#           # Simple echo instead of cat with EOF
+#           echo 'NODE_ENV=production' > .env.local
+#           echo 'PORT=8006' >> .env.local
+#           echo 'OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}' >> .env.local
+          
+#           echo 'Building application...'
+#           npm run build
+          
+#           echo 'Restarting PM2...'
+#           pm2 restart ecosystem.config.js
+          
+#           echo '✅ Deployment complete!'
+#         "
+
+
 name: Deploy to Production
 
 on:
@@ -249,11 +306,11 @@ jobs:
           git checkout main
           git reset --hard origin/main
           
-          echo 'Installing dependencies...'
-          npm ci --omit=dev
+          echo 'Installing dependencies (including dev dependencies)...'
+          # Remove --omit=dev to include TypeScript
+          npm ci
           
           echo 'Creating environment file...'
-          # Simple echo instead of cat with EOF
           echo 'NODE_ENV=production' > .env.local
           echo 'PORT=8006' >> .env.local
           echo 'OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}' >> .env.local
