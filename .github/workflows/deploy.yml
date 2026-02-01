@@ -1177,16 +1177,17 @@ jobs:
           git reset --hard origin/main
           git clean -fd
           
-          echo '📦 Installing dependencies...'
-          npm ci --omit=dev
+          # echo '📦 Installing dependencies...'
+          # npm ci --omit=dev
           
-          echo '🏗️ Building application...'
-          npm run build
+          # echo '🏗️ Building application...'
+          # npm run build
           
           echo '🔄 Restarting PM2...'
-          pm2 delete orrel-app 2>/dev/null || true
-          pm2 start ecosystem.config.js
-          pm2 save
+          cd /var/www/orrel-app && ./deploy.sh
+          # pm2 delete orrel-app 2>/dev/null || true
+          # pm2 start ecosystem.config.js
+          # pm2 save
           
           echo '✅ Deployment completed on VPS!'
         "
