@@ -1,5 +1,4 @@
 # name: Deploy to Production
-
 # on:
 #   push:
 #     branches: [ main ]
@@ -1129,67 +1128,282 @@
 #           echo "🌐 Deployment complete! App running on port 8006"
 
 
-name: Deploy to Production
+# name: Deploy to Production
+
+# on:
+#   push:
+#     branches: [ main ]
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v3
+
+#     - name: Setup Node.js
+#       uses: actions/setup-node@v3
+#       with:
+#         node-version: '18'
+#         cache: 'npm'
+
+#     - name: Set up SSH with custom port
+#       uses: webfactory/ssh-agent@v0.7.0
+#       with:
+#         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+#     - name: Add VPS to known_hosts with port 22222
+#       run: |
+#         mkdir -p ~/.ssh
+#         chmod 700 ~/.ssh
+#         # Add with custom port syntax
+#         ssh-keyscan -p 22222 -H ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+#         chmod 600 ~/.ssh/known_hosts
+
+#     - name: Deploy to VPS via SSH
+#       run: |
+#         echo "🚀 Deploying via SSH port 22222..."
+        
+#         # Deploy using SSH with custom port
+#         ssh -p 22222 -o ConnectTimeout=30 -o ServerAliveInterval=60 \
+#           ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "
+#           echo '📁 Changing to app directory...'
+#           cd /var/www/orrel-app
+          
+#           echo '📥 Pulling latest code...'
+#           git fetch origin
+#           git reset --hard origin/main
+#           git clean -fd
+          
+#           # echo '📦 Installing dependencies...'
+#           # npm ci --omit=dev
+          
+#           # echo '🏗️ Building application...'
+#           # npm run build
+          
+#           echo '🔄 Restarting PM2...'
+#           cd /var/www/orrel-app && ./deploy.sh
+#           # pm2 delete orrel-app 2>/dev/null || true
+#           # pm2 start ecosystem.config.js
+#           # pm2 save
+          
+#           echo '✅ Deployment completed on VPS!'
+#         "
+        
+#         echo "🎉 GitHub Actions deployment completed!"
+
+
+#         # Clean up any corrupted node_modules
+# if [ -d "node_modules" ]; then
+#     echo "🧹 Cleaning node_modules..."
+#     rm -rf node_modules
+# fi
+
+# # Clean npm cache
+# echo "🧹 Cleaning npm cache..."
+# npm cache clean --force
+
+name: Deploy Next.js Frontend
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+    paths:
+      - 'orrel-app/**'  # Only deploy when frontend changes
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: production
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18'
+        node-version: '20'  # Match your server's Node version
         cache: 'npm'
+        cache-dependency-path: 'orrel-app/package-lock.json'
 
-    - name: Set up SSH with custom port
+    - name: Build and test locally (optional)
+      run: |
+        cd orrel-app
+        echo "🔧 Installing dependencies..."
+        npm ci --omit=dev
+        echo "🏗️ Building application..."
+        npm run build
+        echo "✅ Build successful!"
+      if: false  # Set to true if you want to test build before deploy
+
+    - name: Set up SSH
       uses: webfactory/ssh-agent@v0.7.0
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Add VPS to known_hosts with port 22222
+    - name: Add VPS to known_hosts
       run: |
         mkdir -p ~/.ssh
         chmod 700 ~/.ssh
-        # Add with custom port syntax
         ssh-keyscan -p 22222 -H ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
         chmod 600 ~/.ssh/known_hosts
 
-    - name: Deploy to VPS via SSH
+    - name: Deploy to VPS
       run: |
-        echo "🚀 Deploying via SSH port 22222..."
+        echo "🚀 Deploying to production..."
         
-        # Deploy using SSH with custom port
-        ssh -p 22222 -o ConnectTimeout=30 -o ServerAliveInterval=60 \
-          ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "
-          echo '📁 Changing to app directory...'
-          cd /var/www/orrel-app
-          
-          echo '📥 Pulling latest code...'
+        # Execute deployment on server
+        ssh -p 22222 \
+          -o ConnectTimeout=30 \
+          -o ServerAliveInterval=60 \
+          -o StrictHostKeyChecking=no \
+          ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} << 'EOF'
+        set -e
+        
+        echo "🔒 Starting secure deployment..."
+        
+        # ============================================
+        # CONFIGURATION
+        # ============================================
+        APP_NAME="orrel-app"
+        APP_DIR="/var/www/orrel-app"
+        BACKUP_DIR="/home/admin-gsas/backups"
+        TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+        # ============================================
+        
+        # 1. Ensure Node.js is available (already verified)
+        echo "📊 Node.js: $(node --version)"
+        echo "📊 npm: $(npm --version)"
+        
+        # 2. Create backup directory
+        mkdir -p "$BACKUP_DIR"
+        
+        # 3. Navigate to app directory
+        cd "$APP_DIR"
+        echo "📁 Working in: $(pwd)"
+        
+        # 4. Backup current version
+        echo "📦 Creating backup..."
+        if [ -d ".next" ] || [ -d "node_modules" ]; then
+          tar czf "$BACKUP_DIR/${APP_NAME}_backup_$TIMESTAMP.tar.gz" \
+            .next \
+            node_modules \
+            package-lock.json \
+            2>/dev/null || echo "Backup created"
+        else
+          echo "First deployment, skipping backup"
+        fi
+        
+        # 5. Update code
+        echo "⬇️ Pulling latest code..."
+        if [ -d ".git" ]; then
           git fetch origin
           git reset --hard origin/main
           git clean -fd
-          
-          # echo '📦 Installing dependencies...'
-          # npm ci --omit=dev
-          
-          # echo '🏗️ Building application...'
-          # npm run build
-          
-          echo '🔄 Restarting PM2...'
-          cd /var/www/orrel-app && ./deploy.sh
-          # pm2 delete orrel-app 2>/dev/null || true
-          # pm2 start ecosystem.config.js
-          # pm2 save
-          
-          echo '✅ Deployment completed on VPS!'
-        "
+          echo "✅ Code updated"
+        else
+          echo "❌ Not a git repository"
+          exit 1
+        fi
+        
+        # 6. Install dependencies securely
+        echo "📦 Installing dependencies..."
+        
+        # Clean previous builds
+        rm -rf .next
+        
+        # Check for package-lock.json
+        if [ ! -f "package-lock.json" ]; then
+          echo "⚠️ package-lock.json not found. Generating..."
+          npm install --package-lock-only --omit=dev
+        fi
+        
+        # Clean install with exact versions
+        npm ci --omit=dev --audit
+        
+        echo "✅ Dependencies installed"
+        
+        # 7. Build Next.js application
+        echo "🏗️ Building Next.js application..."
+        
+        # Set production environment
+        export NODE_ENV=production
+        export NEXT_TELEMETRY_DISABLED=1
+        
+        # Run build
+        if npm run build; then
+          echo "✅ Build successful"
+          BUILD_SIZE=$(du -sh .next | cut -f1)
+          echo "📦 Build size: $BUILD_SIZE"
+        else
+          echo "❌ Build failed"
+          exit 1
+        fi
+        
+        # 8. Setup PM2
+        echo "⚙️ Configuring PM2..."
+        
+        # Check if PM2 is installed
+        if ! command -v pm2 &> /dev/null; then
+          echo "📦 Installing PM2..."
+          npm install -g pm2
+        fi
+        
+        # Stop existing process
+        echo "🔄 Restarting application..."
+        pm2 delete "$APP_NAME" 2>/dev/null || echo "No existing process"
+        
+        # Start Next.js
+        # Option A: If using output: 'standalone' in next.config.js
+        if [ -f ".next/standalone/server.js" ]; then
+          echo "🚀 Starting standalone Next.js..."
+          pm2 start .next/standalone/server.js --name "$APP_NAME" \
+            -- \
+            --port 3000 \
+            --hostname 127.0.0.1
+        else
+          # Option B: Regular Next.js start
+          echo "🚀 Starting Next.js on port 3000..."
+          pm2 start npm --name "$APP_NAME" -- \
+            run start -- --port 3000 --hostname 127.0.0.1
+        fi
+        
+        # 9. Save PM2 configuration
+        pm2 save
+        
+        # 10. Setup PM2 startup (if not already)
+        pm2 startup 2>/dev/null || echo "PM2 startup already configured"
+        
+        # 11. Cleanup old backups (keep last 3)
+        echo "🧹 Cleaning up old backups..."
+        cd "$BACKUP_DIR"
+        ls -t ${APP_NAME}_backup_*.tar.gz 2>/dev/null | tail -n +4 | xargs -r rm -f || echo "No old backups"
+        
+        # 12. Verify deployment
+        echo ""
+        echo "✅ DEPLOYMENT COMPLETED!"
+        echo "========================="
+        echo "📊 Application Status:"
+        pm2 status "$APP_NAME"
+        echo ""
+        echo "🌐 Health check (waiting 5 seconds)..."
+        sleep 5
+        if curl -s -f http://127.0.0.1:3000 > /dev/null; then
+          echo "✅ Application is healthy on port 3000"
+        else
+          echo "⚠️  Warning: Application not responding on port 3000"
+          echo "Checking PM2 logs..."
+          pm2 logs "$APP_NAME" --lines 10 --raw 2>/dev/null || echo "No logs available"
+        fi
+        
+        # 13. Final status
+        echo ""
+        echo "🎉 Orrel frontend deployed successfully!"
+        echo "🔗 Access via: https://orrelng.com"
+        EOF
         
         echo "🎉 GitHub Actions deployment completed!"
