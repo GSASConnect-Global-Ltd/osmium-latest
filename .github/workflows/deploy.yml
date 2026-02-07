@@ -1212,7 +1212,7 @@ jobs:
       with:
         node-version: '20'  # Match your server's Node version
         cache: 'npm'
-        cache-dependency-path: 'orrel-app/package-lock.json'
+        # cache-dependency-path: 'orrel-app/package-lock.json'
 
     - name: Build and test locally (optional)
       run: |
