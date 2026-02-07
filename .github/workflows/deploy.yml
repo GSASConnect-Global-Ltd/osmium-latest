@@ -1193,8 +1193,8 @@ name: Deploy Next.js Frontend
 on:
   push:
     branches: [main]
-    paths:
-      - 'orrel-app/**'  # Only deploy when frontend changes
+    # paths:
+    #   - 'orrel-app/**'  # Only deploy when frontend changes
 
 jobs:
   deploy:
