@@ -1397,8 +1397,8 @@ name: 🔒 Secure Deploy Orrel Frontend
 on:
   push:
     branches: [main]
-    paths:
-      - '**'  # Monitor all files for changes
+    # paths:
+    #   - '**'  # Monitor all files for changes
 
 jobs:
   security-scan:
