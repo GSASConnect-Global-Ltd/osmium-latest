@@ -1446,7 +1446,7 @@ jobs:
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script_stop: true  # Stop on any error
-        timeout: 900  # 5 minute timeout
+        timeout: 900s  # 5 minute timeout
         script: |
           set -euo pipefail  # Strict mode: exit on error, undefined vars, pipefail
           
