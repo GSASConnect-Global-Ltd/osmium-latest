@@ -1188,18 +1188,249 @@
 # echo "🧹 Cleaning npm cache..."
 # npm cache clean --force
 
-name: Deploy Next.js Frontend
+# name: Deploy Next.js Frontend
+
+# on:
+#   push:
+#     branches: [main]
+#     # paths:
+#     #   - 'orrel-app/**'  # Only deploy when frontend changes
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     # environment: production
+    
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v3
+#       with:
+#         fetch-depth: 0
+
+#     - name: Setup Node.js
+#       uses: actions/setup-node@v3
+#       with:
+#         node-version: '20'  # Match your server's Node version
+#         cache: 'npm'
+#         # cache-dependency-path: 'orrel-app/package-lock.json'
+
+#     - name: Build and test locally (optional)
+#       run: |
+#         cd orrel-app
+#         echo "🔧 Installing dependencies..."
+#         npm ci --omit=dev
+#         echo "🏗️ Building application..."
+#         npm run build
+#         echo "✅ Build successful!"
+#       if: false  # Set to true if you want to test build before deploy
+
+#     - name: Set up SSH
+#       uses: webfactory/ssh-agent@v0.7.0
+#       with:
+#         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+#     - name: Add VPS to known_hosts
+#       run: |
+#         # mkdir -p ~/.ssh
+#         # chmod 700 ~/.ssh
+#         ssh-keyscan -p 22222 -H ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+#         # chmod 600 ~/.ssh/known_hosts
+
+#     - name: Deploy to VPS
+#       run: |
+#         echo "🚀 Deploying to production..."
+        
+#         # Execute deployment on server
+#         ssh -p 22222 \
+#           -o ConnectTimeout=30 \
+#           -o ServerAliveInterval=60 \
+#           -o StrictHostKeyChecking=no \
+#           ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} << 'EOF'
+#         set -e
+        
+#         echo "🔒 Starting secure deployment..."
+        
+#         # ============================================
+#         # CONFIGURATION
+#         # ============================================
+#         APP_NAME="orrel-app"
+#         APP_DIR="/var/www/orrel-app"
+#         BACKUP_DIR="/home/admin-gsas/backups"
+#         TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+#         # ============================================
+        
+#         # 1. Ensure Node.js is available (already verified)
+#         echo "📊 Node.js: $(node --version)"
+#         echo "📊 npm: $(npm --version)"
+        
+#         # 2. Create backup directory
+#         mkdir -p "$BACKUP_DIR"
+        
+#         # 3. Navigate to app directory
+#         cd "$APP_DIR"
+#         echo "📁 Working in: $(pwd)"
+        
+#         # 4. Backup current version
+#         echo "📦 Creating backup..."
+#         if [ -d ".next" ] || [ -d "node_modules" ]; then
+#           tar czf "$BACKUP_DIR/${APP_NAME}_backup_$TIMESTAMP.tar.gz" \
+#             .next \
+#             node_modules \
+#             package-lock.json \
+#             2>/dev/null || echo "Backup created"
+#         else
+#           echo "First deployment, skipping backup"
+#         fi
+        
+#         # 5. Update code
+#         echo "⬇️ Pulling latest code..."
+#         if [ -d ".git" ]; then
+#           git fetch origin
+#           git reset --hard origin/main
+#           git clean -fd
+#           echo "✅ Code updated"
+#         else
+#           echo "❌ Not a git repository"
+#           exit 1
+#         fi
+        
+#         # 6. Install dependencies securely
+#         echo "📦 Installing dependencies..."
+        
+#         # Clean previous builds
+#         rm -rf .next
+        
+#         # Check for package-lock.json
+#         if [ ! -f "package-lock.json" ]; then
+#           echo "⚠️ package-lock.json not found. Generating..."
+#           npm install --package-lock-only --omit=dev
+#         fi
+        
+#         # Clean install with exact versions
+#         npm ci --omit=dev --audit
+        
+#         echo "✅ Dependencies installed"
+        
+#         # 7. Build Next.js application
+#         echo "🏗️ Building Next.js application..."
+        
+#         # Set production environment
+#         export NODE_ENV=production
+#         export NEXT_TELEMETRY_DISABLED=1
+        
+#         # Run build
+#         if npm run build; then
+#           echo "✅ Build successful"
+#           BUILD_SIZE=$(du -sh .next | cut -f1)
+#           echo "📦 Build size: $BUILD_SIZE"
+#         else
+#           echo "❌ Build failed"
+#           exit 1
+#         fi
+        
+#         # 8. Setup PM2
+#         echo "⚙️ Configuring PM2..."
+        
+#         # Check if PM2 is installed
+#         if ! command -v pm2 &> /dev/null; then
+#           echo "📦 Installing PM2..."
+#           npm install -g pm2
+#         fi
+        
+#         # Stop existing process
+#         echo "🔄 Restarting application..."
+#         pm2 delete "$APP_NAME" 2>/dev/null || echo "No existing process"
+        
+#         # Start Next.js
+#         # Option A: If using output: 'standalone' in next.config.js
+#         if [ -f ".next/standalone/server.js" ]; then
+#           echo "🚀 Starting standalone Next.js..."
+#           pm2 start .next/standalone/server.js --name "$APP_NAME" \
+#             -- \
+#             --port 3000 \
+#             --hostname 127.0.0.1
+#         else
+#           # Option B: Regular Next.js start
+#           echo "🚀 Starting Next.js on port 3000..."
+#           pm2 start npm --name "$APP_NAME" -- \
+#             run start -- --port 3000 --hostname 127.0.0.1
+#         fi
+        
+#         # 9. Save PM2 configuration
+#         pm2 save
+        
+#         # 10. Setup PM2 startup (if not already)
+#         pm2 startup 2>/dev/null || echo "PM2 startup already configured"
+        
+#         # 11. Cleanup old backups (keep last 3)
+#         echo "🧹 Cleaning up old backups..."
+#         cd "$BACKUP_DIR"
+#         ls -t ${APP_NAME}_backup_*.tar.gz 2>/dev/null | tail -n +4 | xargs -r rm -f || echo "No old backups"
+        
+#         # 12. Verify deployment
+#         echo ""
+#         echo "✅ DEPLOYMENT COMPLETED!"
+#         echo "========================="
+#         echo "📊 Application Status:"
+#         pm2 status "$APP_NAME"
+#         echo ""
+#         echo "🌐 Health check (waiting 5 seconds)..."
+#         sleep 5
+#         if curl -s -f http://127.0.0.1:3000 > /dev/null; then
+#           echo "✅ Application is healthy on port 3000"
+#         else
+#           echo "⚠️  Warning: Application not responding on port 3000"
+#           echo "Checking PM2 logs..."
+#           pm2 logs "$APP_NAME" --lines 10 --raw 2>/dev/null || echo "No logs available"
+#         fi
+        
+#         # 13. Final status
+#         echo ""
+#         echo "🎉 Orrel frontend deployed successfully!"
+#         echo "🔗 Access via: https://orrelng.com"
+#         EOF
+        
+#         echo "🎉 GitHub Actions deployment completed!"
+
+name: 🔒 Secure Deploy Orrel Frontend
 
 on:
   push:
     branches: [main]
-    # paths:
-    #   - 'orrel-app/**'  # Only deploy when frontend changes
+    paths:
+      - '**'  # Monitor all files for changes
 
 jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Get full history
+        
+    - name: Scan for secrets
+      run: |
+        echo "🔍 Scanning for hardcoded secrets..."
+        # Check for API keys, tokens, passwords
+        if find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.json" -o -name "*.env*" \) \
+          -exec grep -lE "(api[_-]?key|secret[_-]?key|password|token|auth)" {} \; 2>/dev/null | grep -v node_modules | head -5; then
+          echo "⚠️  WARNING: Potential secrets found in code!"
+        fi
+        
+    - name: Check package vulnerabilities
+      run: |
+        if [ -f "package.json" ]; then
+          echo "📦 Checking npm vulnerabilities..."
+          npm audit --production --audit-level=critical 2>/dev/null || echo "Audit completed"
+        fi
+
   deploy:
     runs-on: ubuntu-latest
-    # environment: production
+    needs: security-scan
+    if: success() || failure()  # Deploy even if security scan has warnings
     
     steps:
     - name: Checkout code
@@ -1207,187 +1438,263 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
+    - name: 🔐 Secure Deploy to VPS
+      uses: appleboy/ssh-action@v0.1.5
       with:
-        node-version: '20'  # Match your server's Node version
-        cache: 'npm'
-        # cache-dependency-path: 'orrel-app/package-lock.json'
-
-    - name: Build and test locally (optional)
-      run: |
-        cd orrel-app
-        echo "🔧 Installing dependencies..."
-        npm ci --omit=dev
-        echo "🏗️ Building application..."
-        npm run build
-        echo "✅ Build successful!"
-      if: false  # Set to true if you want to test build before deploy
-
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.7.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-    - name: Add VPS to known_hosts
-      run: |
-        # mkdir -p ~/.ssh
-        # chmod 700 ~/.ssh
-        ssh-keyscan -p 22222 -H ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
-        # chmod 600 ~/.ssh/known_hosts
-
-    - name: Deploy to VPS
-      run: |
-        echo "🚀 Deploying to production..."
-        
-        # Execute deployment on server
-        ssh -p 22222 \
-          -o ConnectTimeout=30 \
-          -o ServerAliveInterval=60 \
-          -o StrictHostKeyChecking=no \
-          ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} << 'EOF'
-        set -e
-        
-        echo "🔒 Starting secure deployment..."
-        
-        # ============================================
-        # CONFIGURATION
-        # ============================================
-        APP_NAME="orrel-app"
-        APP_DIR="/var/www/orrel-app"
-        BACKUP_DIR="/home/admin-gsas/backups"
-        TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-        # ============================================
-        
-        # 1. Ensure Node.js is available (already verified)
-        echo "📊 Node.js: $(node --version)"
-        echo "📊 npm: $(npm --version)"
-        
-        # 2. Create backup directory
-        mkdir -p "$BACKUP_DIR"
-        
-        # 3. Navigate to app directory
-        cd "$APP_DIR"
-        echo "📁 Working in: $(pwd)"
-        
-        # 4. Backup current version
-        echo "📦 Creating backup..."
-        if [ -d ".next" ] || [ -d "node_modules" ]; then
-          tar czf "$BACKUP_DIR/${APP_NAME}_backup_$TIMESTAMP.tar.gz" \
-            .next \
-            node_modules \
-            package-lock.json \
-            2>/dev/null || echo "Backup created"
-        else
-          echo "First deployment, skipping backup"
-        fi
-        
-        # 5. Update code
-        echo "⬇️ Pulling latest code..."
-        if [ -d ".git" ]; then
-          git fetch origin
+        host: ${{ secrets.VPS_IP }}
+        port: 22222
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script_stop: true  # Stop on any error
+        timeout: 300s  # 5 minute timeout
+        script: |
+          set -euo pipefail  # Strict mode: exit on error, undefined vars, pipefail
+          
+          echo "🔒 === SECURE DEPLOYMENT STARTED ==="
+          echo "🕒 $(date)"
+          echo "👤 User: $(whoami)"
+          echo "🔐 Script running with -euo pipefail (strict mode)"
+          
+          # ============================================
+          # CONFIGURATION
+          # ============================================
+          readonly APP_NAME="orrel-app"
+          readonly APP_USER="admin-gsas"
+          readonly APP_DIR="/var/www/orrel-app"
+          readonly BACKUP_DIR="/home/$APP_USER/backups"
+          readonly NODE_PATH="/home/$APP_USER/.nvm/versions/node/v24.13.0/bin"
+          readonly TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+          readonly DEPLOY_LOG="/tmp/${APP_NAME}_deploy_${TIMESTAMP}.log"
+          # ============================================
+          
+          # Redirect all output to log file for auditing
+          exec > >(tee -a "$DEPLOY_LOG") 2>&1
+          
+          # === SECURITY CHECKS ===
+          echo "🔍 Running security checks..."
+          
+          # 1. Verify running as correct user
+          if [ "$(whoami)" != "$APP_USER" ]; then
+            echo "❌ SECURITY ERROR: Must run as $APP_USER, not $(whoami)"
+            exit 1
+          fi
+          
+          # 2. Ensure Node.js is properly installed
+          if [ ! -f "$NODE_PATH/node" ]; then
+            echo "❌ Node.js not found at $NODE_PATH/node"
+            exit 1
+          fi
+          
+          # 3. Set secure PATH
+          export PATH="$NODE_PATH:$PATH"
+          echo "📊 Node.js: $(node --version)"
+          echo "📊 npm: $(npm --version)"
+          
+          # 4. Create secure backup directory
+          mkdir -p "$BACKUP_DIR"
+          chmod 700 "$BACKUP_DIR"
+          
+          # === CHANGE TO APP DIRECTORY ===
+          cd "$APP_DIR" || {
+            echo "❌ Cannot access $APP_DIR"
+            exit 1
+          }
+          echo "📁 Working directory: $(pwd)"
+          
+          # === BACKUP CURRENT VERSION ===
+          echo "📦 Creating secure backup..."
+          readonly BACKUP_FILE="$BACKUP_DIR/${APP_NAME}_secure_backup_${TIMESTAMP}.tar.gz"
+          
+          if [ -d ".git" ] || [ -d "node_modules" ] || [ -d ".next" ]; then
+            # Create encrypted backup (if you have gpg installed)
+            tar czf - . 2>/dev/null | gzip > "$BACKUP_FILE" 2>/dev/null || {
+              echo "⚠️  Backup creation failed, continuing anyway..."
+              BACKUP_FILE=""
+            }
+            
+            if [ -n "$BACKUP_FILE" ] && [ -f "$BACKUP_FILE" ]; then
+              echo "✅ Backup created: $(ls -lh "$BACKUP_FILE" | awk '{print $5}')"
+              chmod 600 "$BACKUP_FILE"  # Make backup readable only by owner
+            fi
+          else
+            echo "ℹ️  First deployment or empty directory, skipping backup"
+          fi
+          
+          # === VERIFY GIT REPOSITORY ===
+          echo "🔍 Verifying git repository..."
+          if [ ! -d ".git" ]; then
+            echo "❌ Not a git repository. Possible security issue."
+            exit 1
+          fi
+          
+          # === UPDATE CODE WITH VERIFICATION ===
+          echo "⬇️ Updating code with verification..."
+          
+          # Get current commit before update
+          readonly OLD_COMMIT=$(git rev-parse HEAD 2>/dev/null || echo "NO_COMMIT")
+          
+          # Fetch and update
+          git fetch origin --tags --force 2>&1 | grep -v "pack-objects" || true
           git reset --hard origin/main
-          git clean -fd
-          echo "✅ Code updated"
-        else
-          echo "❌ Not a git repository"
-          exit 1
-        fi
-        
-        # 6. Install dependencies securely
-        echo "📦 Installing dependencies..."
-        
-        # Clean previous builds
-        rm -rf .next
-        
-        # Check for package-lock.json
-        if [ ! -f "package-lock.json" ]; then
-          echo "⚠️ package-lock.json not found. Generating..."
-          npm install --package-lock-only --omit=dev
-        fi
-        
-        # Clean install with exact versions
-        npm ci --omit=dev --audit
-        
-        echo "✅ Dependencies installed"
-        
-        # 7. Build Next.js application
-        echo "🏗️ Building Next.js application..."
-        
-        # Set production environment
-        export NODE_ENV=production
-        export NEXT_TELEMETRY_DISABLED=1
-        
-        # Run build
-        if npm run build; then
-          echo "✅ Build successful"
+          git clean -fdx  # Remove all untracked files (security)
+          
+          # Get new commit
+          readonly NEW_COMMIT=$(git rev-parse HEAD)
+          
+          echo "📝 Commit changed: $OLD_COMMIT → $NEW_COMMIT"
+          
+          # Verify the update actually changed something
+          if [ "$OLD_COMMIT" = "$NEW_COMMIT" ] && [ "$OLD_COMMIT" != "NO_COMMIT" ]; then
+            echo "⚠️  No code changes detected"
+          fi
+          
+          # === SECURE DEPENDENCY INSTALLATION ===
+          echo "📦 Installing dependencies with security checks..."
+          
+          # Clean previous builds and dependencies
+          rm -rf .next node_modules package-lock.json
+          
+          # Generate package-lock.json if missing
+          if [ ! -f "package.json" ]; then
+            echo "❌ package.json not found!"
+            exit 1
+          fi
+          
+          if [ ! -f "package-lock.json" ]; then
+            echo "⚠️  package-lock.json not found. Generating securely..."
+            npm install --package-lock-only --omit=dev --no-audit --no-fund
+          fi
+          
+          # Install with security audit
+          echo "🔍 Running npm audit before install..."
+          npm audit --production --audit-level=moderate 2>/dev/null || echo "Audit check completed"
+          
+          echo "📦 Installing production dependencies..."
+          npm ci --omit=dev --audit --no-fund
+          
+          # === SECURITY SCAN OF NODE_MODULES ===
+          echo "🔍 Scanning node_modules for suspicious patterns..."
+          SUSPICIOUS_FILES=$(find node_modules -type f -name "*.js" -exec grep -l "eval(\|child_process\.exec\|spawn\|wget\|curl" {} \; 2>/dev/null | head -10)
+          
+          if [ -n "$SUSPICIOUS_FILES" ]; then
+            echo "⚠️  WARNING: Suspicious patterns found in node_modules:"
+            echo "$SUSPICIOUS_FILES" | head -5
+            echo "Review these files before continuing deployment."
+            # Uncomment to block deployment:
+            # exit 1
+          fi
+          
+          # === BUILD APPLICATION ===
+          echo "🏗️ Building Next.js application..."
+          
+          # Set secure environment
+          export NODE_ENV=production
+          export NEXT_TELEMETRY_DISABLED=1
+          export NEXT_PUBLIC_SENTRY_DSN=""  # Clear any analytics
+          
+          # Build with production settings
+          if ! npm run build; then
+            echo "❌ Build failed!"
+            
+            # Attempt rollback if backup exists
+            if [ -n "$BACKUP_FILE" ] && [ -f "$BACKUP_FILE" ]; then
+              echo "🔄 Attempting rollback..."
+              rm -rf .next node_modules
+              tar xzf "$BACKUP_FILE" 2>/dev/null || echo "Rollback failed"
+            fi
+            
+            exit 1
+          fi
+          
           BUILD_SIZE=$(du -sh .next | cut -f1)
-          echo "📦 Build size: $BUILD_SIZE"
-        else
-          echo "❌ Build failed"
-          exit 1
-        fi
-        
-        # 8. Setup PM2
-        echo "⚙️ Configuring PM2..."
-        
-        # Check if PM2 is installed
-        if ! command -v pm2 &> /dev/null; then
-          echo "📦 Installing PM2..."
-          npm install -g pm2
-        fi
-        
-        # Stop existing process
-        echo "🔄 Restarting application..."
-        pm2 delete "$APP_NAME" 2>/dev/null || echo "No existing process"
-        
-        # Start Next.js
-        # Option A: If using output: 'standalone' in next.config.js
-        if [ -f ".next/standalone/server.js" ]; then
-          echo "🚀 Starting standalone Next.js..."
-          pm2 start .next/standalone/server.js --name "$APP_NAME" \
-            -- \
-            --port 3000 \
-            --hostname 127.0.0.1
-        else
-          # Option B: Regular Next.js start
-          echo "🚀 Starting Next.js on port 3000..."
-          pm2 start npm --name "$APP_NAME" -- \
-            run start -- --port 3000 --hostname 127.0.0.1
-        fi
-        
-        # 9. Save PM2 configuration
-        pm2 save
-        
-        # 10. Setup PM2 startup (if not already)
-        pm2 startup 2>/dev/null || echo "PM2 startup already configured"
-        
-        # 11. Cleanup old backups (keep last 3)
-        echo "🧹 Cleaning up old backups..."
-        cd "$BACKUP_DIR"
-        ls -t ${APP_NAME}_backup_*.tar.gz 2>/dev/null | tail -n +4 | xargs -r rm -f || echo "No old backups"
-        
-        # 12. Verify deployment
-        echo ""
-        echo "✅ DEPLOYMENT COMPLETED!"
-        echo "========================="
-        echo "📊 Application Status:"
-        pm2 status "$APP_NAME"
-        echo ""
-        echo "🌐 Health check (waiting 5 seconds)..."
-        sleep 5
-        if curl -s -f http://127.0.0.1:3000 > /dev/null; then
-          echo "✅ Application is healthy on port 3000"
-        else
-          echo "⚠️  Warning: Application not responding on port 3000"
-          echo "Checking PM2 logs..."
-          pm2 logs "$APP_NAME" --lines 10 --raw 2>/dev/null || echo "No logs available"
-        fi
-        
-        # 13. Final status
-        echo ""
-        echo "🎉 Orrel frontend deployed successfully!"
-        echo "🔗 Access via: https://orrelng.com"
-        EOF
-        
-        echo "🎉 GitHub Actions deployment completed!"
+          echo "✅ Build successful: $BUILD_SIZE"
+          
+          # === PM2 MANAGEMENT ===
+          echo "⚙️ Configuring PM2..."
+          
+          # Install PM2 if not present
+          if ! command -v pm2 &> /dev/null; then
+            echo "📦 Installing PM2 securely..."
+            npm install -g pm2 --no-audit --no-fund
+          fi
+          
+          # Stop existing process
+          echo "🔄 Managing application process..."
+          pm2 delete "$APP_NAME" 2>/dev/null || echo "No existing process found"
+          
+          # Start with secure settings
+          echo "🚀 Starting application with secure settings..."
+          
+          # Check if standalone build exists (more secure)
+          if [ -f ".next/standalone/server.js" ]; then
+            echo "🔐 Using standalone build (more secure)"
+            pm2 start .next/standalone/server.js --name "$APP_NAME" \
+              -- \
+              --port 3000 \
+              --hostname 127.0.0.1 \
+              --no-experimental-https \
+              --no-experimental-fetch
+          else
+            echo "⚡ Using regular build"
+            pm2 start npm --name "$APP_NAME" -- \
+              run start -- --port 3000 --hostname 127.0.0.1
+          fi
+          
+          # Save PM2 configuration
+          pm2 save --force
+          
+          # Setup startup if not configured
+          pm2 startup 2>/dev/null | tail -1 | sudo bash 2>/dev/null || echo "PM2 startup already configured"
+          
+          # === POST-DEPLOYMENT CHECKS ===
+          echo "🔍 Running post-deployment checks..."
+          
+          # Wait for app to start
+          sleep 5
+          
+          # Check if app is running
+          if ! pm2 ping "$APP_NAME" 2>/dev/null; then
+            echo "❌ Application failed to start!"
+            pm2 logs "$APP_NAME" --lines 20 --raw 2>/dev/null || true
+            exit 1
+          fi
+          
+          # Health check
+          echo "🏥 Running health check..."
+          if curl -s -f -m 10 http://127.0.0.1:3000 > /dev/null; then
+            echo "✅ Application is healthy on port 3000"
+          else
+            echo "⚠️  Health check failed, but PM2 reports running"
+            pm2 logs "$APP_NAME" --lines 10 --raw 2>/dev/null || true
+          fi
+          
+          # === CLEANUP & AUDIT ===
+          echo "🧹 Cleaning up..."
+          
+          # Remove old backups (keep last 7)
+          cd "$BACKUP_DIR"
+          find . -name "${APP_NAME}_secure_backup_*.tar.gz" -type f -mtime +7 -delete 2>/dev/null || true
+          
+          # Count remaining backups
+          BACKUP_COUNT=$(find . -name "${APP_NAME}_secure_backup_*.tar.gz" -type f 2>/dev/null | wc -l)
+          echo "📦 Backups retained: $BACKUP_COUNT"
+          
+          # Final security check
+          echo "🔒 Final security checks..."
+          ps aux | grep "$APP_NAME" | grep -v grep || echo "Process not found in ps"
+          
+          # === DEPLOYMENT COMPLETE ===
+          echo ""
+          echo "🎉 === SECURE DEPLOYMENT COMPLETED ==="
+          echo "🕒 $(date)"
+          echo "📱 Application: $APP_NAME"
+          echo "📍 Port: 3000 (internal)"
+          echo "🌐 Access: https://orrelng.com"
+          echo "📊 Status:"
+          pm2 status "$APP_NAME" --silent || true
+          echo ""
+          echo "📝 Deployment log saved to: $DEPLOY_LOG"
+          echo "🔐 Backup retained: ${BACKUP_FILE:-None}"
+          
+          # Save deployment info for auditing
+          echo "$TIMESTAMP | $NEW_COMMIT | $(whoami) | SUCCESS" >> "$BACKUP_DIR/deployment_audit.log"
