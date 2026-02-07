@@ -1459,7 +1459,7 @@ jobs:
           # CONFIGURATION
           # ============================================
           readonly APP_NAME="orrel-app"
-          readonly APP_USER="admin-gsas"
+          readonly APP_USER=${{ secrets.VPS_USER }}
           readonly APP_DIR="/var/www/orrel-app"
           readonly BACKUP_DIR="/home/$APP_USER/backups"
           readonly NODE_PATH="/home/$APP_USER/.nvm/versions/node/v24.13.0/bin"
