@@ -26,22 +26,6 @@
 #     - name: Build application
 #       run: npm run build
 
-#     - name: Deploy to VPS
-#       uses: appleboy/ssh-action@v0.1.6
-#       with:
-#         host: ${{ secrets.VPS_IP }}
-#         username: ${{ secrets.VPS_USER }}
-#         key: ${{ secrets.SSH_PRIVATE_KEY }}
-#         # script: |
-#         #   cd /var/www/orrel-app
-#         #   git pull origin main
-#         #   npm ci --production
-#         #   npm run build
-#         #   pm2 restart ecosystem.config.js
-#         #   echo "Deployment completed successfully!"
-#         script: |
-#             cd /var/www/orrel-app && ./deploy.sh
-
 
 # name: Deploy to Production
 
