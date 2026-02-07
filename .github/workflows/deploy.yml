@@ -2453,8 +2453,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
       
       - name: 🚀 Deploy to Server
         uses: appleboy/ssh-action@v0.1.5
@@ -2469,173 +2472,141 @@ jobs:
             echo "🚀 Starting deployment..."
             
             # ================================================================
-            # CRITICAL: Fix PATH to include npm
+            # 1. SETUP PATH FOR NODE.JS
             # ================================================================
-            echo "📊 Checking Node.js installation..."
+            echo "📊 Setting up Node.js PATH..."
             
-            # Find Node.js installation paths
-            NODE_BIN_PATH="/home/admin-gsas/.nvm/versions/node/v24.13.0/bin"
+            # Primary nvm path
+            NVM_PATH="/home/admin-gsas/.nvm/versions/node/v24.13.0/bin"
             
-            # Check if path exists
-            if [ -d "$NODE_BIN_PATH" ]; then
-              echo "✅ Found Node.js at: $NODE_BIN_PATH"
+            if [ -d "$NVM_PATH" ]; then
+              echo "✅ Found Node.js at: $NVM_PATH"
+              export PATH="$NVM_PATH:$PATH"
               
-              # Add to PATH
-              export PATH="$NODE_BIN_PATH:$PATH"
-              
-              # Create symlinks if needed
-              if [ ! -f "/usr/local/bin/npm" ] && [ -f "$NODE_BIN_PATH/npm" ]; then
-                echo "🔗 Creating symlinks..."
-                sudo ln -sf "$NODE_BIN_PATH/node" /usr/local/bin/node 2>/dev/null || true
-                sudo ln -sf "$NODE_BIN_PATH/npm" /usr/local/bin/npm 2>/dev/null || true
-                sudo ln -sf "$NODE_BIN_PATH/npx" /usr/local/bin/npx 2>/dev/null || true
-              fi
+              # Create symlinks
+              sudo ln -sf "$NVM_PATH/node" /usr/local/bin/node 2>/dev/null || true
+              sudo ln -sf "$NVM_PATH/npm" /usr/local/bin/npm 2>/dev/null || true
+              sudo ln -sf "$NVM_PATH/npx" /usr/local/bin/npx 2>/dev/null || true
             else
-              # Try to find Node.js in other locations
               echo "🔍 Searching for Node.js..."
-              POSSIBLE_PATHS=(
-                "/home/admin-gsas/.nvm/versions/node/*/bin"
-                "/usr/local/node/bin"
-                "/opt/node/bin"
-                "/usr/local/bin"
-                "/usr/bin"
-              )
-              
-              for path_pattern in "${POSSIBLE_PATHS[@]}"; do
-                for path in $path_pattern; do
-                  if [ -f "$path/node" ] && [ -f "$path/npm" ]; then
-                    echo "✅ Found Node.js at: $path"
-                    export PATH="$path:$PATH"
-                    break 2
-                  fi
-                done
+              # Try common locations
+              for path in "/usr/local/bin" "/usr/bin" "/opt/node/bin" "/home/admin-gsas/.nvm/versions/node/*/bin"; do
+                if [ -f "$path/npm" ]; then
+                  echo "✅ Found npm at: $path"
+                  export PATH="$path:$PATH"
+                  break
+                fi
               done
             fi
             
-            # Verify npm is now accessible
-            if command -v npm > /dev/null 2>&1; then
-              echo "✅ npm found: $(which npm)"
-              echo "📊 Node.js: $(node --version)"
-              echo "📊 npm: $(npm --version)"
-            else
-              echo "❌ npm still not found in PATH!"
-              echo "Current PATH: $PATH"
-              echo "Trying alternative approach..."
-              
-              # Try loading nvm
-              if [ -f "/home/admin-gsas/.nvm/nvm.sh" ]; then
-                echo "📦 Loading nvm..."
-                source "/home/admin-gsas/.nvm/nvm.sh"
-                nvm use 24.13.0 2>/dev/null || nvm use default 2>/dev/null
-                export PATH="/home/admin-gsas/.nvm/versions/node/v24.13.0/bin:$PATH"
-              fi
-              
-              # Final check
-              if ! command -v npm > /dev/null 2>&1; then
-                echo "⚠️ Installing npm via Node.js..."
-                # If node exists but npm doesn't, install npm separately
-                if command -v node > /dev/null 2>&1; then
-                  curl -L https://www.npmjs.com/install.sh | sh
-                else
-                  echo "❌ ERROR: Node.js not found. Installing..."
-                  curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
-                  sudo apt install -y nodejs
-                fi
-              fi
+            # Verify
+            echo "📊 Node.js: $(node --version 2>/dev/null || echo 'Not found')"
+            echo "📊 npm: $(npm --version 2>/dev/null || echo 'Not found')"
+            
+            if ! command -v npm &> /dev/null; then
+              echo "❌ npm not found! Installing..."
+              curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
+              sudo apt install -y nodejs
             fi
             
             # ================================================================
-            # Configuration
+            # 2. CONFIGURATION
             # ================================================================
-            APP_NAME="orrel-app"  # Changed from oracle-app
-            APP_DIR="/var/www/orrel-app"  # Fixed path
+            APP_NAME="orrel-app"
+            APP_DIR="/var/www/orrel-app"
             BACKUP_DIR="/home/admin-gsas/backups"
             
-            echo "📱 App: $APP_NAME"
+            echo "📱 Application: $APP_NAME"
             echo "📁 Directory: $APP_DIR"
             
             # Create backup directory
             mkdir -p "$BACKUP_DIR"
             
-            # Navigate to app directory
+            # ================================================================
+            # 3. GO TO APP DIRECTORY
+            # ================================================================
             echo "📁 Changing to app directory..."
-            cd "$APP_DIR" || {
-              echo "❌ Cannot access $APP_DIR"
-              echo "Creating directory..."
+            if [ ! -d "$APP_DIR" ]; then
+              echo "📦 Creating app directory..."
               sudo mkdir -p "$APP_DIR"
               sudo chown -R admin-gsas:admin-gsas "$APP_DIR"
-              cd "$APP_DIR"
+            fi
+            
+            cd "$APP_DIR" || {
+              echo "❌ Failed to access $APP_DIR"
+              exit 1
             }
             
-            echo "✅ Working directory: $(pwd)"
+            echo "✅ Current directory: $(pwd)"
             
-            # Backup current version
+            # ================================================================
+            # 4. CREATE BACKUP
+            # ================================================================
             echo "📦 Creating backup..."
             TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+            BACKUP_FILE="$BACKUP_DIR/${APP_NAME}_backup_$TIMESTAMP.tar.gz"
             
             if [ -d ".git" ] || [ -f "package.json" ]; then
-              tar --exclude='node_modules' --exclude='.next' -czf "$BACKUP_DIR/${APP_NAME}_backup_$TIMESTAMP.tar.gz" . 2>/dev/null || {
+              tar --exclude='node_modules' --exclude='.next' -czf "$BACKUP_FILE" . 2>/dev/null && \
+                echo "✅ Backup created: $BACKUP_FILE" || \
                 echo "⚠️ Backup creation had issues"
-              }
-              echo "✅ Backup created"
             else
               echo "ℹ️ First deployment - no backup needed"
             fi
             
-            # Update code from GitHub
-            echo "⬇️ Pulling latest code..."
+            # ================================================================
+            # 5. UPDATE CODE
+            # ================================================================
+            echo "⬇️ Updating code..."
+            
             if [ -d ".git" ]; then
               git fetch origin
               git reset --hard origin/main
               git clean -fd
-              echo "✅ Code updated successfully"
+              echo "✅ Code updated"
             else
               echo "📦 Cloning repository..."
               git clone https://github.com/GSASConnect-Global-Ltd/osmium-latest.git .
             fi
             
-            # Verify we have package.json
-            if [ ! -f "package.json" ]; then
-              echo "❌ ERROR: package.json not found!"
-              echo "📁 Current files:"
-              ls -la
-              exit 1
-            fi
-            
-            echo "📄 package.json exists"
-            
-            # Install dependencies
+            # ================================================================
+            # 6. INSTALL DEPENDENCIES
+            # ================================================================
             echo "📦 Installing dependencies..."
             
-            # Clean previous installations
+            # Clean previous
             rm -rf node_modules .next package-lock.json
             
-            # Install with dev dependencies for build
-            echo "🔧 Installing all dependencies..."
+            # Install all dependencies (including dev for build)
             npm ci --include=dev --no-audit --no-fund || {
               echo "⚠️ npm ci failed, trying npm install..."
               npm install --include=dev --no-audit --no-fund
             }
             
-            echo "✅ Dependencies installed"
-            
-            # Build application
+            # ================================================================
+            # 7. BUILD APPLICATION
+            # ================================================================
             echo "🏗️ Building application..."
             
-            # Set environment variables
             export NODE_ENV=production
             export NEXT_TELEMETRY_DISABLED=1
             
             if npm run build; then
               echo "✅ Build successful"
+              
+              # Check build output
+              if [ -d ".next" ]; then
+                BUILD_SIZE=$(du -sh .next | cut -f1)
+                echo "📦 Build size: $BUILD_SIZE"
+              fi
             else
               echo "❌ Build failed!"
               
-              # Rollback if backup exists
-              if [ -f "$BACKUP_DIR/${APP_NAME}_backup_$TIMESTAMP.tar.gz" ]; then
-                echo "🔄 Rolling back..."
+              # Rollback
+              if [ -f "$BACKUP_FILE" ]; then
+                echo "🔄 Rolling back from backup..."
                 rm -rf .next node_modules
-                tar -xzf "$BACKUP_DIR/${APP_NAME}_backup_$TIMESTAMP.tar.gz" 2>/dev/null || echo "Rollback failed"
+                tar -xzf "$BACKUP_FILE" 2>/dev/null || echo "Rollback failed"
               fi
               
               exit 1
@@ -2644,11 +2615,15 @@ jobs:
             # Install production-only dependencies
             echo "⚡ Installing production dependencies..."
             npm ci --omit=dev --no-audit --no-fund || {
-              echo "⚠️ Production install failed, continuing with existing node_modules"
+              echo "⚠️ Production install failed, continuing..."
             }
             
-            # Setup PM2 process manager
+            # ================================================================
+            # 8. PM2 SETUP
+            # ================================================================
             echo "⚙️ Setting up PM2..."
+            
+            # Install PM2 if not present
             if ! command -v pm2 &> /dev/null; then
               echo "📦 Installing PM2..."
               npm install -g pm2 --no-audit --no-fund
@@ -2657,8 +2632,8 @@ jobs:
             # Restart application
             echo "🔄 Restarting application..."
             
-            # Delete existing process if running
-            pm2 delete "$APP_NAME" 2>/dev/null || echo "No existing process to delete"
+            # Stop existing process
+            pm2 delete "$APP_NAME" 2>/dev/null || echo "No existing process found"
             
             # Start new process
             if [ -f ".next/standalone/server.js" ]; then
@@ -2669,41 +2644,73 @@ jobs:
               pm2 start npm --name "$APP_NAME" -- run start
             fi
             
-            # Save PM2 configuration
+            # Save PM2 config
             pm2 save 2>/dev/null || echo "PM2 save failed"
             
-            # Setup PM2 to start on boot
-            echo "🔧 Setting up startup configuration..."
+            # Setup startup
+            echo "🔧 Setting up PM2 startup..."
             pm2 startup 2>/dev/null | tail -1 | sudo bash 2>/dev/null || echo "PM2 startup already configured"
             
-            # Health check
+            # ================================================================
+            # 9. HEALTH CHECK
+            # ================================================================
             echo "🏥 Running health check..."
-            sleep 3
+            sleep 5  # Give app time to start
             
-            if curl -s -f -m 10 http://127.0.0.1:3000 > /dev/null; then
-              echo "✅ Application is healthy"
-            else
-              echo "⚠️ Health check failed"
-              echo "📋 Checking logs..."
+            MAX_RETRIES=3
+            HEALTHY=false
+            
+            for i in $(seq 1 $MAX_RETRIES); do
+              if curl -s -f -m 5 http://127.0.0.1:3000 > /dev/null; then
+                echo "✅ Application is healthy (attempt $i/$MAX_RETRIES)"
+                HEALTHY=true
+                break
+              else
+                echo "  Waiting... (attempt $i/$MAX_RETRIES)"
+                sleep 3
+              fi
+            done
+            
+            if [ "$HEALTHY" = false ]; then
+              echo "⚠️ Health check failed after $MAX_RETRIES attempts"
+              echo "📋 Checking PM2 logs..."
               pm2 logs "$APP_NAME" --lines 10 2>/dev/null || echo "No logs available"
             fi
             
-            # Cleanup old backups (keep last 5)
+            # ================================================================
+            # 10. CLEANUP
+            # ================================================================
             echo "🧹 Cleaning up old backups..."
             cd "$BACKUP_DIR"
-            ls -t ${APP_NAME}_backup_*.tar.gz 2>/dev/null | tail -n +6 | xargs -r rm -f 2>/dev/null || echo "No old backups to clean"
             
-            # Final status
+            # Keep last 5 backups
+            ls -t ${APP_NAME}_backup_*.tar.gz 2>/dev/null | tail -n +6 | while read -r file; do
+              echo "  Removing: $file"
+              rm -f "$file" 2>/dev/null || true
+            done
+            
+            BACKUP_COUNT=$(ls -1 ${APP_NAME}_backup_*.tar.gz 2>/dev/null | wc -l)
+            echo "📦 Backups retained: $BACKUP_COUNT"
+            
+            # ================================================================
+            # 11. FINAL STATUS
+            # ================================================================
             echo ""
-            echo "🎉 Deployment completed successfully!"
+            echo "🎉 DEPLOYMENT COMPLETED SUCCESSFULLY!"
+            echo "========================================"
+            echo "📱 Application: $APP_NAME"
+            echo "📁 Directory: $APP_DIR"
+            echo "🌐 URL: https://orrelng.com"
+            echo "🕒 Time: $(date)"
+            echo "📊 Node.js: $(node --version)"
+            echo "📊 npm: $(npm --version)"
             echo ""
-            echo "📊 Application Status:"
+            echo "📋 PM2 Status:"
             pm2 status "$APP_NAME" --silent 2>/dev/null || {
-              echo "⚠️ Could not get PM2 status"
-              echo "Checking process directly:"
-              ps aux | grep -v grep | grep "$APP_NAME" || echo "No process found"
+              echo "  Could not get PM2 status"
+              echo "  Checking process directly..."
+              ps aux | grep -v grep | grep "$APP_NAME" || echo "  No process found"
             }
             
             echo ""
-            echo "🌐 Application should be available at: https://orrelng.com"
-            echo "🕒 Deployment time: $(date)"
+            echo "✅ Deployment complete! The application should now be live."
