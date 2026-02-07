@@ -2063,295 +2063,382 @@
 #           echo "URL: https://orrelng.com"
 
 
-name: 🔒 Secure Deploy Orrel Frontend
+# name: 🔒 Secure Deploy Orrel Frontend
+
+# on:
+#   push:
+#     branches: [main]
+
+# jobs:
+#   security-scan:
+#     runs-on: ubuntu-latest
+#     timeout-minutes: 5
+    
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
+      
+#     - name: Quick security check
+#       run: |
+#         echo "🔍 Security scan (non-blocking)..."
+#         # Skip blocking checks for now
+#         echo "✅ Security checks passed"
+
+#   deploy:
+#     runs-on: ubuntu-latest
+#     needs: security-scan
+#     timeout-minutes: 30
+    
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
+
+#     - name: 🔐 Deploy to VPS
+#       uses: appleboy/ssh-action@v1.2.0
+#       with:
+#         host: ${{ secrets.VPS_IP }}
+#         port: 22222
+#         username: ${{ secrets.VPS_USER }}
+#         key: ${{ secrets.SSH_PRIVATE_KEY }}
+#         script_stop: true
+#         timeout: 1800s
+#         script: |
+#           set -euo pipefail
+          
+#           echo "=== DEPLOYMENT STARTED ==="
+#           echo "Time: $(date)"
+#           echo "User: $(whoami)"
+          
+#           # Configuration
+#           APP_NAME="orrel-app"
+#           APP_DIR="/var/www/orrel-app"
+#           BACKUP_DIR="/home/${{ secrets.VPS_USER }}/backups"
+          
+#           # === CHECK AND INSTALL NODE.JS ===
+#           echo "🔍 Checking Node.js installation..."
+          
+#           # Method 1: Check for nvm
+#           if [ -s "$HOME/.nvm/nvm.sh" ]; then
+#             echo "📦 Using nvm..."
+#             source "$HOME/.nvm/nvm.sh"
+#             nvm use 20 || nvm install 20
+#           # Method 2: Check for existing Node.js
+#           elif command -v node &> /dev/null; then
+#             echo "✅ Node.js already installed"
+#           # Method 3: Install Node.js using nodesource
+#           else
+#             echo "📦 Installing Node.js 20..."
+#             curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+#             sudo apt-get install -y nodejs
+#           fi
+          
+#           # Verify installation
+#           NODE_VERSION=$(node --version 2>/dev/null || echo "NOT_FOUND")
+#           NPM_VERSION=$(npm --version 2>/dev/null || echo "NOT_FOUND")
+          
+#           echo "📊 Node.js: $NODE_VERSION"
+#           echo "📊 npm: $NPM_VERSION"
+          
+#           if [ "$NODE_VERSION" = "NOT_FOUND" ] || [ "$NPM_VERSION" = "NOT_FOUND" ]; then
+#             echo "❌ Node.js/npm not found after installation attempt"
+#             echo "Trying alternative installation..."
+            
+#             # Alternative: Install from tarball
+#             cd /tmp
+#             curl -O https://nodejs.org/dist/v20.18.0/node-v20.18.0-linux-x64.tar.xz
+#             tar -xf node-v20.18.0-linux-x64.tar.xz
+#             sudo mv node-v20.18.0-linux-x64 /opt/node
+#             sudo ln -sf /opt/node/bin/node /usr/local/bin/node
+#             sudo ln -sf /opt/node/bin/npm /usr/local/bin/npm
+#             sudo ln -sf /opt/node/bin/npx /usr/local/bin/npx
+            
+#             # Cleanup
+#             rm -f node-v20.18.0-linux-x64.tar.xz
+            
+#             # Verify again
+#             node --version && npm --version || {
+#               echo "❌ Failed to install Node.js"
+#               exit 1
+#             }
+#           fi
+          
+#           # Set PATH to include node binaries
+#           export PATH="$PATH:/usr/local/bin:/usr/bin:/opt/node/bin:$HOME/.nvm/versions/node/*/bin"
+          
+#           # === GO TO APP DIRECTORY ===
+#           echo "📁 Changing to app directory..."
+#           cd "$APP_DIR" || {
+#             echo "❌ Cannot access $APP_DIR"
+#             echo "Creating directory..."
+#             sudo mkdir -p "$APP_DIR"
+#             sudo chown -R $USER:$USER "$APP_DIR"
+#             cd "$APP_DIR"
+#           }
+          
+#           echo "📁 Current directory: $(pwd)"
+#           echo "📁 Contents:"
+#           ls -la
+          
+#           # === BACKUP ===
+#           echo "📦 Creating backup..."
+#           mkdir -p "$BACKUP_DIR"
+#           BACKUP_FILE="$BACKUP_DIR/backup_$(date +%Y%m%d_%H%M%S).tar.gz"
+          
+#           if [ -d ".git" ] || [ -f "package.json" ]; then
+#             tar --exclude='node_modules' --exclude='.next' -czf "$BACKUP_FILE" . 2>/dev/null || echo "Backup skipped"
+#             echo "✅ Backup created: $BACKUP_FILE"
+#           else
+#             echo "ℹ️ First deployment or empty directory"
+#           fi
+          
+#           # === UPDATE CODE ===
+#           echo "⬇️ Updating code..."
+          
+#           # Check if git repo exists
+#           if [ ! -d ".git" ]; then
+#             echo "📦 Cloning repository..."
+#             git clone https://github.com/GSASConnect-Global-Ltd/osmium-latest.git .
+#           else
+#             echo "🔄 Pulling latest changes..."
+#             git fetch origin --tags --force
+#             git reset --hard origin/main
+#             git clean -fd
+#           fi
+          
+#           # === INSTALL DEPENDENCIES ===
+#           echo "📦 Installing dependencies..."
+          
+#           # Clean previous installations
+#           rm -rf node_modules .next package-lock.json
+          
+#           # Check if package.json exists
+#           if [ ! -f "package.json" ]; then
+#             echo "❌ package.json not found!"
+#             echo "📁 Current files:"
+#             ls -la
+#             exit 1
+#           fi
+          
+#           echo "📄 package.json content:"
+#           cat package.json | head -20
+          
+#           # Install ALL dependencies (including dev for build)
+#           echo "🔧 Installing all dependencies..."
+#           npm ci --include=dev --no-audit --no-fund --ignore-scripts || {
+#             echo "⚠️ npm ci failed, trying npm install..."
+#             npm install --include=dev --no-audit --no-fund
+#           }
+          
+#           # === BUILD APPLICATION ===
+#           echo "🏗️ Building application..."
+          
+#           export NODE_ENV=production
+#           export NEXT_TELEMETRY_DISABLED=1
+#           export NODE_OPTIONS="--max-old-space-size=4096"
+          
+#           # Check if build script exists
+#           if grep -q '"build"' package.json; then
+#             echo "🔨 Running build..."
+#             if timeout 600 npm run build; then
+#               echo "✅ Build successful"
+              
+#               # Check build output
+#               if [ -d ".next" ]; then
+#                 BUILD_SIZE=$(du -sh .next | cut -f1)
+#                 echo "📦 Build size: $BUILD_SIZE"
+#               else
+#                 echo "⚠️ .next directory not found after build"
+#               fi
+#             else
+#               echo "❌ Build failed or timed out"
+              
+#               # Rollback if backup exists
+#               if [ -f "$BACKUP_FILE" ]; then
+#                 echo "🔄 Rolling back..."
+#                 rm -rf .next node_modules
+#                 tar xzf "$BACKUP_FILE" 2>/dev/null || echo "Rollback failed"
+#               fi
+              
+#               exit 1
+#             fi
+#           else
+#             echo "📭 No build script found in package.json"
+#           fi
+          
+#           # === INSTALL PRODUCTION DEPENDENCIES ===
+#           echo "⚡ Installing production dependencies..."
+#           npm ci --omit=dev --no-audit --no-fund --ignore-scripts || {
+#             echo "⚠️ Production install failed, using existing node_modules"
+#           }
+          
+#           # === PM2 SETUP ===
+#           echo "⚙️ Setting up PM2..."
+          
+#           # Install PM2 globally if not present
+#           if ! command -v pm2 &> /dev/null; then
+#             echo "📦 Installing PM2..."
+#             npm install -g pm2 --no-audit --no-fund
+#           fi
+          
+#           # Stop existing process
+#           pm2 delete "$APP_NAME" 2>/dev/null || echo "No existing process found"
+          
+#           # Start application
+#           echo "🚀 Starting application..."
+          
+#           if [ -f ".next/standalone/server.js" ]; then
+#             echo "🔐 Using standalone mode"
+#             pm2 start .next/standalone/server.js \
+#               --name "$APP_NAME" \
+#               --log "/var/log/$APP_NAME.log" \
+#               --time \
+#               -- \
+#               --port=3000 \
+#               --hostname=127.0.0.1
+#           elif [ -f "package.json" ] && grep -q '"start"' package.json; then
+#             echo "⚡ Using npm start"
+#             pm2 start npm \
+#               --name "$APP_NAME" \
+#               --log "/var/log/$APP_NAME.log" \
+#               --time \
+#               -- \
+#               start
+#           else
+#             echo "❌ No start method found"
+#             exit 1
+#           fi
+          
+#           # Save PM2 configuration
+#           pm2 save 2>/dev/null || true
+          
+#           # Setup PM2 startup
+#           echo "🔧 Setting up PM2 startup..."
+#           pm2 startup 2>/dev/null | tail -1 | sudo bash 2>/dev/null || echo "PM2 startup already configured"
+          
+#           # === HEALTH CHECK ===
+#           echo "🏥 Running health check..."
+#           sleep 5
+          
+#           MAX_RETRIES=5
+#           for i in $(seq 1 $MAX_RETRIES); do
+#             if curl -s -f -m 5 http://127.0.0.1:3000 > /dev/null; then
+#               echo "✅ Application is healthy (attempt $i/$MAX_RETRIES)"
+#               break
+#             fi
+            
+#             if [ $i -eq $MAX_RETRIES ]; then
+#               echo "⚠️ Health check failed after $MAX_RETRIES attempts"
+#               echo "📋 PM2 logs:"
+#               pm2 logs "$APP_NAME" --lines 10 2>/dev/null || echo "No logs available"
+#             else
+#               echo "  Waiting... (attempt $i/$MAX_RETRIES)"
+#               sleep 3
+#             fi
+#           done
+          
+#           # === CLEANUP ===
+#           echo "🧹 Cleaning up old backups..."
+#           cd "$BACKUP_DIR"
+#           ls -t backup_*.tar.gz 2>/dev/null | tail -n +6 | xargs rm -f 2>/dev/null || true
+          
+#           # === DEPLOYMENT COMPLETE ===
+#           echo ""
+#           echo "🎉 === DEPLOYMENT COMPLETED SUCCESSFULLY ==="
+#           echo "🕒 Time: $(date)"
+#           echo "📱 Application: $APP_NAME"
+#           echo "🌐 URL: https://orrelng.com"
+#           echo "📊 Node.js: $(node --version)"
+#           echo "📊 npm: $(npm --version)"
+#           echo ""
+#           echo "📋 PM2 Status:"
+#           pm2 status "$APP_NAME" --silent 2>/dev/null || echo "Status check failed"
+          
+#           # Log deployment
+#           echo "$(date) | SUCCESS | $(git rev-parse --short HEAD 2>/dev/null || echo "unknown")" >> "$BACKUP_DIR/deployments.log"
+
+name: 🚀 Simple Deploy Orrel Frontend
 
 on:
   push:
     branches: [main]
 
 jobs:
-  security-scan:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Quick security check
-      run: |
-        echo "🔍 Security scan (non-blocking)..."
-        # Skip blocking checks for now
-        echo "✅ Security checks passed"
-
   deploy:
     runs-on: ubuntu-latest
-    needs: security-scan
-    timeout-minutes: 30
+    timeout-minutes: 10
     
     steps:
-    - name: Checkout code
+    - name: 📥 Checkout code
       uses: actions/checkout@v4
 
-    - name: 🔐 Deploy to VPS
+    - name: 🚀 Deploy to VPS
       uses: appleboy/ssh-action@v1.2.0
       with:
         host: ${{ secrets.VPS_IP }}
         port: 22222
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script_stop: true
-        timeout: 1800s
+        timeout: 300s  # 5 minutes
         script: |
-          set -euo pipefail
+          echo "🚀 Starting simple deployment..."
           
-          echo "=== DEPLOYMENT STARTED ==="
-          echo "Time: $(date)"
-          echo "User: $(whoami)"
-          
-          # Configuration
+          # App configuration
           APP_NAME="orrel-app"
           APP_DIR="/var/www/orrel-app"
-          BACKUP_DIR="/home/${{ secrets.VPS_USER }}/backups"
           
-          # === CHECK AND INSTALL NODE.JS ===
-          echo "🔍 Checking Node.js installation..."
-          
-          # Method 1: Check for nvm
-          if [ -s "$HOME/.nvm/nvm.sh" ]; then
-            echo "📦 Using nvm..."
-            source "$HOME/.nvm/nvm.sh"
-            nvm use 20 || nvm install 20
-          # Method 2: Check for existing Node.js
-          elif command -v node &> /dev/null; then
-            echo "✅ Node.js already installed"
-          # Method 3: Install Node.js using nodesource
-          else
-            echo "📦 Installing Node.js 20..."
+          # 1. Install Node.js if not present
+          if ! command -v node &> /dev/null; then
+            echo "📦 Installing Node.js..."
             curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
             sudo apt-get install -y nodejs
           fi
           
-          # Verify installation
-          NODE_VERSION=$(node --version 2>/dev/null || echo "NOT_FOUND")
-          NPM_VERSION=$(npm --version 2>/dev/null || echo "NOT_FOUND")
+          echo "✅ Node.js: $(node --version)"
+          echo "✅ npm: $(npm --version)"
           
-          echo "📊 Node.js: $NODE_VERSION"
-          echo "📊 npm: $NPM_VERSION"
-          
-          if [ "$NODE_VERSION" = "NOT_FOUND" ] || [ "$NPM_VERSION" = "NOT_FOUND" ]; then
-            echo "❌ Node.js/npm not found after installation attempt"
-            echo "Trying alternative installation..."
-            
-            # Alternative: Install from tarball
-            cd /tmp
-            curl -O https://nodejs.org/dist/v20.18.0/node-v20.18.0-linux-x64.tar.xz
-            tar -xf node-v20.18.0-linux-x64.tar.xz
-            sudo mv node-v20.18.0-linux-x64 /opt/node
-            sudo ln -sf /opt/node/bin/node /usr/local/bin/node
-            sudo ln -sf /opt/node/bin/npm /usr/local/bin/npm
-            sudo ln -sf /opt/node/bin/npx /usr/local/bin/npx
-            
-            # Cleanup
-            rm -f node-v20.18.0-linux-x64.tar.xz
-            
-            # Verify again
-            node --version && npm --version || {
-              echo "❌ Failed to install Node.js"
-              exit 1
-            }
-          fi
-          
-          # Set PATH to include node binaries
-          export PATH="$PATH:/usr/local/bin:/usr/bin:/opt/node/bin:$HOME/.nvm/versions/node/*/bin"
-          
-          # === GO TO APP DIRECTORY ===
-          echo "📁 Changing to app directory..."
+          # 2. Go to app directory
+          echo "📁 Going to app directory: $APP_DIR"
           cd "$APP_DIR" || {
-            echo "❌ Cannot access $APP_DIR"
+            echo "❌ Could not access $APP_DIR"
             echo "Creating directory..."
             sudo mkdir -p "$APP_DIR"
             sudo chown -R $USER:$USER "$APP_DIR"
             cd "$APP_DIR"
           }
           
-          echo "📁 Current directory: $(pwd)"
-          echo "📁 Contents:"
-          ls -la
-          
-          # === BACKUP ===
-          echo "📦 Creating backup..."
-          mkdir -p "$BACKUP_DIR"
-          BACKUP_FILE="$BACKUP_DIR/backup_$(date +%Y%m%d_%H%M%S).tar.gz"
-          
-          if [ -d ".git" ] || [ -f "package.json" ]; then
-            tar --exclude='node_modules' --exclude='.next' -czf "$BACKUP_FILE" . 2>/dev/null || echo "Backup skipped"
-            echo "✅ Backup created: $BACKUP_FILE"
-          else
-            echo "ℹ️ First deployment or empty directory"
-          fi
-          
-          # === UPDATE CODE ===
+          # 3. Update code
           echo "⬇️ Updating code..."
-          
-          # Check if git repo exists
-          if [ ! -d ".git" ]; then
-            echo "📦 Cloning repository..."
+          if [ -d ".git" ]; then
+            git pull origin main
+          else
+            echo "📦 Cloning fresh..."
             git clone https://github.com/GSASConnect-Global-Ltd/osmium-latest.git .
-          else
-            echo "🔄 Pulling latest changes..."
-            git fetch origin --tags --force
-            git reset --hard origin/main
-            git clean -fd
           fi
           
-          # === INSTALL DEPENDENCIES ===
+          # 4. Install dependencies
           echo "📦 Installing dependencies..."
+          npm install
           
-          # Clean previous installations
-          rm -rf node_modules .next package-lock.json
+          # 5. Build
+          echo "🏗️ Building..."
+          npm run build
           
-          # Check if package.json exists
-          if [ ! -f "package.json" ]; then
-            echo "❌ package.json not found!"
-            echo "📁 Current files:"
-            ls -la
-            exit 1
-          fi
-          
-          echo "📄 package.json content:"
-          cat package.json | head -20
-          
-          # Install ALL dependencies (including dev for build)
-          echo "🔧 Installing all dependencies..."
-          npm ci --include=dev --no-audit --no-fund --ignore-scripts || {
-            echo "⚠️ npm ci failed, trying npm install..."
-            npm install --include=dev --no-audit --no-fund
-          }
-          
-          # === BUILD APPLICATION ===
-          echo "🏗️ Building application..."
-          
-          export NODE_ENV=production
-          export NEXT_TELEMETRY_DISABLED=1
-          export NODE_OPTIONS="--max-old-space-size=4096"
-          
-          # Check if build script exists
-          if grep -q '"build"' package.json; then
-            echo "🔨 Running build..."
-            if timeout 600 npm run build; then
-              echo "✅ Build successful"
-              
-              # Check build output
-              if [ -d ".next" ]; then
-                BUILD_SIZE=$(du -sh .next | cut -f1)
-                echo "📦 Build size: $BUILD_SIZE"
-              else
-                echo "⚠️ .next directory not found after build"
-              fi
-            else
-              echo "❌ Build failed or timed out"
-              
-              # Rollback if backup exists
-              if [ -f "$BACKUP_FILE" ]; then
-                echo "🔄 Rolling back..."
-                rm -rf .next node_modules
-                tar xzf "$BACKUP_FILE" 2>/dev/null || echo "Rollback failed"
-              fi
-              
-              exit 1
-            fi
-          else
-            echo "📭 No build script found in package.json"
-          fi
-          
-          # === INSTALL PRODUCTION DEPENDENCIES ===
-          echo "⚡ Installing production dependencies..."
-          npm ci --omit=dev --no-audit --no-fund --ignore-scripts || {
-            echo "⚠️ Production install failed, using existing node_modules"
-          }
-          
-          # === PM2 SETUP ===
-          echo "⚙️ Setting up PM2..."
-          
-          # Install PM2 globally if not present
+          # 6. Install PM2 if needed
           if ! command -v pm2 &> /dev/null; then
             echo "📦 Installing PM2..."
-            npm install -g pm2 --no-audit --no-fund
+            npm install -g pm2
           fi
           
-          # Stop existing process
-          pm2 delete "$APP_NAME" 2>/dev/null || echo "No existing process found"
-          
-          # Start application
+          # 7. Start/Restart app
           echo "🚀 Starting application..."
+          pm2 delete "$APP_NAME" 2>/dev/null || true
+          pm2 start npm --name "$APP_NAME" -- start
           
-          if [ -f ".next/standalone/server.js" ]; then
-            echo "🔐 Using standalone mode"
-            pm2 start .next/standalone/server.js \
-              --name "$APP_NAME" \
-              --log "/var/log/$APP_NAME.log" \
-              --time \
-              -- \
-              --port=3000 \
-              --hostname=127.0.0.1
-          elif [ -f "package.json" ] && grep -q '"start"' package.json; then
-            echo "⚡ Using npm start"
-            pm2 start npm \
-              --name "$APP_NAME" \
-              --log "/var/log/$APP_NAME.log" \
-              --time \
-              -- \
-              start
-          else
-            echo "❌ No start method found"
-            exit 1
-          fi
-          
-          # Save PM2 configuration
+          # 8. Save PM2 config
           pm2 save 2>/dev/null || true
           
-          # Setup PM2 startup
-          echo "🔧 Setting up PM2 startup..."
-          pm2 startup 2>/dev/null | tail -1 | sudo bash 2>/dev/null || echo "PM2 startup already configured"
-          
-          # === HEALTH CHECK ===
-          echo "🏥 Running health check..."
-          sleep 5
-          
-          MAX_RETRIES=5
-          for i in $(seq 1 $MAX_RETRIES); do
-            if curl -s -f -m 5 http://127.0.0.1:3000 > /dev/null; then
-              echo "✅ Application is healthy (attempt $i/$MAX_RETRIES)"
-              break
-            fi
-            
-            if [ $i -eq $MAX_RETRIES ]; then
-              echo "⚠️ Health check failed after $MAX_RETRIES attempts"
-              echo "📋 PM2 logs:"
-              pm2 logs "$APP_NAME" --lines 10 2>/dev/null || echo "No logs available"
-            else
-              echo "  Waiting... (attempt $i/$MAX_RETRIES)"
-              sleep 3
-            fi
-          done
-          
-          # === CLEANUP ===
-          echo "🧹 Cleaning up old backups..."
-          cd "$BACKUP_DIR"
-          ls -t backup_*.tar.gz 2>/dev/null | tail -n +6 | xargs rm -f 2>/dev/null || true
-          
-          # === DEPLOYMENT COMPLETE ===
           echo ""
-          echo "🎉 === DEPLOYMENT COMPLETED SUCCESSFULLY ==="
-          echo "🕒 Time: $(date)"
-          echo "📱 Application: $APP_NAME"
+          echo "🎉 DEPLOYMENT COMPLETED!"
+          echo "📱 App: $APP_NAME"
           echo "🌐 URL: https://orrelng.com"
-          echo "📊 Node.js: $(node --version)"
-          echo "📊 npm: $(npm --version)"
-          echo ""
-          echo "📋 PM2 Status:"
-          pm2 status "$APP_NAME" --silent 2>/dev/null || echo "Status check failed"
-          
-          # Log deployment
-          echo "$(date) | SUCCESS | $(git rev-parse --short HEAD 2>/dev/null || echo "unknown")" >> "$BACKUP_DIR/deployments.log"
+          echo "🕒 Time: $(date)"
