@@ -2563,7 +2563,8 @@ jobs:
             if [ -d ".git" ]; then
               git fetch origin
               git reset --hard origin/main
-              git clean -fd
+              # git clean -fd
+              git clean -fd -e .lockfile.hash
               echo "✅ Code updated"
             else
               echo "📦 Cloning repository..."
