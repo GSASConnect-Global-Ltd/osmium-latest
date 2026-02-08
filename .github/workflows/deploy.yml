@@ -2621,6 +2621,12 @@ jobs:
                 echo "✅ Dependencies installed"
             fi
 
+            # Ensure TypeScript is available
+
+            echo "📦 Ensuring TypeScript for build..."
+
+            npm list typescript 2>/dev/null | grep -q typescript || npm install typescript @types/node --no-audit --no-fund
+
             # Always remove .next for fresh build
             echo "🧹 Cleaning previous build..."
             rm -rf .next
@@ -2678,105 +2684,130 @@ jobs:
             fi
             
             # Install production-only dependencies
-            echo "⚡ Installing production dependencies..."
-            npm ci --omit=dev --no-audit --no-fund || {
-              echo "⚠️ Production install failed, continuing..."
-            }
+            # echo "⚡ Installing production dependencies..."
+            # npm ci --omit=dev --no-audit --no-fund || {
+            #   echo "⚠️ Production install failed, continuing..."
+            # }
             
             # ================================================================
             # 8. PM2 SETUP
             # ================================================================
             echo "⚙️ Setting up PM2..."
             
-            # Install PM2 if not present
-            if ! command -v pm2 &> /dev/null; then
-              echo "📦 Installing PM2..."
-              npm install -g pm2 --no-audit --no-fund
-            fi
-            
-            # Restart application
-            echo "🔄 Restarting application..."
-            
-            # Stop existing process
-            pm2 delete "$APP_NAME" 2>/dev/null || echo "No existing process found"
-            
-            # Start new process
+            pm2 delete "$APP_NAME" 2>/dev/null || true
+
+            # Determine how to start
+
             if [ -f ".next/standalone/server.js" ]; then
-              echo "🔐 Using standalone build"
-              pm2 start .next/standalone/server.js --name "$APP_NAME" -- --port 3000 --hostname 127.0.0.1
+                echo "🔐 Starting standalone build..."
+                cd .next/standalone
+                pm2 start server.js --name "$APP_NAME" -- --port 3000 --hostname 0.0.0.0
+                cd "$APP_DIR"
             else
-              echo "⚡ Using npm start"
-              pm2 start npm --name "$APP_NAME" -- run start
+                echo "⚡ Starting Next.js production server..."
+                # CRITICAL: Use npx next start, not npm start
+                pm2 start "npx next start" --name "$APP_NAME" -- --port 3000 --hostname 0.0.0.0
+            fi
+
+            pm2 save 2>/dev/null || true
+
+            # ================================================================
+            # 9. VERIFICATION
+            # ================================================================
+
+            echo "🔍 Verifying startup..."
+            sleep 10
+
+            # Check if running
+            if pm2 status "$APP_NAME" | grep -q "online"; then
+                echo "✅ PM2 process is online"
+            else
+                echo "❌ PM2 process not started"
+                pm2 logs "$APP_NAME" --lines 20
+                exit 1
+            fi
+
+            # Check if listening
+            if timeout 3 bash -c "echo >/dev/tcp/127.0.0.1/3000"; then
+                echo "✅ Port 3000 is listening"
+            else
+                echo "❌ Port 3000 not listening"
+                exit 1
+
+            fi
+
+            # Health check
+            echo "🏥 Final health check..."
+            if curl -s -f -m 10 http://127.0.0.1:3000 > /dev/null; then
+                echo "🎉 Application is fully operational!"
+            else
+                echo "⚠️ Application started but not responding to HTTP"
+                echo "   Testing alternative paths..."
+                curl -I http://127.0.0.1:3000 2>/dev/null | head -1
+                echo "   Check: curl http://127.0.0.1:3000"
             fi
             
-            # Save PM2 config
-            pm2 save 2>/dev/null || echo "PM2 save failed"
+            # # ================================================================
+            # # 9. HEALTH CHECK
+            # # ================================================================
+            # echo "🏥 Running health check..."
+            # sleep 5  # Give app time to start
             
-            # Setup startup
-            echo "🔧 Setting up PM2 startup..."
-            pm2 startup 2>/dev/null | tail -1 | sudo bash 2>/dev/null || echo "PM2 startup already configured"
+            # MAX_RETRIES=3
+            # HEALTHY=false
             
-            # ================================================================
-            # 9. HEALTH CHECK
-            # ================================================================
-            echo "🏥 Running health check..."
-            sleep 5  # Give app time to start
+            # for i in $(seq 1 $MAX_RETRIES); do
+            #   if curl -s -f -m 5 http://127.0.0.1:3000 > /dev/null; then
+            #     echo "✅ Application is healthy (attempt $i/$MAX_RETRIES)"
+            #     HEALTHY=true
+            #     break
+            #   else
+            #     echo "  Waiting... (attempt $i/$MAX_RETRIES)"
+            #     sleep 3
+            #   fi
+            # done
             
-            MAX_RETRIES=3
-            HEALTHY=false
+            # if [ "$HEALTHY" = false ]; then
+            #   echo "⚠️ Health check failed after $MAX_RETRIES attempts"
+            #   echo "📋 Checking PM2 logs..."
+            #   pm2 logs "$APP_NAME" --lines 10 2>/dev/null || echo "No logs available"
+            # fi
             
-            for i in $(seq 1 $MAX_RETRIES); do
-              if curl -s -f -m 5 http://127.0.0.1:3000 > /dev/null; then
-                echo "✅ Application is healthy (attempt $i/$MAX_RETRIES)"
-                HEALTHY=true
-                break
-              else
-                echo "  Waiting... (attempt $i/$MAX_RETRIES)"
-                sleep 3
-              fi
-            done
+            # # ================================================================
+            # # 10. CLEANUP
+            # # ================================================================
+            # echo "🧹 Cleaning up old backups..."
+            # cd "$BACKUP_DIR"
             
-            if [ "$HEALTHY" = false ]; then
-              echo "⚠️ Health check failed after $MAX_RETRIES attempts"
-              echo "📋 Checking PM2 logs..."
-              pm2 logs "$APP_NAME" --lines 10 2>/dev/null || echo "No logs available"
-            fi
+            # # Keep last 5 backups
+            # ls -t ${APP_NAME}_backup_*.tar.gz 2>/dev/null | tail -n +6 | while read -r file; do
+            #   echo "  Removing: $file"
+            #   rm -f "$file" 2>/dev/null || true
+            # done
             
-            # ================================================================
-            # 10. CLEANUP
-            # ================================================================
-            echo "🧹 Cleaning up old backups..."
-            cd "$BACKUP_DIR"
+            # BACKUP_COUNT=$(ls -1 ${APP_NAME}_backup_*.tar.gz 2>/dev/null | wc -l)
+            # echo "📦 Backups retained: $BACKUP_COUNT"
             
-            # Keep last 5 backups
-            ls -t ${APP_NAME}_backup_*.tar.gz 2>/dev/null | tail -n +6 | while read -r file; do
-              echo "  Removing: $file"
-              rm -f "$file" 2>/dev/null || true
-            done
+            # # ================================================================
+            # # 11. FINAL STATUS
+            # # ================================================================
+            # echo ""
+            # echo "🎉 DEPLOYMENT COMPLETED SUCCESSFULLY!"
+            # echo "========================================"
+            # echo "📱 Application: $APP_NAME"
+            # echo "📁 Directory: $APP_DIR"
+            # echo "🌐 URL: https://orrelng.com"
+            # echo "🕒 Time: $(date)"
+            # echo "📊 Node.js: $(node --version)"
+            # echo "📊 npm: $(npm --version)"
+            # echo ""
+            # echo "📋 PM2 Status:"
+            # pm2 status "$APP_NAME" --silent 2>/dev/null || {
+            #   echo "  Could not get PM2 status"
+            #   echo "  Checking process directly..."
+            #   ps aux | grep -v grep | grep "$APP_NAME" || echo "  No process found"
+            # }
             
-            BACKUP_COUNT=$(ls -1 ${APP_NAME}_backup_*.tar.gz 2>/dev/null | wc -l)
-            echo "📦 Backups retained: $BACKUP_COUNT"
-            
-            # ================================================================
-            # 11. FINAL STATUS
-            # ================================================================
-            echo ""
-            echo "🎉 DEPLOYMENT COMPLETED SUCCESSFULLY!"
-            echo "========================================"
-            echo "📱 Application: $APP_NAME"
-            echo "📁 Directory: $APP_DIR"
-            echo "🌐 URL: https://orrelng.com"
-            echo "🕒 Time: $(date)"
-            echo "📊 Node.js: $(node --version)"
-            echo "📊 npm: $(npm --version)"
-            echo ""
-            echo "📋 PM2 Status:"
-            pm2 status "$APP_NAME" --silent 2>/dev/null || {
-              echo "  Could not get PM2 status"
-              echo "  Checking process directly..."
-              ps aux | grep -v grep | grep "$APP_NAME" || echo "  No process found"
-            }
-            
-            echo ""
-            echo "✅ Deployment complete! The application should now be live."
+            # echo ""
+            # echo "✅ Deployment complete! The application should now be live."
 
