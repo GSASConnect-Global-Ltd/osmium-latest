@@ -24,8 +24,11 @@ export default function LatestBlogs() {
     const fetchBlogPosts = async () => {
       try {
         const res = await fetch(
-          "https://osmium-blog-admin-backend.onrender.com/api/blogs/recent"
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/recent`
         );
+        // const res = await fetch(
+        //   "https://osmium-blog-admin-backend.onrender.com/api/blogs/recent"
+        // );
         if (!res.ok) throw new Error("Failed to fetch blogs");
 
         const data: BlogPostFromAPI[] = await res.json();
