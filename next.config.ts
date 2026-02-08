@@ -189,9 +189,9 @@ const nextConfig: NextConfig = {
   
   // ✅ Production optimizations
   // swcMinify: true,
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-  },
+  // compiler: {
+  //   removeConsole: process.env.NODE_ENV === 'production',
+  // },
   
   // ✅ Optional: For better performance
   experimental: {
