@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
         hostname: "osmium-blog-admin-backend.onrender.com",
         pathname: "/uploads/**", // allow all images under /uploads
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "5000",
+        pathname: "/uploads/**",
+      },
     ],
   },
 };

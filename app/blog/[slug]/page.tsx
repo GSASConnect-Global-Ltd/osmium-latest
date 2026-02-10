@@ -49,9 +49,15 @@ export default function BlogPostPage() {
     const fetchPost = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/${slug}`
-        );
-        if (!res.ok) throw new Error("Failed to fetch post");
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/${slug}`
+);
+
+if (!res.ok) {
+  const errText = await res.text();
+  console.error("API ERROR:", res.status, errText);
+  throw new Error(`Failed to fetch post (${res.status})`);
+}
+
 
         const data: BlogPostFromAPI = await res.json();
 
@@ -175,9 +181,10 @@ export default function BlogPostPage() {
               )
           )}
 
-          <div className="mt-8 leading-relaxed text-gray-800 whitespace-pre-line">
-            {post.content}
-          </div>
+          <div
+            className="mt-8 leading-relaxed prose prose-lg max-w-none"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
 
           {/* Social Share Buttons */}
           <div className="flex items-center mt-8 space-x-4">
