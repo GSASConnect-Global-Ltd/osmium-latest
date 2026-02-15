@@ -200,15 +200,16 @@ const BlogSection = () => {
         <div className="mx-auto max-w-7xl">
           {filteredPosts.length > 0 ? (
             <div className="grid grid-cols-1 gap-y-20 gap-x-12 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
-              {filteredPosts.map((post) => (
-                <BlogCard
-                  key={post.slug}
-                  slug={post.slug} // ✅ fixed
-                  title={post.title}
-                  summary={post.summary}
-                  image={post.image}
-                />
-              ))}
+              {filteredPosts.map((post, index) => (
+  <BlogCard
+    key={`${post.slug}-${index}`}
+    slug={post.slug}
+    title={post.title}
+    summary={post.summary}
+    image={post.image}
+  />
+))}
+
             </div>
           ) : (
             <p className="text-center text-gray-500">No posts available.</p>

@@ -69,9 +69,14 @@ if (!res.ok) {
           date: data.date,
           readTime: data.readTime || "5 min read",
           category: data.category,
-          images: (data.images || []).map(
-            (img) => (img ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}` : null)
-          ),
+          images: (data.images || []).map((img) => {
+  if (!img) return null;
+
+  return img.startsWith("http")
+    ? img
+    : `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}`;
+}),
+
           content: data.content,
           slug: data.slug,
         };
@@ -83,19 +88,24 @@ if (!res.ok) {
         if (relatedRes.ok) {
           const relatedData: BlogPostFromAPI[] = await relatedRes.json();
           const mappedRelated = relatedData.map((p) => ({
-            _id: p._id,
-            title: p.title,
-            summary: p.summary,
-            author: p.author,
-            date: p.date,
-            readTime: p.readTime || "5 min read",
-            category: p.category,
-            images: (p.images || []).map(
-              (img) => (img ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}` : null)
-            ),
-            content: p.content,
-            slug: p.slug,
-          }));
+  _id: p._id,
+  title: p.title,
+  summary: p.summary,
+  author: p.author,
+  date: p.date,
+  readTime: p.readTime || "5 min read",
+  category: p.category,
+  images: (p.images || []).map((img) => {
+    if (!img) return null;
+
+    return img.startsWith("http")
+      ? img
+      : `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}`;
+  }),
+  content: p.content,
+  slug: p.slug,
+}));
+
           setRelatedPosts(mappedRelated);
         }
       } catch (error) {
@@ -160,7 +170,8 @@ if (!res.ok) {
       {/* Main Layout */}
       <article className="container flex flex-col max-w-6xl px-6 py-12 mx-auto md:flex-row md:gap-12">
         {/* Content */}
-        <section className="flex-1 prose prose-lg text-black max-w-none">
+       <section className="flex-1 max-w-3xl space-y-6 leading-relaxed tracking-normal prose prose-lg text-justify  prose-neutral">
+
           <p className="text-lg text-gray-700 whitespace-pre-line">{post.summary}</p>
 
           {post.images.slice(1).map(

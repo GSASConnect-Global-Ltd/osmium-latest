@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+
 import {
   ChevronDown,
   Zap,
@@ -24,6 +26,15 @@ const Navbar = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const pathname = usePathname();
+
+  useEffect(() => {
+  setIsServicesOpen(false);
+  setIsMobileServicesOpen(false);
+  setIsMobileOpen(false);
+}, [pathname]);
+
+
 
   // ✅ Hide navbar after short scroll (100px)
   useEffect(() => {
@@ -41,6 +52,7 @@ const Navbar = () => {
     { name: "Portfolio", href: "/portfolio", type: "link" },
     { name: "Blog", href: "/blog", type: "link" },
     { name: "Contact", href: "/contact", type: "link" },
+    {name: "Job", href:"/hiring", type: "link"}
   ];
 
   // ✅ Services

@@ -10,7 +10,7 @@ interface Social {
   url: string;
 }
 
-interface TeamMember {
+interface TeamMemberFromAPI {
   _id?: string;
   name: string;
   post: string;
@@ -19,45 +19,65 @@ interface TeamMember {
   socials?: Social[];
 }
 
+interface TeamMemberNormalized {
+  name: string;
+  role: string;
+  bio?: string;
+  image: string;
+  socials: Social[];
+}
+
 export default function TeamPage() {
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [teamMembers, setTeamMembers] = useState<TeamMemberNormalized[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const IMG_UPLOAD_PATH =
-    process.env.NEXT_PUBLIC_IMG_UPLOAD_PATH ||
-    "http://localhost:5000/uploads/team";
-
   useEffect(() => {
-    async function fetchTeam() {
+    const fetchTeam = async () => {
       try {
-        const { data } = await axios.get(
+        const res = await axios.get<TeamMemberFromAPI[]>(
           `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/team`
         );
-        setTeamMembers(data);
+
+        const normalized: TeamMemberNormalized[] = res.data.map((member) => {
+          let imageUrl = "/default-avatar.png";
+
+          if (member.photo) {
+            imageUrl = member.photo.startsWith("http")
+              ? member.photo
+              : `${process.env.NEXT_PUBLIC_IMG_UPLOAD_PATH || "http://localhost:5000/uploads/team"}/${member.photo}`;
+          }
+
+          return {
+            name: member.name,
+            role: member.post,
+            bio: member.bio,
+            image: imageUrl,
+            socials: member.socials || [],
+          };
+        });
+
+        setTeamMembers(normalized);
       } catch (err) {
-        console.error("Failed to fetch team members", err);
+        console.error("❌ Error fetching team members:", err);
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchTeam();
   }, []);
 
-  if (loading) return <p>Loading team members...</p>;
-
-  // Transform data for Team component
-  const formattedTeam = teamMembers.map((member) => ({
-    name: member.name,
-    role: member.post,
-    bio: member.bio,
-    image: member.photo ? `${IMG_UPLOAD_PATH}/${member.photo}` : "/default-avatar.png",
-    socials: member.socials || [],
-  }));
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-white">
+        <p className="text-lg text-black">Loading team members...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
-      {/* Team Hero Section (Dark) */}
+      {/* Hero Section */}
       <div className="text-white bg-black">
         <HeroSection
           subtitle="Meet the Team"
@@ -66,8 +86,12 @@ export default function TeamPage() {
         />
       </div>
 
-      {/* Team Members Section (White) */}
-      <Team teamMembers={formattedTeam} />
+      {/* Team Members */}
+      <section className="py-20 bg-white">
+        <div className="px-6 mx-auto max-w-7xl">
+          <Team teamMembers={teamMembers} />
+        </div>
+      </section>
     </div>
   );
 }

@@ -26,9 +26,7 @@ export default function LatestBlogs() {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/recent`
         );
-        // const res = await fetch(
-        //   "https://osmium-blog-admin-backend.onrender.com/api/blogs/recent"
-        // );
+        
         if (!res.ok) throw new Error("Failed to fetch blogs");
 
         const data: BlogPostFromAPI[] = await res.json();
@@ -39,7 +37,8 @@ export default function LatestBlogs() {
           images: post.images
             .filter((img) => img && img !== "null")
             .map(
-              (img) => `https://osmium-blog-admin-backend.onrender.com${img}`
+              (img) => `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}`
+
             ),
         }));
 

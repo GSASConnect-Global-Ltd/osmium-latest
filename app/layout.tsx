@@ -19,7 +19,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning className={`${ppEditorialNew.variable} `}>
       <head />
-     <body className={` ${ppEditorialNew.variable} antialiased`}>
+    <body
+  suppressHydrationWarning
+  className={`${ppEditorialNew.variable} antialiased`}
+>
+
   <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
     <Navbar />
     <main className="bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300 font-[var(--font-satoshi)]">
