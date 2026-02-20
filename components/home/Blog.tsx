@@ -4,20 +4,30 @@ import { useEffect, useState } from "react";
 import BlogCard from "../blog/BlogCard";
 import { useTheme } from "next-themes";
 
-// Define backend blog post type
+// Backend blog post type
 interface BlogPostFromAPI {
   _id: string;
   title: string;
   summary: string;
   images: string[];
-  slug: string; // new slug field
+  slug: string;
 }
+
+// ✅ Safe image URL builder
+const buildImageUrl = (src?: string) => {
+  if (!src || src === "null") return undefined;
+
+  // already absolute URL → keep it
+  if (src.startsWith("http")) return src;
+
+  // relative → attach backend URL
+  return `${process.env.NEXT_PUBLIC_API_BASE_URL}${src}`;
+};
 
 export default function LatestBlogs() {
   const [blogPosts, setBlogPosts] = useState<BlogPostFromAPI[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // next-themes
   const { theme, resolvedTheme } = useTheme();
 
   useEffect(() => {
@@ -26,20 +36,18 @@ export default function LatestBlogs() {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/recent`
         );
-        
+
         if (!res.ok) throw new Error("Failed to fetch blogs");
 
         const data: BlogPostFromAPI[] = await res.json();
 
-        // Map images, filter nulls
+        // ✅ Normalize images safely
         const mapped = data.map((post) => ({
           ...post,
           images: post.images
-            .filter((img) => img && img !== "null")
-            .map(
-              (img) => `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}`
-
-            ),
+            ?.filter((img) => img && img !== "null")
+            .map(buildImageUrl)
+            .filter(Boolean) as string[],
         }));
 
         setBlogPosts(mapped);
@@ -53,7 +61,7 @@ export default function LatestBlogs() {
     fetchBlogPosts();
   }, []);
 
-  // Determine if dark mode is active
+  // theme detection
   const isDark =
     (typeof resolvedTheme === "string" && resolvedTheme === "dark") ||
     theme === "dark";
@@ -67,7 +75,7 @@ export default function LatestBlogs() {
       <div className="px-4 mx-auto sm:px-6 max-w-7xl">
         {/* Heading */}
         <h2
-          className="mb-12 text-center ppEditorial text-[28px] sm:text-[36px] md:text-[48px] 
+          className="mb-12 text-center ppEditorial text-[28px] sm:text-[36px] md:text-[48px]
                      leading-[36px] sm:leading-[44px] md:leading-[56px] text-foreground"
           style={{
             fontWeight: 200,
@@ -79,7 +87,7 @@ export default function LatestBlogs() {
           Latest Blog & Resources
         </h2>
 
-        {/* Blog States */}
+        {/* States */}
         {loading ? (
           <p className="text-center text-muted-foreground">
             Loading blog posts...
@@ -93,10 +101,10 @@ export default function LatestBlogs() {
             {blogPosts.map((post) => (
               <BlogCard
                 key={post._id}
-                slug={post.slug} // use slug for linking
+                slug={post.slug}
                 title={post.title}
                 summary={post.summary}
-                image={post.images[0]}
+                image={post.images?.[0]}
               />
             ))}
           </div>

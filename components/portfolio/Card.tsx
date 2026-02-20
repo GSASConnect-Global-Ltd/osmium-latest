@@ -19,54 +19,33 @@ const PortfolioCard = ({
 }: PortfolioCardProps) => {
   return (
     <div className="overflow-hidden transition duration-300 group rounded-xl">
-      {/* Image Section with Gradient Overlay */}
-      <div
-        className="relative w-full"
-        style={{
-          height: "359px",
-          borderRadius: "24px",
-          overflow: "hidden",
-        }}
-      >
+
+      {/* Image Section */}
+      <div className="relative w-full h-[240px] sm:h-[300px] md:h-[359px] rounded-[24px] overflow-hidden">
         <Image
           src={image}
           alt={title}
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
-        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-black/30" />
       </div>
 
-     {/* Content Section */}
-      <div className="mt-[32px] flex flex-col space-y-4">
+      {/* Content Section */}
+      <div className="mt-6 sm:mt-8 md:mt-[32px] flex flex-col space-y-3 sm:space-y-4">
+
         {/* Title */}
-        <p
-          style={{
-            color: "#1B2514",
-            fontFamily: "Satoshi",
-            fontSize: "24px",
-            fontStyle: "normal",
-            fontWeight: 700,
-            lineHeight: "24px", // 100%
-            letterSpacing: "0.24px",
-          }}
-        >
+        <p className="text-[#1B2514] font-satoshi font-bold 
+                      text-[20px] sm:text-[22px] md:text-[24px] 
+                      leading-[24px] tracking-[0.24px]">
           {title}
         </p>
 
         {/* Description */}
-        <p
-          style={{
-            color: "#1B2514",
-            fontFamily: "Satoshi",
-            fontSize: "16px",
-            fontStyle: "normal",
-            fontWeight: 400,
-            lineHeight: "24px", // 150%
-            letterSpacing: "0.16px",
-          }}
-        >
+        <p className="text-[#1B2514] font-satoshi font-normal 
+                      text-[14px] sm:text-[15px] md:text-[16px] 
+                      leading-[22px] md:leading-[24px] 
+                      tracking-[0.16px]">
           {description}
         </p>
 
@@ -76,43 +55,21 @@ const PortfolioCard = ({
             keywords.map((keyword) => (
               <span
                 key={keyword}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  gap: "10px",
-                  padding: "6px 10px",
-                  borderRadius: "4px",
-                  background: "#F5F5F5",
-                  color: "var(--foundation-primary-shade-dark-hover, #1B2514)",
-                  fontFamily: "Satoshi",
-                  fontSize: "16px",
-                  fontStyle: "normal",
-                  fontWeight: 400,
-                  lineHeight: "24px", // 150%
-                  letterSpacing: "0.16px",
-                }}
+                className="flex items-center justify-center
+                           px-3 py-1.5 sm:px-3 sm:py-1.5
+                           rounded-md bg-[#F5F5F5]
+                           text-[#1B2514] font-satoshi
+                           text-[12px] sm:text-[14px] md:text-[16px]
+                           leading-[18px] md:leading-[24px]"
               >
                 {keyword}
               </span>
             ))
           ) : (
             <span
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "10px",
-                padding: "6px 10px",
-                borderRadius: "4px",
-                background: "#F5F5F5",
-                color: "#9CA3AF",
-                fontFamily: "Satoshi",
-                fontSize: "14px",
-                fontStyle: "italic",
-                fontWeight: 400,
-                lineHeight: "20px",
-              }}
+              className="px-3 py-1.5 rounded-md bg-[#F5F5F5]
+                         text-gray-400 italic
+                         text-[12px] sm:text-[14px]"
             >
               No keywords
             </span>
@@ -121,21 +78,17 @@ const PortfolioCard = ({
 
         {/* Button */}
         <button
-          className="flex items-center gap-2 group"
-          style={{
-            color: "#13492D",
-            textAlign: "center",
-            fontSize: "16px",
-            fontStyle: "normal",
-            fontWeight: 700,
-            lineHeight: "20px", // 125%
-          }}
+          className="flex items-center gap-2 text-[#13492D]
+                     font-bold
+                     text-[14px] sm:text-[15px] md:text-[16px]
+                     leading-[20px]
+                     transition-all duration-300
+                     hover:opacity-80"
         >
           View Project
           <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
         </button>
       </div>
-
     </div>
   );
 };

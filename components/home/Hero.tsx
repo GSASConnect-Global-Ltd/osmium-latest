@@ -14,8 +14,8 @@ const Hero = () => {
         className="absolute opacity-40"
         style={{
           transform: "rotate(67.18deg)",
-          bottom: "-362px", // half hidden
-          left: "-455.46px",
+          bottom: "-36%", // relative positioning for responsiveness
+          left: "-34%",
         }}
         priority
       />
@@ -29,46 +29,42 @@ const Hero = () => {
         className="absolute opacity-40"
         style={{
           transform: "rotate(112.82deg)",
-          bottom: "-325px", // half hidden
-          left: "763.1px",
+          bottom: "-30%",
+          left: "60%",
         }}
         priority
       />
 
       {/* Content */}
-      <div className="container relative z-10 px-4 mx-auto text-center w-[729px]">
-        <div className="max-w-5xl mx-auto space-y-8">
+      <div className="container relative z-10 px-4 mx-auto text-center w-full max-w-[729px]">
+        <div className="mx-auto space-y-6 sm:space-y-8">
           {/* Main Headline */}
-          <p className="text-[71px] ppEditorial font-extralight leading-[86.4px] tracking-[0.04em] text-center text-white">
+          <p className="text-white text-[clamp(28px,5vw,71px)] leading-[clamp(36px,6vw,86.4px)] tracking-[0.04em] font-extralight ppEditorial">
             Building Africa&apos;s Digital &amp; Sustainable Future
           </p>
 
+          {/* Description */}
           <p
-            className="max-w-2xl mx-auto text-[16px] font-normal leading-[24px] tracking-[0.01em] text-center text-gray-300"
+            className="mx-auto max-w-xl text-gray-300 text-[clamp(14px,2vw,16px)] leading-[clamp(20px,3vw,24px)] tracking-[0.01em]"
             style={{ fontFamily: "Satoshi" }}
           >
             At ORREL, we are at the forefront of technological advancement,
             uniting diverse sectors under one umbrella. Our mission is to drive
-            innovation in AI, renewable energies, and more shaping a sustainable
+            innovation in AI, renewable energies, and more, shaping a sustainable
             future for Africa and beyond.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col items-center justify-center gap-4 pt-6 sm:flex-row">
-            {/* CTA Button */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 sm:pt-6">
             <button
-              className="inline-flex items-center justify-center px-6 py-4 text-black font-satoshi font-bold text-[16px] leading-[20px] tracking-wide rounded-[12px] border-2 border-[#f8faf9] bg-[#37D181] transition-colors duration-300 hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black"
-              style={{
-                minWidth: "fit-content",
-                border: "1px solid white",
-                fontFamily: "Satoshi",
-              }}
+              className="inline-flex items-center justify-center px-6 py-3 sm:py-4 text-black font-bold text-[clamp(14px,2vw,16px)] tracking-wide rounded-[12px] border border-white bg-[#37D181] transition-colors duration-300 hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black"
+              style={{ fontFamily: "Satoshi" }}
             >
               Partner with us
             </button>
 
             <button
-              className="h-12 px-5 text-base font-bold text-white tracking-[0.01em] transition-colors border border-white rounded-lg min-w-40 hover:bg-white hover:text-black"
+              className="inline-flex items-center justify-center h-12 px-5 text-[clamp(14px,2vw,16px)] font-bold text-white tracking-[0.01em] border border-white rounded-lg transition-colors duration-300 hover:bg-white hover:text-black"
               style={{ fontFamily: "Satoshi" }}
             >
               Explore our solutions

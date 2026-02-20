@@ -8,11 +8,14 @@ import Hiring from "@/components/home/Hiring";
 import { ProjectsShowcase } from "@/components/home/Project";
 import CTASection from "@/components/home/CTA";
 import Blog from "@/components/home/Blog";
+import HeroSlide from "@/components/home/HeroSlide";
+
 
 export default function Home() {
   return (
     <div className="min-h-screen font-sans text-black transition-colors duration-300 bg-white">
       <Hero />
+      <HeroSlide />
       <AboutSection />
       <SolutionsSection />
       <TechSection />

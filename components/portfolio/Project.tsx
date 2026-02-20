@@ -55,28 +55,33 @@ const portfolioItems = [
 
 const Portfolio = () => {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [windowWidth, setWindowWidth] = useState(0);
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
+  // Filtered portfolio items
   const filteredItems =
     activeCategory === "All"
       ? portfolioItems
       : portfolioItems.filter((item) => item.category === activeCategory);
 
+  // Detect window width safely on client
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    handleResize(); // initial
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Scroll & drag logic
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
 
-    // Enable smooth native momentum scroll on iOS
     el.style.setProperty("-webkit-overflow-scrolling", "touch");
-
-    // Allow horizontal pan gestures
     el.style.touchAction = "pan-x";
-
-    // Scroll snapping
     el.style.scrollSnapType = "x mandatory";
 
-    // Drag-to-scroll
     let isDown = false;
     let startX = 0;
     let scrollLeft = 0;
@@ -90,8 +95,7 @@ const Portfolio = () => {
 
     const onPointerMove = (e: PointerEvent) => {
       if (!isDown) return;
-      const x = e.pageX;
-      const walk = startX - x;
+      const walk = startX - e.pageX;
       el.scrollLeft = scrollLeft + walk;
     };
 
@@ -114,7 +118,7 @@ const Portfolio = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* ---------- Filter / Category bar ---------- */}
-      <section className="px-6 mb-12 mt-[62px]">
+      <section className="px-4 sm:px-6 mb-10 sm:mb-12 mt-10 sm:mt-[62px]">
         <div className="mx-auto max-w-7xl">
           <div
             ref={scrollRef}
@@ -124,32 +128,29 @@ const Portfolio = () => {
               borderRadius: "100px",
               border: "1px solid #E8E8E8",
               background: "#F5F5F5",
-              padding: "8px",
+              padding: "6px",
               margin: "0 auto",
               scrollBehavior: "smooth",
             }}
           >
-
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`flex justify-center items-center rounded-full transition-all duration-300 flex-shrink-0 snap-start 
-                  ${
-                    activeCategory === category
-                      ? "bg-black text-white shadow-md"
-                      : "bg-transparent text-gray-800 hover:bg-gray-200"
-                  }`}
+                className={`flex justify-center items-center rounded-full transition-all duration-300 flex-shrink-0 snap-start ${
+                  activeCategory === category
+                    ? "bg-black text-white shadow-md"
+                    : "bg-transparent text-gray-800 hover:bg-gray-200"
+                }`}
                 style={{
-                  padding: "10px 20px",
-                  textAlign: "center",
+                  padding: windowWidth && windowWidth < 640 ? "8px 16px" : "10px 20px",
                   fontFamily: "Satoshi",
-                  fontSize: "16px",
+                  fontSize: windowWidth && windowWidth < 640 ? "14px" : "16px",
                   fontWeight: 600,
                   lineHeight: "24px",
                   letterSpacing: "0.16px",
                   whiteSpace: "nowrap",
-                  marginLeft: 8,
+                  marginLeft: index === 0 ? 0 : 8,
                 }}
               >
                 {category}

@@ -12,6 +12,18 @@ interface BlogCardProps {
 }
 
 const BlogCard = ({ slug, title, summary, image }: BlogCardProps) => {
+
+  const normalizeImage = (src?: string) => {
+  if (!src) return "/assets/NoImage.png";
+
+  // absolute URL → keep it
+  if (src.startsWith("http")) return src;
+
+  // relative URL → attach backend
+  return `${process.env.NEXT_PUBLIC_API_URL}${src}`;
+};
+
+
   return (
     <div
       className="flex flex-col items-center overflow-hidden bg-gray-100 rounded-[32px] gap-3 p-2"
@@ -22,13 +34,22 @@ const BlogCard = ({ slug, title, summary, image }: BlogCardProps) => {
     >
       {/* Blog Image */}
       {image ? (
+
         <Image
-          src={image}
-          alt={title}
-          className="object-cover w-[382px] h-[217px] rounded-[24px]"
-          width={382}
-          height={217}
-        />
+  src={normalizeImage(image)}
+  alt={title}
+  className="object-cover w-[382px] h-[217px] rounded-[24px]"
+  width={382}
+  height={217}
+/>
+
+        // <Image
+        //   src={image}
+        //   alt={title}
+        //   className="object-cover w-[382px] h-[217px] rounded-[24px]"
+        //   width={382}
+        //   height={217}
+        // />
       ) : (
         <Image
           src="/assets/NoImage.png"

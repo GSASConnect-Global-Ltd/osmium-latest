@@ -116,31 +116,47 @@ const HiringPage = () => {
   return (
     <section className="bg-gray-50">
      {/* Hero Section */}
-      <div className="bg-black border-b pt-[200px]">
-        <div className="max-w-6xl px-6 py-20 mx-auto text-center">
-          <h1 className="text-3xl font-bold leading-tight text-white sm:text-5xl">
-            Discover your potential and{" "}
-            <span className="text-green-500">take your career</span> to new heights today!
-          </h1>
-          <p className="max-w-2xl mx-auto mt-4 text-lg text-gray-300">
-            At ORREL, we’re building Africa’s digital and sustainable future. Join us to
-            create impact that lasts.
-          </p>
-          <div className="flex flex-col justify-center gap-4 mt-8 sm:flex-row">
-            <input
-              type="text"
-              placeholder="Search by role or keyword"
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setCurrentPage(1);
-              }}
-              className="w-full px-4 py-3 border rounded-lg sm:w-96 focus:ring-2 focus:ring-green-600"
-            />
-          </div>
-        </div>
-      </div>
+     <div className="bg-black border-b pt-[120px] sm:pt-[150px] lg:pt-[200px]">
+      {/* <div className="bg-black border-b pt-20 sm:pt-28 lg:pt-36"> */}
 
+  <div className="max-w-6xl px-6 py-14 sm:py-16 lg:py-20 mx-auto text-center">
+    
+    {/* Heading */}
+    <h1 className="text-2xl font-bold leading-snug text-white 
+                   sm:text-4xl 
+                   lg:text-5xl">
+      Discover your potential and{" "}
+      <span className="text-green-500">take your career</span> to new heights today!
+    </h1>
+
+    {/* Description */}
+    <p className="max-w-2xl mx-auto mt-4 
+                  text-base 
+                  sm:text-lg 
+                  text-gray-300">
+      At ORREL, we’re building Africa’s digital and sustainable future. Join us to
+      create impact that lasts.
+    </p>
+
+    {/* Search */}
+    <div className="flex flex-col justify-center gap-4 mt-6 sm:mt-8 sm:flex-row">
+      <input
+        type="text"
+        placeholder="Search by role or keyword"
+        value={searchQuery}
+        onChange={(e) => {
+          setSearchQuery(e.target.value);
+          setCurrentPage(1);
+        }}
+        className="w-full px-4 py-3 text-sm sm:text-base
+                   border rounded-lg 
+                   sm:w-96
+                   focus:ring-2 focus:ring-green-600
+                   focus:outline-none"
+      />
+    </div>
+  </div>
+</div>
 
       {/* Jobs */}
       <div className="bg-white border-t">

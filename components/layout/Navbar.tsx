@@ -52,7 +52,7 @@ const Navbar = () => {
     { name: "Portfolio", href: "/portfolio", type: "link" },
     { name: "Blog", href: "/blog", type: "link" },
     { name: "Contact", href: "/contact", type: "link" },
-    {name: "Job", href:"/hiring", type: "link"}
+    {name: "Career", href:"/hiring", type: "link"}
   ];
 
   // ✅ Services
