@@ -55,12 +55,13 @@ const Hero = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 sm:pt-6">
+          <div className="flex flex-col items-center justify-center gap-4 pt-4 sm:flex-row sm:pt-6">
             <button
               className="inline-flex items-center justify-center px-6 py-3 sm:py-4 text-black font-bold text-[clamp(14px,2vw,16px)] tracking-wide rounded-[12px] border border-white bg-[#37D181] transition-colors duration-300 hover:brightness-90 focus:outline-none focus:ring-2 focus:ring-black"
               style={{ fontFamily: "Satoshi" }}
             >
-              Partner with us
+              <a href="/contact">Partner with us</a>
+              
             </button>
 
             <button

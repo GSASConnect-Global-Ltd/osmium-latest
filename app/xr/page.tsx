@@ -77,7 +77,7 @@ const Services = () => {
       description="We craft immersive Extended Reality (XR) experiences—Virtual, Augmented, and Mixed—that transform how you train, design, maintain, and engage with your world. "
       backgroundImage="/xr/xr-hero.png"
       buttonText="Partner with Us"
-      buttonLink="#"
+      buttonLink="/contact"
       width="900px" 
     />
       

@@ -75,7 +75,7 @@ const Services = () => {
       description="We design and develop serious games and gamified experiences that transform learning, training, and complex tasks into engaging, effective, and memorable journeys. "
       backgroundImage="/dwt/dwt-hero.png"
       buttonText="Partner with Us"
-      buttonLink="#"
+      buttonLink="/contact"
       width="900px" 
     />
       

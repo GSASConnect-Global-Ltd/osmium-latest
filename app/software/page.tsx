@@ -81,7 +81,7 @@ const Services = () => {
       description="We design and develop robust, scalable, and secure software applications, platforms, and APIs that form the core of modern digital transformation for businesses and institutions. "
       backgroundImage="/software/software-hero.jpg"
       buttonText="Partner with us"
-      buttonLink="#"
+      buttonLink="/contact"
       width="900px" 
     />
       

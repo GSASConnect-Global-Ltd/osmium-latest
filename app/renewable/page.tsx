@@ -102,7 +102,7 @@ const Services = () => {
       description="We deliver renewable energy systems and solutions that power industries, homes, offices, farms and more sustainably.  "
       backgroundImage="/renewable/renewable-hero.png"
       buttonText="Partner with us"
-      buttonLink="#"
+      buttonLink="/contact"
       width="900px" 
     />
       

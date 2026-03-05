@@ -105,7 +105,9 @@ const Main = () => {
                   fontFamily: "Satoshi",
                 }}
               >
-                Partner with us
+                <a href="/contact">Partner with us</a>
+
+                
               </button>
             </div>
           </div>
